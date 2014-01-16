@@ -1,0 +1,34 @@
+﻿@model DabTrial.Models.ManageFileModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>ManageFileModel</legend>
+	<table>
+		<tbody>
+			<tr class="display-row">
+				<td class="display-label">
+				    @Html.DisplayNameFor(model => model.FileName)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.FileName)
+				</td>
+			</tr>
+			<tr>
+                <td></td>
+                <td>
+                    @using (Html.BeginForm()) {
+                        
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete"> 
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>

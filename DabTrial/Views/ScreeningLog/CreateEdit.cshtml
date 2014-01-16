@@ -1,0 +1,166 @@
+﻿@model DabTrial.Models.CreateEditScreenedPatient
+@{
+    ViewBag.Title = "Screened Patients";
+    Html.Assets().Libraries.Uses("AjaxFormTools", "jQueryUI");
+}
+@Html.Partial("InclusionExclusionCriteria")
+@using (Ajax.BeginForm("CreateEdit", "ScreeningLog", new AjaxOptions { OnSuccess = "ajaxAddOrChangeRow", OnFailure = "handleErrorResponse", LoadingElementId="ajaxRequest_processing"  }, new { id = "screenedPatientForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.EditorFor(model => model.CentreData.CommencedEnrollingOn)
+    <fieldset>
+        <legend>Screened Patient Details</legend>
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.ScreeningDate)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.ScreeningDate)
+                        @Html.ValidationMessageFor(model => model.ScreeningDate)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.HospitalId, Model.CentreData.Abbreviation + " Id", Model.CentreData.RecordSystemName) 
+                    </td>
+                    <td class="editor-field">
+                        @Html.HiddenFor(model => model.ScreenedPatientId, new { id = "primaryKey" })
+                        @Html.TextBoxFor(model => model.HospitalId, Model.CentreData.HospitalNoRegEx())
+                        @Html.ValidationMessageFor(model => model.HospitalId)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.Dob)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Dob)
+                        @Html.ValidationMessageFor(model => model.Dob)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.IcuAdmissionDate)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.IcuAdmissionDate)
+                        @Html.ValidationMessageFor(model => model.IcuAdmissionDate)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.AllInclusionCriteriaPresent)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.AllInclusionCriteriaPresent)
+                        @Html.ValidationMessageFor(model => model.AllInclusionCriteriaPresent)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.AllExclusionCriteriaAbsent)
+                    </td>
+                    <td class="editor-field">
+                        @Html.CheckBoxFor(model => model.AllExclusionCriteriaAbsent, Html.EnabledIfAttributesFor(model=>model.AllInclusionCriteriaPresent, true))
+                        @Html.ValidationMessageFor(model => model.AllExclusionCriteriaAbsent)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model=>model.NoConsentAttemptId, "Consent Attempted")
+                    </td>
+                    <td class="editor-field">
+                        @Html.RadioButtonFor(model=>model.NoConsentAttemptId, "", Html.EnabledIfAttributesFor(model=>model.AllExclusionCriteriaAbsent, true))
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        Consent Not Attempted
+                    </td>
+                    <td class="editor-field" colspan="2">
+                        If patient was eligible, but consent was not attempted within 4 hours
+                        <ul @Html.EnabledIfAttributesFor(model => model.AllExclusionCriteriaAbsent, true, new { @class="optionList"}).ToAttributes() >
+                            <li>
+                                Staff unaware:
+                                <ul class="optionList innerOptionList">
+                                    @foreach (var reason in Model.NoConsentAttemptReasons[false])
+                                    {
+                                        <li>
+                                            <label>
+                                                @Html.RadioButtonFor(model=>model.NoConsentAttemptId, reason.Value)
+                                                @reason.Text
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>    
+                            <li>
+                                Staff were fully aware of trial but:
+                                <ul class="optionList innerOptionList">
+                                    @foreach (var reason in Model.NoConsentAttemptReasons[true])
+                                    {
+                                        <li>
+                                            <label>
+                                                @Html.RadioButtonFor(model=>model.NoConsentAttemptId, reason.Value)
+                                                @reason.Text
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                            @foreach (var reason in Model.NoConsentAttemptReasons[null])
+                            {
+                                <li>
+                                    <label>
+                                        @Html.RadioButtonFor(model=>model.NoConsentAttemptId, reason.Value)
+                                        @reason.Text
+                                    </label>
+                                </li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.ConsentRefused)
+                    </td>
+                    <td class="editor-field">
+                        @Html.CheckBoxFor(model => model.ConsentRefused, Html.EnabledIfAttributesFor(model=>model.NoConsentAttemptId, ""))
+                        @Html.ValidationMessageFor(model => model.ConsentRefused)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.NoConsentFreeText)
+                    </td>
+                    <td class="editor-field">
+                        @Html.TextAreaFor(model => model.NoConsentFreeText, Html.EnabledIfAttributesFor(Html.NewPropertyValues().AddNameFor(model=>model.NoConsentAttemptId, Model.NoConsentAttemptRequiresDetail).AddNameFor(model=>model.ConsentRefused,true)))
+                        @Html.ValidationMessageFor(model => model.NoConsentFreeText)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Save">
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+        <div>
+            @Html.ActionLink("Clear Form", "CreateEdit", null, new { @class = "emptyFields" }) <span class="note">(without saving)</span>
+        </div>
+    </fieldset>
+}
+
+@Html.Partial("Index", Model.ScreeningList)

@@ -1,0 +1,28 @@
+﻿@using DabTrial.Models
+<nav>
+    <ul id="menu">
+    @{
+        RoleMenu menu = (ViewBag.Menu ?? new RoleMenu())
+                                 .Add(new RoleMenuItem("Home", "Index", "Home","All"))
+                                 .Add(new RoleMenuItem("About", "About", "Home","All"))
+                                 .Add(new RoleMenuItem("Contact Us", "Index", "ContactUs","All"))
+                                 .Add(new RoleMenuItem("Enrol", "Enrol", "Participant","Authenticated"))
+                                 .Add(new RoleMenuItem("Participants", "Index", "Participant", "Authenticated"))
+                                 .Add(new RoleMenuItem("Site Stats", "CentreStatistics", "StudyCentre", "PrincipleInvestigator,SiteInvestigator"))
+                                 .Add(new RoleMenuItem("Adverse", "Index", "AdverseEvent", "PrincipleInvestigator,SiteInvestigator"))
+                                 .Add(new RoleMenuItem("Violations", "Index", "ProtocolViolation", "PrincipleInvestigator,SiteInvestigator"))
+                                 .Add(new RoleMenuItem("Screening", "CreateEdit", "ScreeningLog", "Authenticated"))
+                                 .Add(new RoleMenuItem("Respiratory Definitions", "Index", "RespSupportType", "PrincipleInvestigator"))
+                                 .Add(new RoleMenuItem("Manage Users", "Index", "InvestigatorAccount", "PrincipleInvestigator"))
+                                 .Add(new RoleMenuItem("View log", "Index", "AuditLog", "PrincipleInvestigator"))
+                                 .Add(new RoleMenuItem("Sites", "Index", "StudyCentre", "PrincipleInvestigator"))
+                                 .Add(new RoleMenuItem("Exclusions", "Index", "NonInclusionReason", "PrincipleInvestigator"));
+        foreach (var link in menu)
+        {
+           <li>
+                @Html.ActionLink(link.LinkText, link.ActionName,link.ControllerName)
+            </li>
+        }
+    }
+    </ul>
+</nav>

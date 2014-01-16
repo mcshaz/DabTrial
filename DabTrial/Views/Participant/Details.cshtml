@@ -1,0 +1,123 @@
+﻿@model DabTrial.Models.ParticipantDetails
+
+
+@{ 
+    ViewBag.Title = "Participant Details";
+    Html.Assets().Libraries.Uses("AjaxFormTools","TimePicker");
+}
+
+@if (ViewBag.NewlyRandomised)
+{
+    ViewBag.Title = "Randomised Successfully";
+    <h2>New Participant Successfully Randomised.</h2>
+    <p>Your patient has been randomised to: <strong>@Model.TrialArm</strong></p>
+    <p>DAB Trial Number: <em>@Html.DisplayFor(model => model.ParticipantId)</em></p>
+    <p>Thank you for Enroling this patient.</p>
+}
+<h2>Participant Details</h2>
+@if (Model.IsInterventionArm)
+{
+<div class="expando gradient @(ViewBag.NewlyRandomised?"defaultOpen":"")">
+    Medications for this patient
+    <div class="expandoToggle">
+        &nbsp;
+    </div>
+</div>
+ @Html.Partial("CalculateDoses", Model.DrugDoses)
+}
+<fieldset>
+    <legend>Participant</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">DAB Trial Id</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ParticipantId)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Hospital Id</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.HospitalId)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Dob</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Dob)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Weight</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Weight)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">ICU admission</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.IcuAdmission)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Gender</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Gender)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Time Randomised</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.LocalTimeRandomised)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Study Arm</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.TrialArm)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Enroling Clinician</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.EnrollingClinicianFullName)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Resp Support at Randomisation</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.RespiratorySupportAtRandomisationDescription)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Study Centre</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.StudyCentreName)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Respiratory Support Changes</td>
+                <td class="display-field">
+                    @Html.Partial("~/Views/RespSupportChange/Index.cshtml", Model)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+<p class="relNav">
+    @Ajax.ActionLink("Update Progress", "Update", new { id = Model.ParticipantId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing" }) |
+    @Ajax.ActionLink("Register Protocol Violation", "Create", "ProtocolViolation", new { id = Model.ParticipantId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  }) |
+    @Ajax.ActionLink("Register Adverse Event", "Create", "AdverseEvent", new { id = Model.ParticipantId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

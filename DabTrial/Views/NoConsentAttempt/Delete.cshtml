@@ -1,0 +1,58 @@
+﻿@model DabTrial.Domain.Tables.NoConsentAttempt
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>NoConsentAttempt</legend>
+	<table>
+		<tbody>
+			<tr class="display-row">
+				<td class="display-label">
+						@Html.DisplayNameFor(model => model.Description)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.Description)
+				</td>
+			</tr>
+			<tr class="display-row">
+				<td class="display-label">
+						@Html.DisplayNameFor(model => model.Abbreviation)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.Abbreviation)
+				</td>
+			</tr>
+			<tr class="display-row">
+				<td class="display-label">
+						@Html.DisplayNameFor(model => model.IsFullyAware)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.IsFullyAware)
+				</td>
+			</tr>
+			<tr class="display-row">
+				<td class="display-label">
+						@Html.DisplayNameFor(model => model.RequiresDetail)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.RequiresDetail)
+				</td>
+			</tr>
+			<tr>
+                <td></td>
+                <td>
+                    @using (Html.BeginForm()) {
+                        
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete"> 
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>

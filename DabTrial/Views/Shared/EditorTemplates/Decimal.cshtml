@@ -1,0 +1,8 @@
+﻿@using UkAdcHtmlAttributeProvider.Infrastructure
+@* This template is quite awkward - should move some of this to a helper method *@
+@{
+    var attributes = Html.GetAttributes();
+    attributes.MergeValue("class", "text-box single-line");
+}
+@Html.TextBox("", (ViewData.TemplateInfo.FormattedModelValue == ViewData.ModelMetadata.Model) ? String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.00}", ViewData.ModelMetadata.Model) : ViewData.TemplateInfo.FormattedModelValue, 
+    attributes)

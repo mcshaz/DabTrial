@@ -1,0 +1,26 @@
+﻿@model DabTrial.Domain.Tables.AdverseEventType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Adverse Event Type</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">Description</td>
+        
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Description)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.AdverseEventTypeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

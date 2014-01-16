@@ -1,0 +1,64 @@
+﻿@model DabTrial.Models.ProtocolViolationDetails
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<fieldset>
+    <legend>Protocol Violation Details</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">Participant Id</td>
+
+                <td class="display-field">
+                    @Html.ActionLink(Model.ParticipantId.ToString(), "Details", "Participant", new { id = Model.ParticipantId }, null)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Time Of Violation</td>
+
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.TimeOfViolation)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Severity</td>
+
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ViolationClass)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Local Reporting Time</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ReportingTimeLocal)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Details</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Details)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Study Centre</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.TrialParticipantStudyCentreName)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Reporting Investigator</td>
+                <td class="display-field">
+                    <a href="mailTo:@Model.ReportingUserEmail">@Model.ReportingUserFullName</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>

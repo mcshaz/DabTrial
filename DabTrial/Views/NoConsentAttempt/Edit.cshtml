@@ -1,0 +1,74 @@
+﻿@model DabTrial.Domain.Tables.NoConsentAttempt
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    <fieldset>
+        <legend>No Consent Attempt Reason</legend>
+     	<table>
+			<tbody>
+				<tr class="editor-row">
+					<td class="editor-label">
+						@Html.LabelFor(model => model.Description)
+					</td>
+					<td class="editor-field">
+						@Html.EditorFor(model => model.Description)
+					
+						@Html.ValidationMessageFor(model => model.Description)
+					</td>
+				</tr>
+
+                <tr class="editor-row">
+					<td class="editor-label">
+						@Html.LabelFor(model => model.Abbreviation)
+					</td>
+					<td class="editor-field">
+						@Html.EditorFor(model => model.Abbreviation)
+					
+						@Html.ValidationMessageFor(model => model.Abbreviation)
+					</td>
+				</tr>
+
+				<tr class="editor-row">
+					<td class="editor-label">
+						@Html.LabelFor(model => model.IsFullyAware)
+					</td>
+					<td class="editor-field">
+						@Html.EditorFor(model => model.IsFullyAware)
+					
+						@Html.ValidationMessageFor(model => model.IsFullyAware)
+					</td>
+				</tr>
+
+				<tr class="editor-row">
+					<td class="editor-label">
+						@Html.LabelFor(model => model.RequiresDetail)
+					</td>
+					<td class="editor-field">
+						@Html.EditorFor(model => model.RequiresDetail)
+					
+						@Html.ValidationMessageFor(model => model.RequiresDetail)
+					</td>
+				</tr>
+
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" value="Save" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+}
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

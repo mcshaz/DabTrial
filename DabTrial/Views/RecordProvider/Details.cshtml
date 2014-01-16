@@ -1,0 +1,42 @@
+﻿@model DabTrial.Models.RecordProviderModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Hospital Record Number Providers</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">Name</td>
+
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Name)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">HospitalNoRegEx</td>
+
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.HospitalNoRegEx)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">NotationDescription</td>
+
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.NotationDescription)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

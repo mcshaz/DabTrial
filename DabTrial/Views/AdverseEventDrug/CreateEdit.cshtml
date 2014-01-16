@@ -1,0 +1,77 @@
+﻿@model DabTrial.Models.DrugCreateModify
+@{
+    ViewBag.Title = "Edit Drug";
+}
+@using (Ajax.BeginForm("CreateEdit", "AdverseEventDrug", new AjaxOptions { OnFailure = "handleErrorResponse", OnSuccess = (Model.DrugId == -1) ? "ajaxAddOrChangeRow" : "closeAndAddOrChangeRow", LoadingElementId = "ajaxRequest_processing" }))
+{
+    if (!(ViewBag.IsAjax ?? Request.IsAjaxRequest())) { @Html.AntiForgeryToken(); }
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Medications</legend>
+        @Html.HiddenFor(model => model.DrugId, new { id = "primaryKey" })
+        @Html.HiddenFor(model => model.AdverseEventId, new { @class = "maintainState" })
+        @Html.HiddenFor(model => model.AdverseEventTrialParticipantDob, new { @class = "maintainState" })
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.DrugName)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.DrugName)
+                    
+                        @Html.ValidationMessageFor(model => model.DrugName)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.Dosage)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Dosage)
+                    
+                        @Html.ValidationMessageFor(model => model.Dosage)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.ReasonsForUse)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.ReasonsForUse)
+                    
+                        @Html.ValidationMessageFor(model => model.ReasonsForUse)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.StartDate)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.StartDate)
+                    
+                        @Html.ValidationMessageFor(model => model.StartDate)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.StopDate)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.StopDate)
+                    
+                        @Html.ValidationMessageFor(model => model.StopDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Save">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </fieldset>
+}
+ 
+

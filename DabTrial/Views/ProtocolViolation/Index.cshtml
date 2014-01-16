@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DabTrial.Models.ProtocolViolationListItem>
+
+@{
+    ViewBag.Title = "Protocol Violation";
+    Html.Assets().Libraries.Uses("AjaxFormTools", "DataTables", "TimePicker");
+    Html.AntiForgeryToken();
+}
+
+<h2>Index</h2>
+<table id="violationGrid" class="dataTable">
+    <thead>
+        <tr>
+            <th>
+                DAB Trial Id
+            </th>
+            <th>
+                Study Centre
+            </th>
+            <th>
+                Time Of Violation
+            </th>
+            <th>
+                Violation Severity
+            </th>
+            <th>
+                Details
+            <th></th>
+        </th></tr>
+    </thead>
+    <tbody class="ajaxUpdatableTBody">
+    @foreach (var item in Model) {
+        @Html.Partial("_IndexRow", item)
+    }
+    </tbody>
+</table>

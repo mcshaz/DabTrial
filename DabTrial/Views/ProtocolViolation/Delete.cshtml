@@ -1,0 +1,66 @@
+﻿@model DabTrial.Models.ProtocolViolationDetails
+@{
+    ViewBag.Title = "Delete";
+}
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Protocol Violation</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">Participant Id</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ParticipantId)
+                </td>
+            </tr>
+            <tr class="display-row">
+                <td class="display-label">Time Of Violation</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.TimeOfViolation)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Details</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Details)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Major Violation</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.MajorViolation)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Reporting User Email</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ReportingUserEmail)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Reporting Time (Local)</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ReportingTimeLocal)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                </td>
+                <td>
+                    @using (Html.BeginForm()) {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete"> 
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>

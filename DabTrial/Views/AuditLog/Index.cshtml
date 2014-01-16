@@ -1,0 +1,15 @@
+﻿@using Mvc.JQuery.Datatables
+@using DabTrial.Controllers
+
+@{
+    ViewBag.Title = "Audit Log";
+    Html.Assets().Libraries.Uses("MvcDataTables", "jQueryUI");
+    Html.DataTableIncludes(jqueryUi: true);
+    var vm = Html.DataTableVm("auditLog", (AuditLogController ac) => ac.GetAuditLogEntries(null));
+    vm.ColumnFilter = true;
+    vm.FilterOn("EventType").Select("C", "D", "M");
+}
+<h2>Audited Changes To Database</h2>
+@Html.AntiForgeryToken()
+@Html.Partial("DataTable", vm)
+

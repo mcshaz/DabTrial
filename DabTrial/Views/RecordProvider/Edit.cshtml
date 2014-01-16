@@ -1,0 +1,62 @@
+﻿@model DabTrial.Models.RecordProviderModel
+
+@{
+    ViewBag.Title = "Edit";
+    Html.Assets().Libraries.Uses("FormTools");
+}
+
+<h2>Medical Record Provider</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Hospital Mrn Model</legend>
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.Name)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Name)
+                    
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.HospitalNoRegEx)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.HospitalNoRegEx)
+                    
+                        @Html.ValidationMessageFor(model => model.HospitalNoRegEx)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.NotationDescription)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.NotationDescription)
+                    
+                        @Html.ValidationMessageFor(model => model.NotationDescription)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Save">
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+    </fieldset>
+}
+<div>
+    @Html.ActionLink("Back to Study Centre", "Details","StudyCentre",  new {id=Model.Id}, null)
+</div>

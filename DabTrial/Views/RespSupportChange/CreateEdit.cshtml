@@ -1,0 +1,50 @@
+﻿@model DabTrial.Models.CreateEditRespSupportChange
+
+
+@using (Ajax.BeginForm("CreateEdit", "RespSupportChange", new AjaxOptions { OnFailure = "handleErrorResponse", OnSuccess = "ajaxAddOrChangeRow", LoadingElementId="ajaxRequest_processing"  }))
+{
+    if (!(ViewBag.IsAjax ?? Request.IsAjaxRequest())) { @Html.AntiForgeryToken(); }
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Respiratory support change</legend>
+        @Html.HiddenFor(model => model.RespSupportChangeId, new { id = "primaryKey" })
+        @Html.HiddenFor(model => model.ParticipantId, new { @class = "maintainState" })
+        @Html.HiddenFor(model => model.TimeRandomised, new { @class = "maintainState" })
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.RespiratorySupportTypeId)
+                    </td>
+                    <td class="editor-field">
+                        <div class="select-details">
+                            @Html.DetailDropDownListFor(model => model.RespiratorySupportTypeId, Model.RespSupportTypes, "- Please Select -")
+                            @Html.DetailDisplayFor(model => model.RespiratorySupportTypeId,"div")
+                        </div>
+                    
+                        @Html.ValidationMessageFor(model => model.RespiratorySupportTypeId)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.ChangeTime)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.ChangeTime)
+                    
+                        @Html.ValidationMessageFor(model => model.ChangeTime)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Save">
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+    </fieldset>
+}
+

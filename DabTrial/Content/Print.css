@@ -1,0 +1,47 @@
+﻿nav, #logindisplay, #menu, .relNav {
+  display:none;
+}
+img, #main {
+max-width: 100%;
+}
+@page {
+margin: 1cm;
+}
+header h1 {
+font-size: 24pt;
+margin-left:26px;
+padding:0;
+text-shadow:none;
+}
+h2 {
+font-size: 14pt;
+clear:left;
+padding:0
+}
+p {
+line-height:1;
+}
+.display-label {
+padding: 0.6em 0.5em 0;
+} 
+.display-field {
+padding:0.6em 0.4em 0;
+}
+.ui-dialog{
+  color:#000 !important;
+  height: 88% !important;
+  left: 1em !important;
+  color: #000000 !important;
+  top: 4em !important;
+  width: 92% !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+.ui-dialog-titlebar {
+    display:none !important;
+}
+body, body.siteBackground, .ui-dialog, .display-label, .display-field {
+    background: none repeat scroll 0 0 #FFFFFF !important;
+}
+.display-label, .display-field, .display-field a {
+    color: #000000 !important;
+}

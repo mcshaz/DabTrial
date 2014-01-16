@@ -1,0 +1,51 @@
+﻿@model DabTrial.Models.ScreenedPatient
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>ScreenedPatient</legend>
+    <table>
+        <tbody>
+    
+
+    <tr class="display-row">
+        <td class="display-label">HospitalId</td>
+
+        <td class="display-field">
+            @Html.DisplayFor(model => model.HospitalId)
+        </td>
+    </tr>
+
+    <tr class="display-row">
+        <td class="display-label">StudyCentre</td>
+
+        <td class="display-field">
+            @Html.DisplayFor(model => model.StudyCentre.Name)
+        </td>
+    </tr>
+
+    <tr class="display-row">
+        <td class="display-label">IcuAdmission</td>
+
+        <td class="display-field">
+            @Html.DisplayFor(model => model.IcuAdmissionDate)
+        </td>
+    </tr>
+
+        </tbody>
+    </table>
+    <p>
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+            <input type="submit" value="Delete">
+        }
+    </p>
+</fieldset>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

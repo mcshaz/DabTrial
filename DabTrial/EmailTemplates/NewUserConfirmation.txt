@@ -1,0 +1,16 @@
+﻿Hello
+
+You have been granted access to the DAB trial website.
+
+To log in to the site, please follow the link:
+<% changePasswordUrl %>
+
+And login with the following details:
+User name: <% UserName %>
+Password:  <% Password %>
+
+After logging on, you will be able to change your password.
+
+Thank you in advance for your contributions to the trial.
+
+Brent McSharry.

@@ -1,0 +1,100 @@
+﻿@model IEnumerable<DabTrial.Models.ParticipantListItem>
+
+@{
+    ViewBag.Title = "Index";
+    Html.Assets().Libraries.Uses("DataTables");
+    Html.AntiForgeryToken();
+}
+<h2>Enrolled Patients</h2>
+<div class="expando gradient">
+    Description of Data Status
+    <div class="expandoToggle">
+        &nbsp;
+    </div>
+</div>
+<div class="hidableDiv">
+    <dl>
+      <dt class="stageActive">Active</dt>
+        <dd>An ICU discharge time has not been entered, and therefore data is still being actively collected.</dd>
+      <dt class="stageDetailsRqd">Details Rqd</dt>
+        <dd>An ICU discharge time has been entered; However the &#39;Update Progress&#39; window still contains fields with incomplete data (e.g. RSV postitive).</dd>
+      <dt class="stageRespRqd">Resp Rqd</dt>
+        <dd>The most recently logged type of respiratory support is not deemed appropriate for discharge to the ward (anything other than simple oxygen therapy or nothing). 
+            In the case of children discharged to the ward on home CPAP or ventilation, the investigators will contact you at the end of the trial to confirm details.</dd>
+      <dt class="stageHospDischRqd">Hosp Disch Rqd</dt>
+        <dd>All data is entered except for the date of hospital discharge.</dd>
+      <dt class="stageComplete">Complete</dt>
+        <dd>All data appears complete.</dd>
+    </dl> 
+    <div class="note">
+        note: Data Status is assigned in the order described above. Therefore, if &#39;Details Rqd&#39; is displayed, the record may also require updates of respiratory support status and hospital discharge date.
+    </div>
+</div>
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Hospital Id
+            </th>
+            <th>
+                Dob
+            </th>
+            <th>
+                ICU admission
+            </th>
+            <th>
+                Left ICU
+            </th>
+            <th>
+                Trial Arm
+            </th>
+            <th>
+                Enrolling Clinician
+            </th>
+            <th>
+                Data Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        var dataStage = item.DataStage.ToString();
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParticipantId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HospitalId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dob)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IcuAdmission)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualIcuDischarge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrialArm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnrollingClinicianFullName)
+            </td>
+            <td>
+                <span class="@("stage"+dataStage)">
+                    @DabTrial.Utilities.StringExtensions.ToSeparatedWords(dataStage)
+                </span>
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id=item.ParticipantId })
+            </td>
+        </tr>
+    }
+    </tbody>
+
+</table>

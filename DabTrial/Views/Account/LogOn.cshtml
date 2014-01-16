@@ -1,0 +1,64 @@
+﻿@model DabTrial.Models.LogOnModel
+
+@{
+    ViewBag.Title = "Log On";
+    Html.Assets().Libraries.Uses("Validation");
+}
+
+<h2>Log On</h2>
+<p>
+    Please enter your user name and password. @Html.ActionLink("Register", "Register") if you don't have an account.
+</p>
+
+@Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <div>
+        <fieldset>
+        <legend>Account Information</legend>
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(m => m.UserName)
+                    </td>
+                    <td class="editor-field">
+                        @Html.TextBoxFor(m => m.UserName)
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(m => m.Password)
+                    </td>
+                    <td class="editor-field">
+                        @Html.PasswordFor(m => m.Password)
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                    </td>
+                    <td class="editor-field">
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelDetailsFor(m => m.RememberMe)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Log On">
+                    </td>
+                </tr>
+        
+            </tbody>
+        </table>
+    </fieldset>
+    </div>
+}
+<p>
+    Please click @Html.ActionLink("Here", "EmailPassword") if you have forgotten your password.
+</p>

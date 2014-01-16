@@ -1,0 +1,55 @@
+﻿@model DabTrial.Models.ParticipantInterventionUpdate
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.InitialSteroidRouteId)
+                    </td>
+                    <td class="editor-field">
+                        @Html.DropDownListFor(model => model.InitialSteroidRouteId, Model.InitialSteroidRoutes, "- Please Select -")
+                    
+                        @Html.ValidationMessageFor(model => model.InitialSteroidRouteId)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.NumberOfSteroidDoses)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.NumberOfSteroidDoses)
+                    
+                        @Html.ValidationMessageFor(model => model.NumberOfSteroidDoses)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.NumberOfAdrenalineNebulisers)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.NumberOfAdrenalineNebulisers)
+                    
+                        @Html.ValidationMessageFor(model => model.NumberOfAdrenalineNebulisers)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.FirstAdrenalineNebAt)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.FirstAdrenalineNebAt)
+                    
+                        @Html.ValidationMessageFor(model => model.FirstAdrenalineNebAt)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.FifthAdrenalineNebAt)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.FifthAdrenalineNebAt)
+                    
+                        @Html.ValidationMessageFor(model => model.FifthAdrenalineNebAt)
+                    </td>
+                </tr>

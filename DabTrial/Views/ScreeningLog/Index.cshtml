@@ -1,0 +1,34 @@
+﻿@model IEnumerable<DabTrial.Models.ScreenedPatientListItem>
+@{
+    Html.Assets().Libraries.Uses("DataTables");
+    Html.Assets().AddScript("~/Scripts/followDisabled.js");
+}
+<h3>All Screened Patients</h3>
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th>
+                Study Centre
+            </th>
+            <th>
+                Hospital Id
+            </th>
+            <th>
+                Admitted to ICU
+            </th>
+            <th>
+                Exclusion Reason
+            </th>
+            <th>
+                Details
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="exludedPatientGrid" class="ajaxUpdatableTBody">
+        @foreach (var item in Model)
+        {
+            @Html.Partial("_IndexRow", item)
+        }
+    </tbody>
+</table>

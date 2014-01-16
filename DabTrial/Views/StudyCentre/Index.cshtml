@@ -1,0 +1,53 @@
+﻿@model IEnumerable<DabTrial.Models.StudyCentreListItem>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Study Centre
+            </th>
+            <th>
+                Medical Record Indexing
+            </th>
+            <th>
+                Acceptable Email Domains
+            </th>
+            <th>
+                Site Registration Password
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Abbreviation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecordSystemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidDomainList)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SiteRegistrationPwd)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.StudyCentreId }) |
+                @Html.ActionLink("Details", "Details", new { id=item.StudyCentreId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.StudyCentreId })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

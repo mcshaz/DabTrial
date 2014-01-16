@@ -1,0 +1,30 @@
+﻿@using DabTrial.Utilities
+@model DabTrial.Models.AdverseEventListItem
+    <tr>
+        <td>
+            @Html.ActionLink(Model.ParticipantId, "Details", "Participant", new { id = Model.ParticipantId }, null)
+        </td>
+        <td>
+            @Html.DisplayFor(model=> model.TrialParticipantStudyCentreAbbreviation)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.EventTime)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.FatalEvent)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.SeverityDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Sequelae)
+        </td>
+        <td>
+            <span title="@Model.Details">@Model.Details.ToBriefString()</span> 
+        </td>
+        <td>
+            @Ajax.ActionLink("Edit", "Edit", "AdverseEvent", new { id = Model.AdverseEventId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  }, new { @class = "editLink" }) |
+            @Ajax.ActionLink("Details", "Details", "AdverseEvent", new { id = Model.AdverseEventId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxResultDialog", LoadingElementId="ajaxRequest_processing" }) |
+            @Ajax.ActionLink("Delete", "Delete", "AdverseEvent", new { id = Model.AdverseEventId }, new AjaxOptions { HttpMethod = "Post",OnSuccess = "rowDeleted", LoadingElementId="ajaxRequest_processing", OnFailure="failedAjaxDelete" , Confirm = String.Format("Are you sure you want to delete adverse event for participant {0} at {1} ?", Model.ParticipantId, Model.EventTime) }, new { @class = "deleteAction" })
+        </td>
+    </tr>

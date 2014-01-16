@@ -1,0 +1,137 @@
+﻿@model DabTrial.Models.StudyCentreStats
+
+@{
+    ViewBag.Title = "CentreStatistics";
+}
+
+<h2>Centre Statistics</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="dataTable">
+    <thead>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Total Participants
+        </th>
+        <th>
+            Current Participants
+        </th>
+        <th>
+            Intervention
+        </th>
+        <th>
+            Controls
+        </th>
+        <th>
+            Adverse Events
+        </th>
+        <th>
+            Deaths
+        </th>
+        <th>
+            Protocol Violations
+        </th>
+        <th>
+            Withdrawals
+        </th>
+        <th>
+            Screened<br />(enrol:screen)
+        </th>
+        <th>
+            Eligible<br />(enrol:eligible)
+        </th>
+        <th>
+            Screened Until
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.CentreStatList) {
+    <tr>
+        <td>
+            @item.Abbreviation
+        </td>
+        <td>
+            @item.TotalParticiapants
+        </td>
+        <td>
+            @item.CurrentParticipants
+        </td>
+        <td>
+            @item.InterventionArmCount
+        </td>
+        <td>
+            @item.ControlArmCount
+        </td>
+        <td>
+            @item.AdverseEventCount
+        </td>
+        <td>
+            @item.DeathCount
+        </td>
+        <td>
+            @item.ViolationCount
+        </td>
+        <td>
+            @item.WithdrawnCount
+        </td>
+        <td>
+            @item.TotalScreened (@Html.DisplayFor(model=>item.RatioEnrollScreen))
+        </td>
+        <td>
+            @item.TotalEligible (@Html.DisplayFor(model=>item.RatioEnrollEligible))
+        </td>
+        <td>
+            @(item.MostRecentScreen==null?"N/A":item.MostRecentScreen.Value.ToShortDateString())
+        </td>
+    </tr>
+}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+               Total
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.TotalParticiapants)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.CurrentParticipants)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.InterventionArmCount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.ControlArmCount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.AdverseEventCount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.DeathCount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.ViolationCount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.WithdrawnCount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.TotalScreened)
+                (@Html.DisplayFor(model => model.OverallStats.RatioEnrollScreen))
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.OverallStats.TotalEligible)
+                (@Html.DisplayFor(model => model.OverallStats.RatioEnrollEligible))
+            </td>
+            <td>
+                N/A
+            </td>
+        </tr>
+    </tfoot>
+</table>

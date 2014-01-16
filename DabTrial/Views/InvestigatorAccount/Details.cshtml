@@ -1,0 +1,83 @@
+﻿@model DabTrial.Models.InvestigatorDetailsFull
+@{
+    ViewBag.Title = "User Details";
+}
+<h2>User Details</h2>
+<fieldset>
+    <legend>Details for: @Html.DisplayFor(model => model.UserName)</legend>
+    <table>
+        <tbody>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.FullName)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.FullName)
+                </td>
+            </tr>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.Email)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.Email)
+                </td>
+            </tr>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.IsLockedOut)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.IsLockedOut)
+                </td>
+            </tr>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.StudyCentreName)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.StudyCentreName)
+                </td>
+            </tr>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.ProfessionalRole)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.ProfessionalRole)
+                </td>
+            </tr>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.Comment)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.Comment)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.Role)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.Role)
+                </td>
+            </tr>
+             <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.IsPublicContact)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.IsPublicContact)
+                    @Html.ValidationMessageFor(model => model.IsPublicContact)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

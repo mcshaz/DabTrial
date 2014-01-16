@@ -1,0 +1,76 @@
+﻿@model DabTrial.Models.DbModel
+@{
+    ViewBag.Title = "Trial Database";
+    Html.Assets().Libraries.Uses("AjaxFormTools", "Validation");
+    var tokenHidden = Html.AntiForgeryToken();
+}
+@using (Html.BeginForm()) {
+@tokenHidden
+@Html.ValidationSummary(false)
+<fieldset>
+<legend>Backup Items Available</legend>
+
+    <table>
+        <tbody class="ajaxUpdatableTBody">
+            <tr>
+                <th></th>
+                <th>File Name</th>
+                <th>Size (kB)</th>
+                <th></th>
+            </tr>
+            @if (Model.BackupFiles.Any())
+            {
+                foreach (var item in Model.BackupFiles)
+                {
+                <tr>
+                    <td>
+                        <input type="checkbox" value="@item.FileName" name="SelectedFileNames" checked="@Model.SelectedFileNames.Contains(item.FileName)"/>
+                    </td>
+                    <td>
+                        @item.FileName
+                    </td>
+                    <td class="numeric-row">
+                        @Html.DisplayFor(model=>item.Size)
+                    </td>
+                    <td>
+                        &nbsp;
+                        @Ajax.ActionLink("Delete", "Delete", "Db", new { id = @item.FileName }, new AjaxOptions { HttpMethod = "Post",OnSuccess = "rowDeleted", LoadingElementId="ajaxRequest_processing", OnFailure="failedAjaxDelete" , Confirm = String.Format("Are you sure you want to the file {0}  ?", @item.FileName) }, new { @class = "deleteAction" })
+                        &nbsp;
+                    </td>
+                 </tr>
+                }
+            } else {
+                <tr>
+                    <td>
+                        <input type="radio" disabled="disabled" />
+                     </td>
+                    <td colspan="3">
+                        <input type="hidden" name="SelectedFileNames" value="" />
+                        There are no backup files on the web server. You can create new backups below.
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <input type="submit" value="Download Selected Files" class="linkButton" />
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+        
+</fieldset>
+}
+@using (Html.BeginForm("CreateBackup","Db"))
+{
+@tokenHidden
+<fieldset>
+    <legend>Create Backup</legend>
+    <p>
+        <label>@Html.CheckBoxFor(model=>model.DifferentialOnly) Only backup new changes to the database (since the last full backup)</label>
+    </p>
+    <input type="submit" value="Create" />
+</fieldset>
+}
+

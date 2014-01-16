@@ -1,0 +1,81 @@
+﻿@model DabTrial.Models.AdverseEventDetails
+
+@{
+    ViewBag.Title = "Event Details";
+}
+
+<fieldset>
+    <legend>Adverse Event</legend>
+    <table>
+        <tbody>
+            
+            <tr class="display-row">
+                <td class="display-label">Participant Id</td>
+
+                <td class="display-field">
+                    @Html.ActionLink(Model.TrialParticipantParticipantId, "Details", "Participant", new { id = Model.TrialParticipantParticipantId }, null)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Event Time</td>
+
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.EventTime)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Reported By</td>
+
+                <td class="display-field">
+                    <a href="mailTo:@Model.ReportingUserEmail">@Model.ReportingUserFullName</a>
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Local Time of Reporting</td>
+
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ReportingTimeLocal)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Severity Level</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.SeverityDescription)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Sequelae</td>
+
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Sequelae)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Fatal Event</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.FatalEvent)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Details</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Details)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Medications at Time</td>
+                <td class="display-field">
+                    @Html.Partial("~/Views/AdverseEventDrug/Index.cshtml", Model)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>

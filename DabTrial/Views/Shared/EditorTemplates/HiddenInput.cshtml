@@ -1,0 +1,14 @@
+﻿@using UkAdcHtmlAttributeProvider.Infrastructure
+@* This template is quite awkward - should move some of this to a helper method *@
+@{
+    var attributes = Html.GetAttributes();
+}
+@if (!ViewData.ModelMetadata.HideSurroundingHtml){
+    @ViewData.TemplateInfo.FormattedModelValue
+}
+@Html.Hidden("", (object)((Model is System.Data.Linq.Binary) ? 
+        Convert.ToBase64String(((System.Data.Linq.Binary) Model).ToArray()) :  
+        (
+            (Model is byte[]) ? Convert.ToBase64String((byte[])Model) : Model
+        )),
+        attributes)

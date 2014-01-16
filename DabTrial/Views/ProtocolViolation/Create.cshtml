@@ -1,0 +1,81 @@
+﻿@model DabTrial.Models.ProtocolViolationCreate
+
+@{
+    ViewBag.Title = "Create Protocol Violation";
+}
+
+@using (Ajax.BeginForm("Create", "ProtocolViolation", new AjaxOptions { OnSuccess = "closeAjaxFormDialog", OnFailure = "handleErrorResponse", LoadingElementId = "ajaxRequest_processing" }))
+{
+    if (!(ViewBag.IsAjax ?? Request.IsAjaxRequest())) { @Html.AntiForgeryToken(); }
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Protocol Violation</legend>
+        @Html.EditorFor(model => model.TrialParticipantLocalTimeRandomised)
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="display-label">
+                        @Html.LabelFor(model => model.ParticipantId)
+                    </td>
+                    <td class="display-field">
+                        @Html.HiddenFor(model => model.ParticipantId)
+                        @Html.DisplayFor(model => model.ParticipantId)
+                    </td>
+                    <td></td>
+                </tr>
+                @if(!Request.IsAjaxRequest())
+                {
+                    <tr class="editor-row">
+                        <td class="display-label">
+                            @Html.LabelFor(model => model.TrialParticipantHospitalId)
+                        </td>
+                        <td class="display-field">
+                            @Html.DisplayFor(model => model.TrialParticipantHospitalId)
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.Violation)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EnumDropDownListFor(model => model.Violation, "-Please Select-")
+                    
+                        @Html.ValidationMessageFor(model => model.Violation)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.TimeOfViolation)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.TimeOfViolation)
+                    
+                        @Html.ValidationMessageFor(model => model.TimeOfViolation)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.Details)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Details)
+                    
+                        @Html.ValidationMessageFor(model => model.Details)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Create">
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+    </fieldset>
+}
+

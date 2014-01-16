@@ -1,0 +1,17 @@
+﻿ul#menu li {
+    margin: 2px 0 0 3px;
+    zoom: 1;
+    display: inline;
+}
+* html #ajaxRequest_processing {
+    position: absolute;
+}
+.inlineBlock,
+.phoneNumber div,
+.buttonList,
+.expando,
+.expandoToggle,
+.field-validation-error,
+.select-details {
+    display: inline;
+}

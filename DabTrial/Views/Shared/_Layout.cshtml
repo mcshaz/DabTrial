@@ -1,0 +1,79 @@
+﻿@using DabTrial.Models
+@using DabTrial.Infrastructure.RazorUtilities
+<!DOCTYPE html>
+<html>
+    <head>
+        @{
+            var assets = Html.Assets();
+            CurrentResources.AssignAllResources(assets);
+            string noScript;
+            string header;
+            string cssBgndClass=null;
+            if (System.Configuration.ConfigurationManager.AppSettings["EnvironmentName"] == "Production")
+            {
+                header = "DAB Trial Website";
+                noScript = "This site works best with JavaScript enabled";
+            }
+            else
+            {
+                header = "Test Website for Dummy Data";
+                cssBgndClass = "siteBackground";
+                assets.Libraries.Uses("DummyData");
+                ViewBag.Title="Dummy " + ViewBag.Title;
+                noScript = "WARNING JavaScript is disabled. This is a TEST site for DUMMY DATA. Enabling JavaScript (usually Tools -> Options) will change all data labels to reflect that this site is NOT to be used for real patient data!";
+            }
+        }
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+
+        <link href="@Url.Content("~/Content/Site-1.0.5.min.css")" rel="stylesheet" type="text/css" />
+        <!--[if lt IE 8]><link href="@Url.Content("~/Content/Site_legacy.css")" rel="stylesheet" type="text/css" /><![endif]-->
+        <link media="print" href="@Url.Content("~/Content/Print.css")" rel="stylesheet" type="text/css"  />
+        @Html.Assets().RenderStyles()
+        <script src="@Url.Content("~/Scripts/Modernizr-2.6.2.0.min.js")" type="text/javascript"></script>
+    </head>
+    <body class="gradient @cssBgndClass">
+        <div class="page">
+            <header>
+                <div id="title">
+                    <h1>@header</h1>
+                </div>
+                <div id="logindisplay">
+                    @Html.Partial("_LogOnPartial")
+                </div>
+                <nav>
+                    <ul id="menu">
+                    @{
+                        RoleMenu menu = (ViewBag.Menu ?? new RoleMenu());
+                        NavigationItems.AssignMenu(menu);
+                        foreach (var link in menu)
+                        {
+                           <li>
+                                @Html.ActionLink(link.LinkText, link.ActionName,link.ControllerName)
+                            </li>
+                        }
+                    }
+                    </ul>
+                </nav>
+            </header>
+            <section>
+                <div id="main">
+                    <noscript class="noscript">@noScript</noscript>
+                    @RenderBody()
+                </div>
+            </section>
+        </div>
+        @if(Html.Assets().Libraries.IsUsing("AjaxFormTools")) {
+            <div id="ajaxResultDialog">
+            </div>
+            <div id="ajaxFormDialog">
+                <form name="ajaxForm" id="ajaxForm" data-ajax="true" data-ajax-loading="#ajaxRequest_processing" method="post" action="/" novalidate="novalidate">
+                </form>
+            </div>
+            <div id="ajaxRequest_processing" style="display:none">
+                Processing...
+            </div>
+        }
+        @Html.Assets().RenderScripts()
+    </body>
+</html>

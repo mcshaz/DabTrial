@@ -1,0 +1,9 @@
+﻿body.siteBackground {
+    background: green !important;
+}
+noscript.noscript {
+    font-size:28px;
+    color:darkred;
+    font-weight:bold;
+    background-color:white;
+}

@@ -1,0 +1,6 @@
+﻿@using UkAdcHtmlAttributeProvider.Infrastructure
+@{
+    var attributes = Html.GetAttributes();
+    attributes.MergeValue("class", "text-box multi-line");
+}
+@Html.TextArea("", ViewData.TemplateInfo.FormattedModelValue.ToString(), 0, 0, attributes)

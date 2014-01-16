@@ -1,0 +1,23 @@
+﻿@using DabTrial.Utilities
+@model DabTrial.Models.DrugListItem
+<tr>
+    <td>
+        @Html.DisplayFor(model => model.DrugName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Dosage)
+    </td>
+    <td>
+        <span title="@Model.ReasonsForUse"> @Model.ReasonsForUse.ToBriefString()</span>
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.StartDate)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.StopDate)
+    </td>
+    <td>
+        @Ajax.ActionLink("edit", "CreateEdit", "AdverseEventDrug", new { id = Model.DrugId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog" }, new { @class = "editLink" }) |
+        @Ajax.ActionLink("delete", "Delete", "AdverseEventDrug", new { id = Model.DrugId }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "rowDeleted", OnFailure="failedAjaxDelete" , Confirm = "Are you sure you want to delete " + Model.DrugName }, new { @class = "deleteAction" })
+    </td>
+</tr>

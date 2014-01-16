@@ -1,0 +1,61 @@
+﻿@model DabTrial.Models.MailInvestigator
+
+@{
+    ViewBag.Title = "Email Us";
+}
+<h3>Mail To:</h3>
+<p>@Model.DisplayInfo.Name (@Model.DisplayInfo.Role at @Model.DisplayInfo.Hospital)</p>
+@using (Ajax.BeginForm("MailTo", new { id = Model.InvestigatorId, name = Model.DisplayInfo.Name, role = Model.DisplayInfo.Role, hospital = Model.DisplayInfo.Hospital }, new AjaxOptions { OnSuccess = "closeAjaxFormDialog", OnFailure = "handleErrorResponse", LoadingElementId = "ajaxRequest_processing" }))
+{
+    @Html.AntiForgeryToken(); 
+    @Html.ValidationSummary(true)
+    <fieldset>
+    <legend>Your Message</legend>
+    <table>
+        <tbody>
+        
+            @Html.HiddenFor(model => model.InvestigatorId)
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelFor(model => model.Email)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.Email)
+                
+                    @Html.ValidationMessageFor(model => model.Email)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelFor(model => model.Subject)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.Subject)
+                
+                    @Html.ValidationMessageFor(model => model.Subject)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelFor(model => model.Message)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.Message)
+                
+                    @Html.ValidationMessageFor(model => model.Message)
+                </td>
+            </tr>
+
+           <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Create">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+}

@@ -1,0 +1,25 @@
+﻿@using DabTrial.Utilities
+@model DabTrial.Models.ScreenedPatientListItem
+
+<tr @Html.Attr("class","rowInEditor",Model.IsRowInEditor)>
+    <td>
+        @Html.DisplayFor(model => model.StudyCentreAbbreviation)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.HospitalId)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.IcuAdmissionDate)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.ExclusionReasonAbbreviation)
+    </td>
+    <td>
+        @Html.DisplayFor(model=>model.NoConsentFreeText)
+    </td>
+    <td>
+        @Ajax.ActionLink("edit", "CreateEdit", "ScreeningLog", new { id = Model.ScreenedPatientId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "populateFormElements", LoadingElementId="ajaxRequest_processing"  }, new { @class = "editLink" }) |
+        @Ajax.ActionLink("details", "Details", "ScreeningLog", new { id = Model.ScreenedPatientId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxResultDialog", LoadingElementId="ajaxRequest_processing" }) |
+        @Ajax.ActionLink("delete", "Delete", "ScreeningLog", new { id = Model.ScreenedPatientId }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "rowDeleted", OnFailure="failedAjaxDelete" , LoadingElementId="ajaxRequest_processing" , Confirm = "Are you sure you want to delete " + Model.HospitalId + "?" }, new { @class = "deleteAction" })
+    </td>
+</tr>

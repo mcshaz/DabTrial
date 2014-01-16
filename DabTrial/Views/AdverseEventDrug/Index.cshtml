@@ -1,0 +1,34 @@
+﻿@model DabTrial.Models.AdverseEventDetails
+@{
+    ViewBag.Title = "Index";
+}
+<table id="drugTable">
+    <thead>
+        <tr>
+            <th>
+                Drug Name
+            </th>
+            <th>
+                Dose
+            </th>
+            <th>
+                Reason
+            </th>
+            <th>
+                Started
+            </th>
+            <th>
+                Stopped
+            </th>
+            <th>
+                @Ajax.ActionLink("Add", "CreateEdit", "AdverseEventDrug", new { AdverseEventId = Model.AdverseEventId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  })
+            </th>
+        </tr>
+    </thead>
+    <tbody class="ajaxUpdatableTBody">
+        @foreach (var item in Model.Drugs)
+        {
+            @Html.Partial("~/Views/AdverseEventDrug/_IndexRow.cshtml", item)
+        }
+    </tbody>
+</table>

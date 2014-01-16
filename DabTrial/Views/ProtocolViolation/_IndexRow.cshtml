@@ -1,0 +1,25 @@
+﻿@using DabTrial.Utilities
+@model DabTrial.Models.ProtocolViolationListItem
+
+<tr>
+    <td>
+        @Html.ActionLink(Model.ParticipantId, "Details", "Participant", new { id = Model.ParticipantId }, null)
+    </td>
+    <td>
+        @Html.DisplayFor(model=> model.TrialParticipantStudyCentreAbbreviation)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.TimeOfViolation)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.ViolationClass)
+    </td>
+    <td>
+        <span title="@Model.Details">@Model.Details.ToBriefString()</span> 
+    </td>
+    <td>
+        @Ajax.ActionLink("Edit", "Edit", new { id = Model.ViolationId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  }, new { @class = "editLink" }) |
+        @Ajax.ActionLink("Details", "Details", new { id = Model.ViolationId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxResultDialog", LoadingElementId="ajaxRequest_processing"  }) |
+        @Ajax.ActionLink("Delete", "Delete", new { id = Model.ViolationId }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "rowDeleted", OnFailure="failedAjaxDelete" , LoadingElementId="ajaxRequest_processing" ,Confirm = String.Format("Are you sure you want to delete protocol violation for participant {0} at {1} ?", Model.ParticipantId, Model.TimeOfViolation) }, new { @class = "deleteAction" })
+    </td>
+</tr>

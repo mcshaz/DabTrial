@@ -1,0 +1,63 @@
+﻿@model DabTrial.Models.InvestigatorDetailsFull
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h3>Are you sure you want to delete @Html.DisplayFor(model=>model.FullName) ?</h3>
+<fieldset>
+    <legend>Investigator </legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">User Name</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.UserName)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Email</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Email)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Hospital</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.StudyCentreName)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Professional Role</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ProfessionalRole)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Role</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Role)
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    @using (Html.BeginForm()) {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete">
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+

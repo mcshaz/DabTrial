@@ -1,0 +1,10 @@
+﻿@model DabTrial.Models.RespSupportChangeItem
+
+<tr>
+    <td>@Html.DisplayFor(model => model.ChangeTime)</td>
+    <td>@Html.DisplayFor(model => model.RespiratorySupportTypeDescription)</td>
+    <td>
+        @Ajax.ActionLink("edit", "CreateEdit", "RespSupportChange", new { id = Model.RespSupportChangeId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog" }, new { @class = "editLink" }) |
+        @Ajax.ActionLink("delete", "Delete", "RespSupportChange", new { id = Model.RespSupportChangeId }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "rowDeleted", OnFailure="failedAjaxDelete", Confirm = String.Format("Are you sure you want to delete the change on {0:d/M/yyyy HH:mm}", Model.ChangeTime) }, new { @class = "deleteAction" })
+    </td>
+</tr>

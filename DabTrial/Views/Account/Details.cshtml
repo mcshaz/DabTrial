@@ -1,0 +1,49 @@
+﻿@model DabTrial.Models.InvestigatorDetailsBrief
+@{
+    ViewBag.Title = "User Details";
+}
+<h2>User Details</h2>
+<fieldset>
+    <legend>Details for: @Html.DisplayFor(model => model.UserName)</legend>
+    <table>
+        <tbody>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.FullName)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.FullName)
+                </td>
+            </tr>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.Email)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.Email)
+                </td>
+            </tr>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.StudyCentreName)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.StudyCentreName)
+                </td>
+            </tr>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.DisplayNameFor(model => model.ProfessionalRole)
+                </td>
+                <td class="editor-field">
+                    @Html.DisplayFor(model => model.ProfessionalRole)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+
+<div>
+    @Html.ActionLink("Change My Password", "ChangePassword") | 
+    @Html.ActionLink("Edit My Details", "Edit")
+</div>

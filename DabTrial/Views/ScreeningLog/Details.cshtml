@@ -1,0 +1,68 @@
+﻿@model DabTrial.Models.ScreenedPatientDetails
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<fieldset>
+    <legend>Screened Patient</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">Hospital Id</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.HospitalId)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Study Centre</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.StudyCentreName)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">ICU Admission date</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.IcuAdmissionDate)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Met all inclusion criteria</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.AllInclusionCriteriaPresent)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">No exclusion criteria</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.AllExclusionCriteriaAbsent)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Attempted to consent</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ConsentAttempted)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Consent refused</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ConsentRefused)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Details pertaining to consent</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.NoConsentDetails)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>

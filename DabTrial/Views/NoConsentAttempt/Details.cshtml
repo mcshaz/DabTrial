@@ -1,0 +1,52 @@
+﻿@model DabTrial.Domain.Tables.NoConsentAttempt
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>No Consent Attempt Reason</legend>
+	<table>
+		<tbody>
+			<tr class="display-row">
+				<td class="display-label">
+					 @Html.DisplayNameFor(model => model.Description)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.Description)
+				</td>
+			</tr>
+			<tr class="display-row">
+				<td class="display-label">
+					 @Html.DisplayNameFor(model => model.Abbreviation)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.Abbreviation)
+				</td>
+			</tr>
+			<tr class="display-row">
+				<td class="display-label">
+					 @Html.DisplayNameFor(model => model.IsFullyAware)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.IsFullyAware)
+				</td>
+			</tr>
+			<tr class="display-row">
+				<td class="display-label">
+					 @Html.DisplayNameFor(model => model.RequiresDetail)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.RequiresDetail)
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

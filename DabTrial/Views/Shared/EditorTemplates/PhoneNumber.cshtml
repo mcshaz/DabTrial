@@ -1,0 +1,10 @@
+﻿@model DabTrial.Models.PhoneNumber
+
+<div class="phoneNumber">
+    (+ &nbsp;<div class="intlCode">@Html.TextBoxFor(model => model.IntlCode, new { @class = "intlCode" })<span class="inputInfo">int'l</span></div> &nbsp;) &nbsp;
+        <div class="areaCode">@Html.TextBoxFor(model => model.AreaCode, new { @class = "areaCode" })<span class="inputInfo">area</span></div>
+    <div class="localNo">@Html.TextBoxFor(model=>model.LocalNo, new { @class = "localNo" })<span class="inputInfo">number</span></div>
+</div>
+@Html.ValidationMessageFor(model => model.IntlCode)
+@Html.ValidationMessageFor(model => model.AreaCode)
+@Html.ValidationMessageFor(model => model.LocalNo)

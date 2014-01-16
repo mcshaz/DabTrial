@@ -1,0 +1,80 @@
+﻿@model DabTrial.Domain.Tables.AuditLogEntry
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>AuditLog</legend>
+    <table>
+        <tbody>
+    
+
+    <tr class="display-row">
+        <td class="display-label">UserName</td>
+    
+        <td class="display-field">
+            @Html.DisplayFor(model => model.UserName)
+        </td>
+    </tr>
+
+    <tr class="display-row">
+        <td class="display-label">EventDateUTC</td>
+        <td class="display-field">
+            @Html.DisplayFor(model => model.EventDateUTC)
+        </td>
+    </tr>
+
+    <tr class="display-row">
+        <td class="display-label">EventType</td>
+
+        <td class="display-field">
+            @Html.DisplayFor(model => model.EventType)
+        </td>
+    </tr>
+
+    <tr class="display-row">
+        <td class="display-label">TableName</td>
+
+        <td class="display-field">
+            @Html.DisplayFor(model => model.TableName)
+        </td>
+     </tr>
+
+    <tr class="display-row">
+        <td class="display-label">RecordId</td>
+
+        <td class="display-field">
+            @Html.DisplayFor(model => model.RecordId)
+        </td>
+    </tr>
+
+    <tr class="display-row">
+        <td class="display-label">ColumnName</td>
+        <td class="display-field">
+            @Html.DisplayFor(model => model.ColumnName)
+        </td>
+    </tr>
+
+    <tr class="display-row">
+        <td class="display-label">OriginalValue</td>
+        <td class="display-field">
+            @Html.DisplayFor(model => model.OriginalValue)
+        </td>
+    </tr>
+
+    <tr class="display-row">
+        <td class="display-label">NewValue</td>
+        <td class="display-field">
+            @Html.DisplayFor(model => model.NewValue)
+        </td>
+    </tr>
+
+        </tbody>
+    </table>
+</fieldset>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

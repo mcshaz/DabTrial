@@ -1,0 +1,17 @@
+﻿@model DabTrial.Models.ParticipantDetails
+@Html.AntiForgeryToken()
+<table id="respSupportChangeTable">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Changed to</th>
+            <th>@Ajax.ActionLink("Add", "CreateEdit", "RespSupportChange", new { participantId = Model.ParticipantId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  })</th>
+        </tr>
+    </thead>
+    <tbody class="ajaxUpdatableTBody">
+        @foreach (var item in Model.RespiratorySupportChanges)
+        {
+            @Html.Partial("~/Views/RespSupportChange/_IndexRow.cshtml", item)
+        }
+    </tbody>
+</table>

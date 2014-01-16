@@ -1,0 +1,41 @@
+﻿@model DabTrial.Domain.Tables.AdverseEventType
+
+@{
+    ViewBag.Title = "Edit Adverse Event";
+    Html.Assets().Libraries.Uses("FormTools");
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.AdverseEventTypeId)
+    <fieldset>
+        <legend>Adverse Event Type</legend>
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.Description)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Description)
+                    
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Save">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

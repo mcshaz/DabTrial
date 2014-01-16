@@ -1,0 +1,49 @@
+﻿@model DabTrial.Models.InvestigatorContactList
+
+@{
+    ViewBag.Title = "Contact Us";
+    Html.Assets().Libraries.Uses("AjaxFormTools");
+    Html.AntiForgeryToken();
+}
+<h2>Contact Us</h2>
+<h3>Principle Investigators:</h3>
+<ul>
+@foreach (var investigator in Model.GetPrincipleInvestigators())
+{
+    <li>
+        <i>
+            @investigator.ProfessionalRole:
+        </i> 
+        @if(investigator.IsPublicContact){
+            @Ajax.ActionLink(investigator.FullName, "MailTo", new { id = investigator.UserId, name=investigator.FullName, role=investigator.ProfessionalRole, hospital=investigator.StudyCentre.Name },   new AjaxOptions{HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing" });
+        } else {
+            @(investigator.FullName)
+        }
+    </li>
+}  
+</ul>
+<h3>Site Investigators:</h3>
+<ul>
+@foreach (var centre in Model.GetInvestigatorsByCentre())
+{
+    <li>
+        <h4>@centre.Key.Name</h4> 
+        Ph: @centre.Key.PublicPhoneNumber
+        <ul>
+        @foreach (var investigator in centre)
+        {
+            <li>
+                <i>
+                    @(investigator.ProfessionalRole):
+                </i> 
+                @if(investigator.IsPublicContact){
+                    @Ajax.ActionLink(investigator.FullName, "MailTo", new { id = investigator.UserId, name = investigator.FullName, role = investigator.ProfessionalRole, hospital = centre.Key.Name }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  });
+                } else {
+                    @(investigator.FullName)
+                }
+            </li>
+        }
+        </ul>
+    </li>
+}
+</ul>

@@ -1,0 +1,163 @@
+﻿@model DabTrial.Models.ParticipantRegistration
+@{
+    ViewBag.Title = "Enrol New Patient";
+    Html.Assets().Libraries.Uses("TimePicker", "Wt4Age");
+}
+
+<h2>Enrol A New Patient in The DAB Trial</h2>
+
+@Html.Partial("InclusionExclusionCriteria")
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+    <legend>Patient Details</legend>
+    <table>
+        <tbody>
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.HospitalId,Model.ViewData.Abbreviation + " Id", Model.ViewData.RecordSystemName) 
+                </td>
+                <td class="editor-field">
+                    @Html.TextBoxFor(model => model.HospitalId, Model.ViewData.HospitalNoRegEx() )
+                
+                    @Html.ValidationMessageFor(model => model.HospitalId)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.Dob)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.Dob)
+                
+                    @Html.ValidationMessageFor(model => model.Dob)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.Gender)
+                </td>
+                <td class="display-field">
+                    @Html.RadioButtonForEnum(model => model.Gender)
+                
+                    @Html.ValidationMessageFor(model => model.Gender)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.IcuAdmission)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.IcuAdmission)
+                
+                    @Html.ValidationMessageFor(model => model.IcuAdmission)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.RespSupportTypeId)
+                </td>
+                <td class="editor-field">
+                    <div class="select-details">
+                        @Html.DetailDropDownListFor(model => model.RespSupportTypeId, Model.RespiratorySupportAtRandomisation, "- Please Select -")
+                        @Html.DetailDisplayFor(model=>model.RespSupportTypeId,"div")
+                    </div>
+                
+                    @Html.ValidationMessageFor(model => model.RespSupportTypeId)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.WeeksGestationAtBirth)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.WeeksGestationAtBirth)
+                
+                    @Html.ValidationMessageFor(model => model.WeeksGestationAtBirth)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.WeightStr)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.WeightStr)
+                
+                    @Html.ValidationMessageFor(model => model.WeightStr)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.ChronicLungDisease)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.ChronicLungDisease)
+                
+                    @Html.ValidationMessageFor(model => model.ChronicLungDisease)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.CyanoticHeartDisease)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.CyanoticHeartDisease)
+                
+                    @Html.ValidationMessageFor(model => model.CyanoticHeartDisease)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.NoImmunosuppressives)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.NoImmunosuppressives)
+                
+                    @Html.ValidationMessageFor(model => model.NoImmunosuppressives)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.ValidConsent)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.ValidConsent)
+                
+                    @Html.ValidationMessageFor(model => model.ValidConsent)
+                </td>
+            </tr>
+
+            <tr class="editor-row">
+                <td class="editor-label">
+                    @Html.LabelDetailsFor(model => model.NotCroup)
+                </td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.NotCroup)
+                
+                    @Html.ValidationMessageFor(model => model.NotCroup)
+                </td>
+            </tr>
+        
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Enter">
+                </td>
+            </tr>
+    
+        </tbody>
+    </table>
+</fieldset>
+}

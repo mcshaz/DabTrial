@@ -1,0 +1,53 @@
+﻿@model DabTrial.Models.AutomatedBakInfo
+
+@{
+    ViewBag.Title = "Backup";
+}
+
+<h2>Index</h2>
+
+<fieldset>
+    <legend>Most Recent Automated Backup</legend>
+	<table>
+		<tbody>
+            <tr class="display-row">
+				<td class="display-label">
+					 @Html.DisplayNameFor(model => model.FileName)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.FileName)
+				</td>
+			</tr>
+			<tr class="display-row">
+				<td class="display-label">
+					 @Html.DisplayNameFor(model => model.LastModified)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.LastModified)
+				</td>
+			</tr>
+			<tr class="display-row">
+				<td class="display-label">
+					 @Html.DisplayNameFor(model => model.Size)
+				</td>
+				<td class="display-field">
+					@Html.DisplayFor(model => model.Size) kB
+				</td>
+			</tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                @using (Html.BeginForm()) {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="fileName" value="@Model.FileName" />
+                    <input type="submit" value="Download" disabled="@(!Model.CanPostBack)"/>
+                }
+                </td>
+            </tr>
+		</tbody>
+	</table>
+</fieldset>
+@*
+<a href="/MyLittleAdmin/Default.aspx">Database administration tool</a>
+*@

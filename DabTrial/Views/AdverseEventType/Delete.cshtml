@@ -1,0 +1,36 @@
+﻿@model DabTrial.Domain.Tables.AdverseEventType
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Adverse Event Type</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">Description</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Description)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td></td>
+                <td>
+                    @using (Html.BeginForm()) {
+                    @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete">
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+}

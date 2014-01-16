@@ -1,0 +1,78 @@
+﻿@model IEnumerable<DabTrial.Models.InvestigatorListItem>
+
+@{
+    ViewBag.Title = "Investigators";
+    Html.Assets().Libraries.Uses("DataTables");
+    Html.Assets().AddScript("~/Scripts/emailGridUtilities-1.0.0.min.js");
+}
+
+<noscript>Please note that because you have JavaScript disabled, you will not be able to send out group emails</noscript>
+<h2>Investigators</h2>
+<table id="investigatorList" class="dataTable">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Study Centre
+            </th>
+            <th>
+                Locked Out
+            </th>
+            <th>
+                Study Role
+            </th>
+            <th>
+                Professional Role
+            </th>
+            <th>
+                Public Contact
+            </th>
+            <th>
+                <label>
+                    <input type="checkbox" id="selectAll" disabled="disabled">
+                    Email
+                </label> &nbsp; <br /> &nbsp; 
+                <input type="button" class="linkButton" id="emailSelected" value="Send" disabled="disabled">
+            </th>
+            <th>
+                @Html.ActionLink("Create New", "Create")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.StudyCentreAbbreviation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsLockedOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Roles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfessionalRole)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPublicContact)
+            </td>
+            <td>
+                <input type="checkbox" class="emailTo" value="@Html.DisplayFor(modelItem => item.Email)">
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.UserName }) |
+                @Html.ActionLink("Details", "Details", new { id = item.UserName }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserName })
+            </td>
+        </tr>
+    }
+    </tbody>
+
+</table>

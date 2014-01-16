@@ -1,0 +1,6 @@
+﻿@using UkAdcHtmlAttributeProvider.Infrastructure
+@{
+    var attributes = Html.GetAttributes();
+    attributes.MergeValue("class", "text-box single-line");
+}
+@Html.TextBox("", ViewContext.ViewData.TemplateInfo.FormattedModelValue, attributes)

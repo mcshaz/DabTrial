@@ -1,0 +1,138 @@
+﻿@model DabTrial.Models.InvestigatorCreateEdit
+
+@{
+    ViewBag.Title = "Edit User";
+    Html.Assets().Libraries.Uses("FormTools");
+}
+
+<h2>Edit User</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Details for: @Html.DisplayFor(model => model.UserName)</legend>
+        @Html.HiddenFor(model => model.UserName)
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.FirstName)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.FirstName)
+                    
+                        @Html.ValidationMessageFor(model => model.FirstName)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.LastName)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.LastName)
+                    
+                        @Html.ValidationMessageFor(model => model.LastName)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.Email)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Email)
+                    
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.IsLockedOut)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.IsLockedOut)
+                    
+                        @Html.ValidationMessageFor(model => model.IsLockedOut)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.StudyCentreId)
+                    </td>
+                    <td class="editor-field">
+                        @Html.DropDownListFor(model => model.StudyCentreId, Model.StudyCentresSelectList)
+                    
+                        @Html.ValidationMessageFor(model => model.StudyCentreId)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.ProfessionalRole)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EnumDropDownListFor(model => model.ProfessionalRole)
+                    
+                        @Html.ValidationMessageFor(model => model.ProfessionalRole)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.Comment)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Comment)
+                    
+                        @Html.ValidationMessageFor(model => model.Comment)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.Role)
+                    </td>
+                    <td class="editor-field">
+                        <ul class="buttonList">
+                            @Html.ButtonListFor(model => model.Role, Model.RolesSelectList, HtmlExtensions.selectTypes.radioButton, "<li>{0} {1}</li>")
+                            @if (Model.CanAssignDbAdmin)
+                            {
+                            <li>
+                                @Html.EditorFor(model => model.IsDbAdmin)
+                                @Html.LabelDetailsFor(model => model.IsDbAdmin)
+                            </li>
+                            }
+                        </ul>
+                    
+                        @Html.ValidationMessageFor(model => model.Role)
+                        @if (Model.CanAssignDbAdmin)
+                        {
+                            @Html.ValidationMessageFor(model => model.IsDbAdmin)
+                        }
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.IsPublicContact)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.IsPublicContact)
+                    
+                        @Html.ValidationMessageFor(model => model.IsPublicContact)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Update">
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

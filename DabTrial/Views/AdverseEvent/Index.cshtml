@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DabTrial.Models.AdverseEventListItem>
+
+@{
+    ViewBag.Title = "Adverse Event";
+    Html.Assets().Libraries.Uses("AjaxFormTools", "DataTables", "TimePicker");
+}
+<h2>Index</h2>
+@Html.AntiForgeryToken()
+<table id="adverseGrid" class="dataTable">
+    <thead>
+        <tr>
+            <th>
+                DAB Trial Id
+            </th>
+            <th>
+                Study Centre
+            </th>
+            <th>
+                Event Time
+            </th>
+            <th>
+                Fatal Event
+            </th>
+            <th>
+                Severity Description
+            </th>
+            <th>
+                Sequelae
+            </th>
+            <th>
+                Details
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="ajaxUpdatableTBody">
+    @foreach (var item in Model) {
+        @Html.Partial("_IndexRow", item)
+    }
+    </tbody>
+</table>

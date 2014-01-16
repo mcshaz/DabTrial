@@ -1,0 +1,36 @@
+﻿ul.drugDose {
+    padding: 0 0 0 6px;
+}
+.inlineBlock {
+    display:inline-block;
+    vertical-align: middle;
+    padding: 0.3em; 
+    text-align: center;
+    border:2px inset #d3d3d3;
+    line-height:1;
+}
+.drugDose {
+    margin:0.5em;
+}
+.eitherOr {
+    font-size:1.1em;
+}
+.drugName {
+    color:red;
+    font-size:1.1em;
+}
+.route {
+    color:#125b07
+}
+.lastDose {
+    color:#8b0000
+}
+.freq {
+    color:navy;
+    font-style:italic;
+}
+.dose {
+    color:#661166;
+    font-weight:bold;
+}
+

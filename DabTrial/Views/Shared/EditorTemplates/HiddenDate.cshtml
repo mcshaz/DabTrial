@@ -1,0 +1,7 @@
+﻿@using UkAdcHtmlAttributeProvider.Infrastructure
+@{
+    var attributes = Html.GetAttributes();
+    //if (ViewData["class"] != null) { 
+    attributes.MergeValue("class", "maintainState"); 
+}
+@Html.Hidden("",(object)Model.ToString("s"),attributes)

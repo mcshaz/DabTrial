@@ -1,0 +1,19 @@
+﻿@using UkAdcHtmlAttributeProvider.Infrastructure
+@* This template is quite awkward - should move some of this to a helper method *@
+@{
+    bool? value = (ViewData.Model == null) ? null : Convert.ToBoolean(ViewData.Model, System.Globalization.CultureInfo.InvariantCulture);
+    var attributes = Html.GetAttributes();   
+}
+@if (ViewData.ModelMetadata.IsNullableValueType) {
+    attributes.MergeValue("class", "list-box tri-state");
+    @Html.DropDownList("", 
+        new List<SelectListItem> {
+            new SelectListItem { Text = "Not Set", Value = String.Empty, Selected = !value.HasValue },
+            new SelectListItem { Text = "True", Value = "true", Selected = value.HasValue && value.Value },
+            new SelectListItem { Text = "False", Value = "false", Selected = value.HasValue && !value.Value },
+        }, 
+        attributes);
+} else {
+    attributes.MergeValue("class", "check-box");
+    @Html.CheckBox("", value ?? false , attributes)
+}

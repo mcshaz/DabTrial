@@ -1,0 +1,43 @@
+﻿
+ul#menu li {
+    zoom:1;
+    *display: inline;
+    *margin: 2px 2px 0 0;
+    _height: 2.3em;
+}
+
+fieldset {
+    display: block;
+}
+
+.display-label, .editor-label {
+    display: inline-block;
+    margin: 0.8em 1em 0;
+    padding:0;
+    min-width: 17em;
+    width: 30%;
+    zoom:1;
+    *display: inline;
+    _height: 3em;
+}
+
+.display-field, .editor-field {
+    display: inline-block;
+    margin: 0.8em 0 0;
+    padding:0;
+    min-width: 15em;
+    width: 60%;
+    zoom:1;
+    *display: inline;
+    _height: 3em;
+}
+
+.label-details {
+    float: left;
+    width: 100%;
+}
+.toggleDiv {
+  clear: both;
+  display: block;
+  float: left;
+}

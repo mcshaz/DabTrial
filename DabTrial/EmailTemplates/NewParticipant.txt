@@ -1,0 +1,3 @@
+﻿A new participant has been enrolled by <% userName %> at <% timeRandomised %>
+
+<strong>Parcipant Id: <% participantId %></strong>

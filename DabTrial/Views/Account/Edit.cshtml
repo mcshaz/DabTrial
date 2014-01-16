@@ -1,0 +1,73 @@
+﻿@model DabTrial.Models.InvestigatorEditBrief
+
+@{
+    ViewBag.Title = "Edit User";
+    Html.Assets().Libraries.Uses("FormTools");
+}
+
+<h2>Edit User</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Details for: @Html.DisplayFor(model => model.UserName)</legend>
+        @Html.HiddenFor(model => model.UserName)
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.FirstName)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.FirstName)
+                    
+                        @Html.ValidationMessageFor(model => model.FirstName)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.LastName)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.LastName)
+                    
+                        @Html.ValidationMessageFor(model => model.LastName)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.Email)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Email)
+                    
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.ProfessionalRole)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EnumDropDownListFor(model => model.ProfessionalRole)
+                    
+                        @Html.ValidationMessageFor(model => model.ProfessionalRole)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Update">
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,28 @@
+﻿@model IDictionary<DabTrial.Models.DirectoryType,IEnumerable<DabTrial.Models.FileLink>>
+@using DabTrial.Utilities;
+@{
+    ViewBag.Title = "About";
+}
+
+<h2>About the trial</h2>
+
+<p>To view the relevant information, please click on one of the links below</p>
+@foreach(var keyVal in Model)
+{
+<div>
+    <h4>
+        @keyVal.Key.ToString().ToSeparatedWords()
+    </h4>
+    <ul>
+        @foreach(var fileLink in keyVal.Value){
+            <li>
+                @if(fileLink.Href == null){
+                    @Html.ActionLink(fileLink.FileName, "Download", new {id = (int)keyVal.Key, fileName = fileLink.FileName})
+                }else{
+                    <a href="@fileLink.Href">@fileLink.FileName</a>
+                }
+            </li>
+        }
+    </ul>
+</div>
+}

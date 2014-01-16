@@ -1,0 +1,116 @@
+﻿@model DabTrial.Models.AdverseEventEditModel
+
+@using (Ajax.BeginForm("Edit", "AdverseEvent", new AjaxOptions { OnSuccess = "closeAndAddOrChangeRow", OnFailure = "handleErrorResponse", LoadingElementId="ajaxRequest_processing"  }))
+{
+    if (!(ViewBag.IsAjax ?? Request.IsAjaxRequest())) { @Html.AntiForgeryToken(); }
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Adverse Event</legend>
+        @Html.HiddenFor(model => model.AdverseEventId)
+        @Html.EditorFor(model => model.TrialParticipantLocalTimeRandomised)
+        <table>
+            <tbody>
+                @if(!Request.IsAjaxRequest())
+                {
+                   <tr class="display-row">
+                        <td class="display-label">
+                            @Html.LabelFor(model => model.ParticipantId)
+                        </td>
+                        <td class="display-field">
+                            @Html.ActionLink(Model.ParticipantId.ToString(), "Details", "Participant", new { id = Model.ParticipantId }, null)
+                        </td>
+                    </tr>
+                    <tr class="display-row">
+                        <td class="display-label">
+                            @Html.LabelFor(model => model.TrialParticipantHospitalId)
+                        </td>
+                        <td class="display-field">
+                            @Html.DisplayFor(model => model.TrialParticipantHospitalId)
+                        </td>
+                    </tr>
+                }
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.SeverityLevels)
+                    </td>
+                    <td class="editor-field">
+                        <div class="select-details">
+                            @Html.DetailDropDownListFor(model => model.SeverityLevelId, Model.SeverityLevels)
+                            @Html.DetailDisplayFor(model => model.SeverityLevelId,"div")
+                        </div>
+                    
+                        @Html.ValidationMessageFor(model => model.SeverityLevelId)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.EventTypes)
+                    </td>
+                    <td class="editor-field">
+                        <div class="select-details">
+                            @Html.DropDownListFor(model => model.AdverseEventTypeId, Model.EventTypes, "- Please Select -")
+                            @Html.DetailDisplayFor(model => model.AdverseEventTypeId,"div")
+                        </div>
+                    
+                        @Html.ValidationMessageFor(model => model.AdverseEventTypeId)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.EventTime)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.EventTime)
+                    
+                        @Html.ValidationMessageFor(model => model.EventTime)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.FatalEvent)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.FatalEvent)
+                    
+                        @Html.ValidationMessageFor(model => model.FatalEvent)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.Sequelae)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Sequelae)
+                    
+                        @Html.ValidationMessageFor(model => model.Sequelae)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelFor(model => model.Details)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Details)
+                    
+                        @Html.ValidationMessageFor(model => model.Details)
+                    </td>
+                </tr>
+        
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Save">
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+    </fieldset>
+}
+

@@ -1,0 +1,60 @@
+﻿@model DabTrial.Models.RecordProviderModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Ajax.BeginForm("Create", "RecordProvider", new AjaxOptions { OnSuccess = "appendSelect", OnFailure = "handleErrorResponse", LoadingElementId = "ajaxRequest_processing" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Medical Record Provider Details</legend>
+        <table>
+            <tbody>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.Name)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.Name)
+                    
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.HospitalNoRegEx)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.HospitalNoRegEx)
+                    
+                        @Html.ValidationMessageFor(model => model.HospitalNoRegEx)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.NotationDescription)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.NotationDescription)
+                    
+                        @Html.ValidationMessageFor(model => model.NotationDescription)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Create">
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+    </fieldset>
+}
+

@@ -1,0 +1,82 @@
+﻿@model DabTrial.Models.StudyCentreDetails
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>StudyCentreDetails</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">Name</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Name)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Abbreviation</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Abbreviation)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Record System</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.RecordSystemName)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Email Domains</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ValidDomainList)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Site Registration Password</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.SiteRegistrationPwd)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Uses 1% adrenaline<div class="note">unchecked = 1 in 1000</div></td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.IsUsing1pcAdrenaline)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Commenced Enrolling On</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.CommencedEnrollingOn)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Public Phone Number</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.PublicPhoneNumber)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Time Zone</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.TimeZoneId)
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.StudyCentreId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

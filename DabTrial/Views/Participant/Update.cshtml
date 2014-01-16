@@ -1,0 +1,183 @@
+﻿@model DabTrial.Models.ParticipantUpdate
+
+@{
+    ViewBag.Title = "Update";
+}
+
+@using (Ajax.BeginForm("Update", "Participant", new AjaxOptions { OnFailure = "handleErrorResponse", OnSuccess = "closeAjaxFormDialog", LoadingElementId = "ajaxRequest_processing" }))
+{
+    Html.AntiForgeryToken();
+    @Html.ValidationSummary(true)
+    
+    if (!(ViewBag.IsAjax ?? Request.IsAjaxRequest())) { @Html.AntiForgeryToken(); }
+    <fieldset>
+        <legend>Update Details</legend>
+        @Html.EditorFor(model => model.MostRecentLoggedEvent)
+        <table>
+            <tbody>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.IsRsvPositive)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.IsRsvPositive)
+                    
+                        @Html.ValidationMessageFor(model => model.IsRsvPositive)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.IsHmpvPositive)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.IsHmpvPositive)
+                    
+                        @Html.ValidationMessageFor(model => model.IsHmpvPositive)
+                    </td>
+                </tr>
+
+                @{
+                    var interventionParticipant=Model as DabTrial.Models.ParticipantInterventionUpdate;
+                    if (interventionParticipant != null) {
+                        @Html.Partial("UpdateIntervention", interventionParticipant);
+                    }
+                }
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.SteroidsForPostExtubationStridor)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.SteroidsForPostExtubationStridor)
+                    
+                        @Html.ValidationMessageFor(model => model.SteroidsForPostExtubationStridor)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.AdrenalineForPostExtubationStridor)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.AdrenalineForPostExtubationStridor)
+                    
+                        @Html.ValidationMessageFor(model => model.AdrenalineForPostExtubationStridor)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.ReadyForIcuDischarge)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.ReadyForIcuDischarge)
+                    
+                        @Html.ValidationMessageFor(model => model.ReadyForIcuDischarge)
+                    </td>
+                </tr>
+
+               <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.ActualIcuDischarge)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.ActualIcuDischarge)
+                    
+                        @Html.ValidationMessageFor(model => model.ActualIcuDischarge)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.HospitalDischarge)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.HospitalDischarge)
+                    
+                        @Html.ValidationMessageFor(model => model.HospitalDischarge)
+                    </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.Died)
+                    </td>
+                    <td class="editor-field">
+                        @Html.CheckBoxFor(model => model.Died, new { @class = "toggleElements", data_toggleclass = "deathDetails" })
+                    </td>
+                    <td></td>
+                </tr>
+
+		        <tr class="editor-row deathDetails">
+                    <td class="toggle-details" colspan="3">
+                        <em>Please Note:</em> if this death is thought to be in any way related to the trial protocol or trial medications, please log this as a @Html.ActionLink("Serious Adverse Event (SAE)", "Create", "AdverseEvent", new { id = Model.ParticipantId, severity = 1, fatal = true }, null) instead.
+                    </td>
+		        </tr>
+                <tr class="editor-row deathDetails">
+			        <td class="editor-label">
+				        @Html.LabelDetailsFor(model => model.DeathTime)
+			        </td>
+			        <td class="editor-field">
+				        @Html.EditorFor(model => model.DeathTime)
+                    
+				        @Html.ValidationMessageFor(model => model.DeathTime)
+			        </td>
+                </tr>
+
+                <tr class="editor-row deathDetails">
+			        <td class="editor-label">
+				        @Html.LabelDetailsFor(model => model.DeathDetails)
+			        </td>
+			        <td class="editor-field">
+				        @Html.EditorFor(model => model.DeathDetails)
+                    
+				        @Html.ValidationMessageFor(model => model.DeathDetails)
+			        </td>
+                </tr>
+
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.WithdrawnFromStudy)
+                    </td>
+                    <td class="editor-field">
+                        @Html.CheckBoxFor(model => model.WithdrawnFromStudy, new { @class = "toggleElements", data_toggleclass="withdrawDetails" })
+                    </td>
+                    <td></td>
+                </tr>
+                
+                <tr class="editor-row  withdrawDetails">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.WithdrawalTime)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.WithdrawalTime)
+                    
+                         @Html.ValidationMessageFor(model => model.WithdrawalTime)
+                    </td>
+                </tr>
+                
+                <tr class="editor-row withdrawDetails">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.WithdrawalReason)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.WithdrawalReason)
+                    
+                        @Html.ValidationMessageFor(model => model.WithdrawalReason)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Save">
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+    </fieldset>
+}
+

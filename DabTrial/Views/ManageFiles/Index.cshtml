@@ -1,0 +1,56 @@
+﻿@model IList<DabTrial.Models.ManageFileDetailsModel>
+@{
+    ViewBag.Title = "Manage Files";
+    Html.Assets().Libraries.Uses("AjaxFormTools");
+}
+<h2>Update Files</h2>
+@using (Html.BeginForm("Index", "ManageFiles", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Upload Files</legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>File Type</th>
+                    <th>File Location</th>
+                    <th>Last Modified</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="ajaxUpdatableTBody">
+                @for (int i = 0; i < Model.Count;i++ )
+                {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(model => model[i].Src)
+                        @Html.TextBoxFor(model => model[i].FileName)
+                        @Html.ValidationMessageFor(model => model[i].FileName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model[i].FileType)
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model[i].SaveDirectory, Model[i].DirectoryList)
+                        @Html.ValidationMessageFor(model => model[i].SaveDirectory)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model[i].LastModified)
+                    </td>
+                    <td>
+                        @Ajax.ActionLink("Delete", "Delete", "ManageFiles", new { id = (Model[i].FileName + '.' + Model[i].FileType), directory = (int)Model[i].SaveDirectory }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "rowDeleted", OnFailure="failedAjaxDelete" , LoadingElementId="ajaxRequest_processing", Confirm = String.Format("Are you sure you want to delete File {0}.{1} ?", Model[i].FileName, Model[i].FileType) }, new { @class = "deleteAction" })
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <p>
+            <input type="submit" value="Update" /> 
+        </p>
+    </fieldset>
+}
+<p>
+    @Html.ActionLink("Upload New Files", "Upload")
+</p>

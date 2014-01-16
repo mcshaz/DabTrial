@@ -1,0 +1,94 @@
+﻿@model DabTrial.Models.AdverseEventDetails
+
+@{
+    ViewBag.Title = "Delete";
+}
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Adverse Event Details</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">AdverseEventId</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.AdverseEventId)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">TrialParticipantParticipantId</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.TrialParticipantParticipantId)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">ReportingUserFullName</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ReportingUserFullName)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">ReportingUserEmail</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ReportingUserEmail)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">ReportingTimeLocal</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ReportingTimeLocal)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">EventTime</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.EventTime)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">FatalEvent</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.FatalEvent)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">SeverityDescription</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.SeverityDescription)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Sequelae</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Sequelae)
+                </td>
+            </tr>
+
+            <tr class="display-row">
+                <td class="display-label">Details</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Details)
+                </td>
+            </tr>
+            <tr class="display-row">
+                <td></td>
+                <td>
+                    @using (Html.BeginForm()) {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete"> 
+                    }           
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
