@@ -129,7 +129,7 @@
 }(jQuery));
 //begin $(document).ready - not used as content loaded by script execution
 (function ($) {
-    var $ajaxResultDialog, minWidth, dpDefaults;
+    var $ajaxResultDialog, minWidth, dpDefaults,dataTableEls;
     $.ajaxSetup({
         cache: false
     });
@@ -143,7 +143,12 @@
         $.datepicker.setDefaults(dpDefaults);
     }
     //sortable data grids
-    if ((jQuery().dataTable)) { $(".dataTable").dataTable(); }
+    dataTableEls = $.fn.dataTable.fnTables();
+    if (($.fn.dataTable)) {
+        $(".dataTable").filter(function () {
+            return $.inArray(this,dataTableEls)===-1 //all elements not initialised
+        }).dataTable();
+    }
     yepnope({
         test: Modernizr.input.placeholder,
         nope: '/Scripts/jquery-placeholder.js',
@@ -686,7 +691,7 @@ function setElementListeners() {
         }
     }
     
-    $toggleEls = $(".toggleElements")
+    $(".toggleElements")
         .contextFilter(this)
         .each(function(){
             setToggleVis.call(this, { data: { duration: "instant" } });

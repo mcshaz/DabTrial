@@ -62,7 +62,7 @@
 
             // use only filtered rows
             if (bFiltered == true) aiRows = oSettings.aiDisplay;
-            // use all rows
+                // use all rows
             else aiRows = oSettings.aiDisplayMaster; // all row numbers
 
             // set up data array	
@@ -76,10 +76,10 @@
                 // ignore empty values?
                 if (bIgnoreEmpty == true && sValue.length == 0) continue;
 
-                // ignore unique values?
+                    // ignore unique values?
                 else if (bUnique == true && jQuery.inArray(sValue, asResultData) > -1) continue;
 
-                // else push the value onto the result data array
+                    // else push the value onto the result data array
                 else asResultData.push(sValue);
             }
 
@@ -139,7 +139,7 @@
                             iLastFilterLength = 0;
                         var iCurrentFilterLength = this.value.length;
                         if (Math.abs(iCurrentFilterLength - iLastFilterLength) < iFilterLength
-                        //&& currentFilter.length == 0 //Why this?
+                            //&& currentFilter.length == 0 //Why this?
 					) {
                             //Cancel the filtering
                             return;
@@ -170,14 +170,23 @@
         }
 
         function fnCreateRangeInput(oTable) {
+            var currentFilter = oTable.fnSettings().aoPreSearchCols[i].sSearch;
+            var fromDatePre = '';
+            var toDatePre = '';
+            if (currentFilter != '' && currentFilter != 'undefined') {
+                var arrDates = currentFilter.split("~");
+                fromDatePre = arrDates[0];
+                toDatePre = arrDates[1];
+            }
+
 
             th.html(_fnRangeLabelPart(0));
             var sFromId = oTable.attr("id") + '_range_from_' + i;
-            var from = $('<input type="text" class="number_range_filter" id="' + sFromId + '" rel="' + i + '"/>');
+            var from = $('<input type="text" class="number_range_filter" id="' + sFromId + '" value="' + fromDatePre + '" rel="' + i + '"/>');
             th.append(from);
             th.append(_fnRangeLabelPart(1));
             var sToId = oTable.attr("id") + '_range_to_' + i;
-            var to = $('<input type="text" class="number_range_filter" id="' + sToId + '" rel="' + i + '"/>');
+            var to = $('<input type="text" class="number_range_filter" id="' + sToId + '" value="' + toDatePre + '" rel="' + i + '"/>');
             th.append(to);
             th.append(_fnRangeLabelPart(2));
             th.wrapInner('<span class="filterColumn filter_number_range" />');
@@ -235,14 +244,23 @@
 
 
         function fnCreateDateRangeInput(oTable) {
+            var currentFilter = oTable.fnSettings().aoPreSearchCols[i].sSearch;
+            var fromDatePre = '';
+            var toDatePre = '';
+            if (currentFilter != '' && currentFilter != 'undefined') {
+                var arrDates = currentFilter.split("~");
+                fromDatePre = arrDates[0];
+                toDatePre = arrDates[1];
+            }
+
             th.html(_fnRangeLabelPart(0));
             var sFromId = oTable.attr("id") + '_range_from_' + i;
-            var from = $('<input type="text" class="date_range_filter" id="' + sFromId + '" rel="' + i + '"/>');
+            var from = $('<input type="text" class="date_range_filter" id="' + sFromId + '" value="' + fromDatePre + '" rel="' + i + '"/>');
             from.datepicker();
             th.append(from);
             th.append(_fnRangeLabelPart(1));
             var sToId = oTable.attr("id") + '_range_to_' + i;
-            var to = $('<input type="text" class="date_range_filter" id="' + sToId + '" rel="' + i + '"/>');
+            var to = $('<input type="text" class="date_range_filter" id="' + sToId + '" value="' + toDatePre + '" rel="' + i + '"/>');
             th.append(to);
             th.append(_fnRangeLabelPart(2));
             th.wrapInner('<span class="filterColumn filter_date_range" />');
@@ -307,19 +325,19 @@
             var index = iColumn;
             var currentFilter = oTable.fnSettings().aoPreSearchCols[i].sSearch;
 
-            var r = '<select class="search_init select_filter"><option value="" class="search_init">' + sLabel + '</option>';
+            var r = '<select class="search_init select_filter"><option value="" class="search_init"></option>';
             var j = 0;
             var iLen = aData.length;
             for (j = 0; j < iLen; j++) {
                 if (typeof (aData[j]) != 'object') {
                     var selected = '';
-                    if (escape(aData[j]) == currentFilter) selected = 'selected '
-                    r += '<option ' + selected + ' value="' + escape(aData[j]) + '">' + aData[j] + '</option>';
+                    if (("^" + escape(aData[j]) + "$") == currentFilter) selected = 'selected '
+                    r += '<option ' + selected + ' value="' + escape("^" + aData[j] + "$") + '">' + aData[j] + '</option>';
                 }
                 else {
                     var selected = '';
-                    if (escape(aData[j].value) == currentFilter) selected = 'selected '
-                    r += '<option ' + selected + 'value="' + escape(aData[j].value) + '">' + aData[j].label + '</option>';
+                    if (("^" + escape(aData[j]) + "$") == currentFilter) selected = 'selected '
+                    r += '<option ' + selected + 'value="' + escape(aData[j].value + "$") + '">' + aData[j].label + '</option>';
                 }
             }
 
@@ -386,7 +404,7 @@
             if (properties.sFilterButtonText != null || properties.sFilterButtonText != undefined) {
                 labelBtn = properties.sFilterButtonText;
             } else {
-                labelBtn = label;
+                labelBtn = label || "filter";
             }
 
             var relativeDivWidthToggleSize = 10;
@@ -418,6 +436,9 @@
             //r+= '<div align="center" style="margin-top: 5px; "> <button id="'+buttonId+'Reset" class="checkbox_filter" > reset </button> </div>'; //reset button and its div
             r += divRowDef;
 
+            var storedValues = oTable.fnSettings().aoPreSearchCols[i].sSearch;
+
+            var previousValues = storedValues ? storedValues.split("|") : [];
             for (j = 0; j < iLen; j++) {
 
                 //if last check close div
@@ -425,8 +446,9 @@
                     r += divClose + divRowDef;
                 }
 
+                var checked = $.inArray("^" + aData[j] + "$", previousValues) > -1;
                 //check button
-                r += '<input class="search_init checkbox_filter" type="checkbox" id= "' + aData[j] + '" name= "' + localLabel + '" value="' + aData[j] + '" >' + aData[j] + '<br/>';
+                r += '<input class="search_init checkbox_filter" type="checkbox" id= "' + aData[j] + '" name= "' + localLabel + '" value="' + ("^" + aData[j] + "$") + '" ' + (checked ? 'checked="checked"' : '') + '>' + aData[j] + '<br/>';
 
                 var checkbox = $(r);
                 th.html(checkbox);
@@ -473,7 +495,7 @@
                 //height: 140,
                 autoOpen: false,
                 //show: "blind",
-                hide: "blind",
+                //hide: "blind",
                 buttons: [{
                     text: "Reset",
                     click: function () {
@@ -491,7 +513,7 @@
 							    text: "Close",
 							    click: function () { $(this).dialog("close"); }
 							}
-						]
+                ]
             });
 
 
@@ -499,7 +521,8 @@
 
                 $('#' + checkToggleDiv).dialog('open');
                 var target = $(this);
-                $('#' + checkToggleDiv).dialog("widget").position({ my: 'top',
+                $('#' + checkToggleDiv).dialog("widget").position({
+                    my: 'top',
                     at: 'bottom',
                     of: target
                 });
@@ -511,7 +534,8 @@
 
             fnOnFiltered = function () {
                 var target = $('#' + buttonId);
-                $('#' + checkToggleDiv).dialog("widget").position({ my: 'top',
+                $('#' + checkToggleDiv).dialog("widget").position({
+                    my: 'top',
                     at: 'bottom',
                     of: target
                 });
@@ -565,6 +589,8 @@
 
             if (!oTable.fnSettings().oFeatures.bFilter)
                 return;
+
+
             asInitVals = new Array();
             var sFilterRow = "tfoot tr";
             if (properties.sPlaceHolder == "head:after") {
@@ -587,10 +613,15 @@
                 }
                 sFilterRow = "thead tr:first";
             }
-
-            $(sFilterRow + " th", oTable).each(function (index) {
+            var tableColumnDefs = oTable.fnSettings().aoColumns;
+            var row = $(sFilterRow + " th", oTable);
+            var thIndex = -1;
+            $(tableColumnDefs).each(function (index) {
                 i = index;
-                var aoColumn = { type: "text",
+
+
+                var aoColumn = {
+                    type: "text",
                     bRegex: false,
                     bSmart: true,
                     iFilterLength: 0
@@ -600,25 +631,27 @@
                         return;
                     aoColumn = properties.aoColumns[i];
                 }
-                label = $(this).text(); //"Search by " + $(this).text();
-                if (aoColumn.sSelector == null)
-                    th = $($(this)[0]);
-                else {
-                    th = $(aoColumn.sSelector);
-                    if (th.length == 0)
-                        th = $($(this)[0]);
+
+
+                if (this.bVisible) {
+                    thIndex++;
+                } else {
+                    if (aoColumn.sSelector == null) return; //if hidden column and sSelector is empty
                 }
+                th = $(row[thIndex]);
+                if (aoColumn.sSelector != null) {
+                    th = $(aoColumn.sSelector);
+                }
+                label = th.text(); //"Search by " + $(this).text();
+
 
                 if (aoColumn != null) {
-                    if (aoColumn.sRangeFormat != null)
-                        sRangeFormat = aoColumn.sRangeFormat;
-                    else
-                        sRangeFormat = properties.sRangeFormat
+                    sRangeFormat = aoColumn.sRangeFormat != null ? aoColumn.sRangeFormat : properties.sRangeFormat;
+
                     switch (aoColumn.type) {
                         case "number":
                             fnCreateInput(oTable, true, false, true, aoColumn.iFilterLength);
                             break;
-
                         case "select":
                             fnCreateSelect(oTable, aoColumn.values);
                             break;
@@ -637,9 +670,9 @@
                             bSmart = (aoColumn.bSmart == null ? false : aoColumn.bSmart);
                             fnCreateInput(oTable, bRegex, bSmart, false, aoColumn.iFilterLength);
                             break;
-
                     }
                 }
+
             });
 
             for (j = 0; j < aiCustomSearch_Indexes.length; j++) {
@@ -647,7 +680,7 @@
                 var fnSearch_ = function () {
                     var id = oTable.attr("id");
                     return $("#" + id + "_range_from_" + aiCustomSearch_Indexes[j]).val() + properties.sRangeSeparator + $("#" + id + "_range_to_" + aiCustomSearch_Indexes[j]).val()
-                }
+                };
                 afnSearch_.push(fnSearch_);
             }
 
@@ -661,8 +694,11 @@
                         var index = aiCustomSearch_Indexes[j];
 
                         for (k = 0; k < aoData.length; k++) {
-                            if (aoData[k].name == "sSearch_" + index)
+                            if (aoData[k].name == "sSearch_" + index) {
                                 aoData[k].value = afnSearch_[j]();
+                                // Added this line to force the value in
+                                oTable.fnSettings().aoPreSearchCols[index].sSearch = aoData[k].value;
+                            }
                         }
                     }
                     aoData.push({ "name": "sRangeSeparator", "value": properties.sRangeSeparator });

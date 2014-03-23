@@ -12,14 +12,14 @@ namespace DabTrial.Infrastructure.RazorUtilities
         {
 #if DEBUG
             assets.Libraries["jQuery"]
-                .AddScript("~/Scripts/jquery-2.0.3.js", BrowserType.W3cCompliant)
-                .AddScript("~/Scripts/jquery-1.10.2.js", BrowserType.IeLegacy);
+                .AddScript("~/Scripts/jquery-2.1.0.js", BrowserType.W3cCompliant)
+                .AddScript("~/Scripts/jquery-1.11.0.js", BrowserType.IeLegacy);
  //               .AddScript("~/Scripts/jquery-migrate-1.2.1.js"); //generate console warnings - must remember to look
             assets.Libraries["jQueryUI"].Requires("jQuery")
                 .AddScript("~/Scripts/jquery-ui-1.9.2.js",BrowserType.Ie6)
-                .AddScript("~/Scripts/jquery-ui-1.10.3.js", ~BrowserType.Ie6)
+                .AddScript("~/Scripts/jquery-ui-1.10.4.js", ~BrowserType.Ie6)
                 .AddStyle("//code.jquery.com/ui/1.9.2/themes/eggplant/jquery-ui.css", BrowserType.Ie6)
-                .AddStyle("//code.jquery.com/ui/1.10.3/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
+                .AddStyle("//code.jquery.com/ui/1.10.4/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
             assets.Libraries["TimePicker"].Requires("jQueryUI","MyUtilityScripts")
                 .AddScript("~/Scripts/jquery-ui-sliderAccess.js")
                 .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.4.js")
@@ -50,11 +50,11 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddStyle("~/Content/DrugDosing-1.0.css");
 #else
             assets.Libraries["jQuery"]
-                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js",BrowserType.W3cCompliant)
-                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js", BrowserType.IeLegacy);
+                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js",BrowserType.W3cCompliant)
+                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js", BrowserType.IeLegacy);
             assets.Libraries["jQueryUI"].Requires("jQuery")
                 .AddScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js",BrowserType.Ie6)
-                .AddScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js", ~BrowserType.Ie6)
+                .AddScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js", ~BrowserType.Ie6)
                 .AddStyle("//code.jquery.com/ui/1.9.2/themes/eggplant/jquery-ui.css", BrowserType.Ie6)
                 .AddStyle("//code.jquery.com/ui/1.10.3/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
             assets.Libraries["TimePicker"].Requires("jQueryUI", "MyUtilityScripts")
@@ -67,7 +67,7 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddScript("~/Scripts/mvcfoolproof.unobtrusive.min.js")
                 .AddScript("~/Scripts/CustomClientValidation-1.0.9.min.js");
             assets.Libraries["MyUtilityScripts"].Requires("jQuery")
-                .AddScript("~/Scripts/GeneralOnLoad-1.0.6.min.js").IsImplementingLibrary = true;
+                .AddScript("~/Scripts/GeneralOnLoad-1.0.7.min.js").IsImplementingLibrary = true;
             assets.Libraries["FormTools"].Requires("Validation", "MyUtilityScripts");
             assets.Libraries["AjaxFormTools"].Requires("FormTools", "jQueryUI")
                 .AddScript("~/Scripts/jquery.unobtrusive-ajax.min.js");

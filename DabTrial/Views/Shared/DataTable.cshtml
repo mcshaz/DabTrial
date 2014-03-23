@@ -1,15 +1,19 @@
-﻿@using Mvc.JQuery.Datatables
+﻿@using System.Data.Odbc
+@using System.Linq
+@using Mvc.JQuery.Datatables
 @model DataTableConfigVm
-
 <table id="@Model.Id" class="display @(Model.TableClass ?? DataTableConfigVm.DefaultTableClass ?? "")">
     <thead>
-        <tr>
-            @foreach (var column in Model.Columns)
-            {
-                <th>@column.DisplayName</th>
-            }
-        </tr>
         @if (Model.ColumnFilter)
+        {
+            <tr>
+                @foreach (var column in Model.Columns)
+                {
+                    <th>@column.DisplayName</th>
+                }
+            </tr>
+        }
+        @if (!Model.HideHeaders)
         {
             <tr>
                 @foreach (var column in Model.Columns)
@@ -30,7 +34,8 @@
 
 <script type="text/javascript">
     (function setDataTable() {
-        if(!window.jQuery) {
+        var $ = window.jQuery;
+        if(!($ && $.fn.dataTable && $.fn.columnFilter)) {
             setTimeout(setDataTable, 100);
             return;
         }
@@ -68,15 +73,12 @@
                     ,"fnDrawCallback": @Html.Raw(Model.DrawCallback)
                 </text>
             }
-            });
+                    });
             @if (Model.ColumnFilter)
             {
                 <text>
-                    dt.columnFilter({
-                        sPlaceHolder: "head:before",
-                        aoColumns: [@Html.Raw(Model.ColumnFiltersString)]
-                    });
-                </text>
+        dt.columnFilter(@Html.Raw(Model.ColumnFilterVm.ToString()));
+        </text>
             }
     })();
 </script>
