@@ -172,6 +172,7 @@ namespace DabTrial.Models
     public class ParticipantRegistration
     {
         [Display(Name = "Hospital Id", Description = "Medical record number or health index used by your institution")]
+        [Required]
         public String HospitalId { get; set; }
 
         [ForeignKey("StudyCentre")]

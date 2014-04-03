@@ -143,8 +143,9 @@
         $.datepicker.setDefaults(dpDefaults);
     }
     //sortable data grids
-    dataTableEls = $.fn.dataTable.fnTables();
+    
     if (($.fn.dataTable)) {
+        dataTableEls = $.fn.dataTable.fnTables();
         $(".dataTable").filter(function () {
             return $.inArray(this,dataTableEls)===-1 //all elements not initialised
         }).dataTable();

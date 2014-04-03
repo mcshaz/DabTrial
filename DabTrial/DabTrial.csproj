@@ -471,10 +471,10 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
-    <Content Include="Scripts\CustomClientValidation-1.0.9.min.js" />
+    <Content Include="Scripts\CustomClientValidation-1.1.0.min.js" />
     <Content Include="Scripts\date-en-AU.js" />
     <Content Include="Scripts\FollowDisabled.js" />
-    <Content Include="Scripts\GeneralOnLoad-1.0.7.min.js" />
+    <Content Include="Scripts\GeneralOnLoad-1.0.8.min.js" />
     <Content Include="Scripts\GeneralOnLoad.js" />
     <Content Include="Scripts\CustomClientValidation.js" />
     <Content Include="Scripts\DataTables-1.9.4\docs\media\js\doc.js" />

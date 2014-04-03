@@ -353,7 +353,7 @@
         }
         return false;
     });
-    valGroups = [];
+    var valGroups = [];
     $.validator.unobtrusive.adapters.add('requiredgroup', function (options) {
         var groupName = options.element.name,
             uniqueGroup = getUniqueFormId(options.form) + groupName;
