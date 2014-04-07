@@ -12,20 +12,39 @@ namespace DabTrial.Domain.Services
         public ScreenedPatientService(IValidationDictionary validationDictionary, IDataContext context = null) : base(validationDictionary, context)
         {
         }
-        public IEnumerable<ScreenedPatient> GetAllScreenedPatients(string currentUserName, int records=100, int skip=0)
+        public IEnumerable<ScreenedPatient> GetAllScreenedPatients(string currentUserName, int? skip=null, int? take=null)
         {
             var usr = _db.Users.Where(u => u.UserName == currentUserName).FirstOrDefault();
             var studyCentreId = usr.RestrictedToCentre();
+            IQueryable<ScreenedPatient> returnVar;
             if (studyCentreId.HasValue)
             {
-                return (from s in _db.ScreenedPatients.Include("NoConsentReason")
-                        where s.StudyCentreId == studyCentreId
-                        orderby s.IcuAdmissionDate
-                        select s).Skip(skip).Take(records).ToList();
+                 returnVar = (from s in _db.ScreenedPatients.Include("NoConsentReason")
+                                                        where s.StudyCentreId == studyCentreId
+                                                        orderby s.IcuAdmissionDate
+                                                        select s);
+                if (skip.HasValue)
+                {
+                    returnVar = returnVar.Skip(skip.Value);
+                }
+                if (take.HasValue)
+                {
+                    returnVar = returnVar.Take(take.Value);
+                }
+                return returnVar.ToList();
             }
-            return DecryptHospitalId((from s in _db.ScreenedPatients
-                                      orderby s.IcuAdmissionDate
-                                      select s).Skip(skip).Take(records).ToList(),usr).Cast<ScreenedPatient>();
+            returnVar = (from s in _db.ScreenedPatients
+                        orderby s.IcuAdmissionDate
+                        select s);
+            if (skip.HasValue)
+            {
+                returnVar = returnVar.Skip(skip.Value);
+            }
+            if (take.HasValue)
+            {
+                returnVar = returnVar.Take(take.Value);
+            }
+            return DecryptHospitalId(returnVar.ToList(),usr).Cast<ScreenedPatient>();
         }
         public ScreenedPatient GetScreenedPatient(int Id, string currentUserName)
         {
