@@ -15,13 +15,6 @@
     return this;
 };
 (function ($) {
-    $.fn.contextFilter = function (context) {
-        if (context === window) { return this; }
-        var isWithinContext = function () {
-            return !!$(this).closest(context).length;
-        };
-        return this.filter(isWithinContext);
-    };
     function elementText(el, separator) {
         var textContents = [];
         for (var chld = el.firstChild; chld; chld = chld.nextSibling) {
@@ -457,14 +450,15 @@ function emptyFormElements() {
             if (el.type==="checkbox" && el.name && $.inArray(el.name, checkboxNames) === -1) { checkboxNames.push(el.name); }
         });
     $formEls = $formEls.filter(function () {
-        return this.type != "hidden" || !$.inArray(this.Name, checkboxNames);
+        return this.type != "hidden" || this.getAttribute("data-datatype") == "primarykey" || !$.inArray(this.Name, checkboxNames);
     });
     clearFormErrors();
     $formEls = $formEls.add($("select,textarea"));
     $formEls.each(function () {
         if (!this.form || this.type === "submit") return;
-        if (this.id === "primaryKey") { this.value = "-1"; }
+        if (this.getAttribute("data-datatype") == "primarykey") { this.value = "-1"; }
         else if (!maintainState.test(this.className)) {
+            if (this.isEncrypted) { this.isEncrpted = this.disabled = false;}
             $(this).emptyValues();
         }
         if (this.getAttribute("details")) { showDetail.call(this); }
@@ -527,6 +521,14 @@ function populateFormElements(data) {
         } else {
             isChanged = this.value != newVal;
             this.value = newVal;
+            if (newVal == 'Encrypted')
+            {
+                this.disabled = this.isEncrypted = true;
+            }
+            else if(this.isEncrypted)
+            {
+                this.disabled = this.isEncrypted = false;
+            }
             if (this.getAttribute("details")) { showDetail.call(this); }
         }
         if (isChanged) { ($t || $(this)).change(); }
@@ -583,6 +585,17 @@ function displayJsonError(response, form, summaryElement) {
     });
     return true;
 };
+function ajaxRedraw(response) {
+    if (isJsonError(response)) {
+        displayJsonError(response);
+    } else {
+        emptyFormElements();
+        var dts = $.fn.dataTable.fnTables(true);
+        if (dts.length) {
+            $(dts[dts.length - 1]).dataTable().fnDraw();
+        }
+    }
+}
 function ajaxAddOrChangeRow(response) {
     if (isJsonError(response)) {
         displayJsonError(response);
@@ -591,16 +604,18 @@ function ajaxAddOrChangeRow(response) {
     var $editRow = $(".rowInEditor"),
         $ajaxTBody = $(".ajaxUpdatableTBody").filter(":visible").last(),
         $ajaxTable = $ajaxTBody.parent(),
-        cellHTML;
+        rowObject;
     emptyFormElements();
-    if ($ajaxTable.hasClass("dataTable")) {
-        cellHTML = $.map($(response).find('td'), function (item) {
-            return $.trim(item.innerHTML);
-        });
+    if ($.fn.dataTable.fnIsDataTable($ajaxTable)) {
+        rowObject = ($.type(response) == 'string')
+            ?$.map($(response).find('td'), function (item) {
+                return $.trim(item.innerHTML);
+            })
+            :response;
         if ($editRow.length > 0) {
-            $ajaxTable.dataTable().fnUpdate(cellHTML, $editRow[0]);
+            $ajaxTable.dataTable().fnUpdate(rowObject, $editRow[0]);
         } else {
-            $ajaxTable.dataTable().fnAddData(cellHTML);
+            $ajaxTable.dataTable().fnAddData(rowObject);
         }
     } else {
         if ($editRow.length > 0) {
@@ -661,13 +676,14 @@ function setToggleVis(e) {
 };
 function setElementListeners() {
     var show = function (input, inst) {
-        if ($.trim(input.value)) {
-            if (inst.selectedYear != 0 && inst.selectedMonth != 0 && inst.selectedDay != 0) {
-                return { defaultDate: new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay) };
+            if ($.trim(input.value)) {
+                if (inst.selectedYear != 0 && inst.selectedMonth != 0 && inst.selectedDay != 0) {
+                    return { defaultDate: new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay) };
+                }
             }
-        }
-        return { defaultDate: new Date() };
-    };
+            return { defaultDate: new Date() };
+        },
+        context = (this==window)?document:this;
         
     //date & time pickers
     if ($.datepicker) {
@@ -675,13 +691,11 @@ function setElementListeners() {
             var visible = $('#ui-datepicker-div').is(':visible');
             $(this).datepicker(visible ? 'hide' : 'show');
         };
-        $(".date").not("[type=hidden]").add("input[type=date]")
-            .contextFilter(this)
+        $(".date", context).not("[type=hidden]").add("input[type=date]")
             .datepicker({ beforeShow: show });
         //.on("mousedown", toggleDatePicker);
         if ($.timepicker) {
-            $(".dateTime").not("[type=hidden]")
-                .contextFilter(this)
+            $(".dateTime", context).not("[type=hidden]")
                 .datetimepicker({
                     timeFormat: "HH:mm",
                     //seperator: " ",
@@ -692,26 +706,22 @@ function setElementListeners() {
         }
     }
     
-    $(".toggleElements")
-        .contextFilter(this)
+    $(".toggleElements", context)
         .each(function(){
             setToggleVis.call(this, { data: { duration: "instant" } });
             $(this).on('click', setToggleVis);
         });
     //select lists with details
-    $(document.getElementsByTagName("select"))
+    $("select", context)
         .filter("[details='true']")
-        .contextFilter(this)
         .each(showDetail)
         .on("change", showDetail);
     if (!Modernizr.input.placeholder) {
-        $("input,textarea")
-            .contextFilter(this)
+        $("input,textarea", context)
             .placeholder();
     }
     //this class identifies a table (ideally tbody) with edit and update buttons
-    $(".ajaxUpdatableTBody")
-        .contextFilter(this)
+    $(".ajaxUpdatableTBody", context)
         .on("click", ".deleteAction", function (event) {
             $(".deleteRow").removeClass("deleteRow");
             $(this).closest("tr").addClass("deleteRow");

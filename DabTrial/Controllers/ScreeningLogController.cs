@@ -8,6 +8,10 @@ using AutoMapper;
 using DabTrial.Utilities;
 using DabTrial.Domain.Services;
 using DabTrial.Domain.Tables;
+using Mvc.JQuery.Datatables;
+using System.Data.Entity;
+using DabTrial.Infrastructure.Crypto;
+using DabTrial.Infrastructure.Helpers;
 
 namespace DabTrial.Controllers
 {
@@ -32,7 +36,7 @@ namespace DabTrial.Controllers
         [AutoMapModel(typeof(ScreenedPatient), typeof(ScreenedPatientDetails))]
         public ActionResult Details(int id)
         {
-            var model = ScreenService.GetScreenedPatient(id,CurrentUserName);
+            var model = ScreenService.GetScreenedPatient(id,CurrentUser);
             if (Request.IsAjaxRequest()) { return PartialView(model); }
             return View(model);
         }
@@ -44,15 +48,12 @@ namespace DabTrial.Controllers
         [Ajax(false)]
         public ActionResult CreateEdit(int id=-1)
         {
-            var model = Mapper.Map<CreateEditScreenedPatient>(ScreenService.GetScreenedPatient(id, CurrentUserName)) 
+            var model = Mapper.Map<CreateEditScreenedPatient>(ScreenService.GetScreenedPatient(id, CurrentUser)) 
                 ?? new CreateEditScreenedPatient 
                 { 
                     ScreenedPatientId = -1
                     //ScreeningDate = CurrentUser.StudyCentre.LocalTime().Date
                 };
-            model.ScreeningList = Mapper.Map<IEnumerable<ScreenedPatientListItem>>(ScreenService.GetAllScreenedPatients(CurrentUserName));
-            var selectedRow = model.ScreeningList.FirstOrDefault(s => s.ScreenedPatientId == id);
-            if (selectedRow != null) { selectedRow.IsRowInEditor = true; }
             setLists(model);
             return View(model);
         }
@@ -62,7 +63,7 @@ namespace DabTrial.Controllers
         //[AutoMapModel(typeof(ScreenedPatient), typeof(CreateEditScreenedPatient))]
         public ActionResult CreateEditAjax(int id = -1)
         {
-            var CreateEditPatient = Mapper.Map<CreateEditScreenedPatient>(ScreenService.GetScreenedPatient(id, CurrentUserName)) 
+            var CreateEditPatient = Mapper.Map<CreateEditScreenedPatient>(ScreenService.GetScreenedPatient(id, CurrentUser)) 
                 ?? new CreateEditScreenedPatient 
                 {
                     ScreenedPatientId = -1
@@ -98,7 +99,7 @@ namespace DabTrial.Controllers
                 else
                 {
                     dbSp = ScreenService.Update(patient.ScreenedPatientId, 
-                        patient.HospitalId, 
+                        (patient.HospitalId==ParticipantMapProfile.NullHospNo)?null:patient.HospitalId, 
                         patient.IcuAdmissionDate.Value,
                         patient.Dob.Value,
                         patient.ScreeningDate.Value,
@@ -111,7 +112,7 @@ namespace DabTrial.Controllers
                 }
                 if (isAjax && ModelState.IsValid)
                 {
-                    return PartialView("_IndexRow", Mapper.Map<ScreenedPatientListItem>(dbSp));
+                    return new EmptyResult(); // new JsonResult { Data = Mapper.Map<ScreenedPatientListItem>(dbSp) };
                 }
                 if (!isAjax && ModelState.IsValid) { return RedirectToAction("CreateEdit"); }
             }
@@ -121,7 +122,6 @@ namespace DabTrial.Controllers
                 return ModelState.JsonValidation();
             }
             setLists(patient);
-            patient.ScreeningList= Mapper.Map<IEnumerable<ScreenedPatientListItem>>(ScreenService.GetAllScreenedPatients(CurrentUserName));
             return View(patient);
         }
  
@@ -130,7 +130,7 @@ namespace DabTrial.Controllers
  
         public ActionResult Edit(int id)
         {
-            var model = Mapper.Map<CreateEditScreenedPatient>(ScreenService.GetScreenedPatient(id, CurrentUserName));
+            var model = Mapper.Map<CreateEditScreenedPatient>(ScreenService.GetScreenedPatient(id, CurrentUser));
             setLists(model);
             return View(model);
         }
@@ -165,7 +165,7 @@ namespace DabTrial.Controllers
  
         public ActionResult Delete(int id)
         {
-            return View(ScreenService.GetScreenedPatient(id, CurrentUserName));
+            return View(ScreenService.GetScreenedPatient(id, CurrentUser));
         }
 
         //
@@ -183,6 +183,47 @@ namespace DabTrial.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public DataTablesResult<ScreenedPatientListItem> GetScreenedPatients(DataTablesParam dataTableParam)
+        {
+            var studyCentreId = CurrentUser.RestrictedToCentre();
+            DateTime today = DateTime.Today;
+            if (dataTableParam.sSearchColumns[ScreenedPatientListItem.HosiptalIdOrder] != String.Empty)
+            {
+                var q = ScreenService.GetScreenedPatientByHospitalId(dataTableParam.sSearchColumns[ScreenedPatientListItem.HosiptalIdOrder], CurrentUser);
+                dataTableParam.sSearchColumns[ScreenedPatientListItem.HosiptalIdOrder] = String.Empty;
+                if (q!=null) dataTableParam.sSearchColumns[0] = q.ScreenedPatientId.ToString();
+            }
+
+            return DataTablesResult.Create(
+                dbContext.ScreenedPatients.Where(src => !studyCentreId.HasValue || src.StudyCentreId == studyCentreId.Value).Select(src => new ScreenedPatientListItem
+                {
+                    HospitalId = src.HospitalId,
+                    ExclusionReasonAbbreviation = !src.AllInclusionCriteriaPresent ? "Inclusions"
+                        : !src.AllExclusionCriteriaAbsent ? "Exclusions"
+                            : src.NoConsentAttemptId.HasValue ? src.NoConsentReason.Abbreviation
+                                : src.ConsentRefused ? "Refused" 
+                                    : "?",
+                    IcuAdmissionDate = src.IcuAdmissionDate,
+                    ScreenedPatientId = src.ScreenedPatientId, 
+                    ScreeningDate = src.ScreeningDate,
+                    NoConsentFreeText = (src.NoConsentFreeText == null || src.NoConsentFreeText ==string.Empty || src.NoConsentFreeText.Length <= 15)? src.NoConsentFreeText
+                        : DbFunctions.Left(src.NoConsentFreeText, 12) + "...",
+                    StudyCentreAbbreviation = src.StudyCentre.Abbreviation,
+                    StudyCentreId = src.StudyCentreId
+                }),
+                dataTableParam,
+                src=> new 
+                    {
+                        HospitalId = (src.StudyCentreId == CurrentUser.StudyCentreId)
+                            ? ScreenService.DecryptHospitalId(src.HospitalId)
+                            : ParticipantMapProfile.NullHospNo,
+                        ScreeningDate = src.ScreeningDate.ToShortDateString(),
+                        IcuAdmissionDate = src.IcuAdmissionDate.ToShortDateString() + " (" + DateIntervalHelper.GetIntervalPrior(src.IcuAdmissionDate, today) + " ago)"
+                    });
+        }
+
         private void setLists(CreateEditScreenedPatient model)
         {
             model.CentreData = Mapper.Map<CentreSpecificPatientValidationInfo>(CentreService.GetCentreByUser(CurrentUserName));
@@ -196,6 +237,8 @@ namespace DabTrial.Controllers
             });
 
             model.NoConsentAttemptRequiresDetail = allReasons.Where(r => r.RequiresDetail).Select(r => r.Id);
+
+            model.StudyCentreAbbreviations = CentreService.GetCentreAbbreviations();
         }
         protected override void Dispose(bool disposing)
         {

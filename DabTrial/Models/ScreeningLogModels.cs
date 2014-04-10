@@ -7,22 +7,33 @@ using System.ComponentModel.DataAnnotations;
 using DabTrial.Infrastructure.Validation;
 using MvcHtmlHelpers;
 using Foolproof;
+using DabTrial.Infrastructure.Interfaces;
+using Mvc.JQuery.Datatables;
 
 
 namespace DabTrial.Models
 {
-    public class ScreenedPatientListItem
+    public class ScreenedPatientListItem : IPatient
     {
+        internal const int HosiptalIdOrder = 2;
+        [DataTables(MRenderFunction="showEditControls", DisplayName="", Searchable=false, Sortable=false)]
         public Int32 ScreenedPatientId { get; set; }
+        [DataTables(DisplayName="Centre")]
         public string StudyCentreAbbreviation { get; set; }
+        [DataTables(DisplayName = "Hospital Id", Sortable=false)]
         public string HospitalId {get;set;}
-        [DisplayFormat(DataFormatString = "{0:d/M/yyyy}")]
+        [DataTables(DisplayName = "ICU Admission")]
         public DateTime IcuAdmissionDate {get; set;}
+        [DataTables(DisplayName = "Screened", SortDirection=SortDirection.Descending)]
         public DateTime ScreeningDate { get; set; }
+        [DataTables(DisplayName = "Exclusion Reason")]
         public string ExclusionReasonAbbreviation {get;set;}
+        [DataTables(DisplayName = "Details")]
         public string NoConsentFreeText { get; set; }
-        public bool IsRowInEditor { get; set; }
+        [DataTables(Visible=false,Sortable=false,Searchable=false)]
+        public Int32 StudyCentreId { get; set; }
     }
+
     public class ScreenedPatientDetails
     {
         public Int32 ScreenedPatientId { get; set; }
@@ -30,11 +41,12 @@ namespace DabTrial.Models
         public string HospitalId { get; set; }
         [DisplayFormat(DataFormatString = "{0:d/M/yyyy}")]
         public DateTime IcuAdmissionDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:d/M/yyyy}")]
         public DateTime Dob { get; set; }
         public DateTime ScreeningDate { get; set; }
         public bool AllInclusionCriteriaPresent { get; set; }
         public bool AllExclusionCriteriaAbsent { get; set; }
-        public bool NoConsentReasonDescription { get; set; }
+        public string NoConsentReasonDescription { get; set; }
         public bool ConsentRefused { get; set; }
         public string NoConsentFreeText { get; set; }
     }
@@ -43,7 +55,7 @@ namespace DabTrial.Models
     {
         public Int32 ScreenedPatientId { get; set; }
         [Display(Name = "Hospital Id", Description = "Medical record number or health index used by your institution")]
-        [Required]
+        [RequiredIfEmpty("ScreenedPatientId")]
         public String HospitalId { get; set; }
         
         [ComesBeforeNowAtClient]
@@ -83,7 +95,8 @@ namespace DabTrial.Models
         public CentreSpecificPatientValidationInfo CentreData { get; set; }
         public ILookup<bool?,SelectListItem> NoConsentAttemptReasons { get; set; }
 
-        public IEnumerable<ScreenedPatientListItem> ScreeningList { get; set; }
         public IEnumerable<int> NoConsentAttemptRequiresDetail { get; set; }
+
+        public string[] StudyCentreAbbreviations { get; set; }
     }
 }

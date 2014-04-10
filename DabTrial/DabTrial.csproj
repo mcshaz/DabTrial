@@ -220,6 +220,7 @@
     <Compile Include="Infrastructure\Crypto\ProjectUniqueKeys.cs" />
     <Compile Include="Infrastructure\FileSysServices\FileManagementService.cs" />
     <Compile Include="Infrastructure\Helpers\AssetsHelper.cs" />
+    <Compile Include="Infrastructure\Helpers\DateIntervalHelper.cs" />
     <Compile Include="Infrastructure\Helpers\PartialMirrorAttributes.cs" />
     <Compile Include="Infrastructure\Helpers\EnabledIfAttributes.cs" />
     <Compile Include="Infrastructure\Helpers\DetailDropDownListFor.cs" />
@@ -474,10 +475,11 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
-    <Content Include="Scripts\CustomClientValidation-1.1.0.min.js" />
+    <Content Include="Scripts\CustomClientValidation-1.1.1.min.js" />
     <Content Include="Scripts\date-en-AU.js" />
+    <Content Include="Scripts\EditableDataTable.js" />
     <Content Include="Scripts\FollowDisabled.js" />
-    <Content Include="Scripts\GeneralOnLoad-1.0.8.min.js" />
+    <Content Include="Scripts\GeneralOnLoad-1.0.9.min.js" />
     <Content Include="Scripts\GeneralOnLoad.js" />
     <Content Include="Scripts\CustomClientValidation.js" />
     <Content Include="Scripts\DataTables-1.9.4\docs\media\js\doc.js" />
@@ -524,7 +526,6 @@
     <Content Include="Scripts\DummyData.js" />
     <Content Include="Scripts\emailGridUtilities.js" />
     <Content Include="Scripts\emailGridUtilities-1.0.0.min.js" />
-    <Content Include="Scripts\GeneralOnLoad_old.js" />
     <Content Include="App_Data\PrivateStatic\FAQ.pdf" />
     <Content Include="CodeTemplates\AddView\CSHTML\Create.tt" />
     <Content Include="CodeTemplates\AddView\CSHTML\Delete.tt" />
@@ -540,6 +541,7 @@
     <Content Include="Scripts\jquery-placeholder.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
+    <Content Include="Scripts\jquery.dataTables.columnFilter.unmodified.js" />
     <Content Include="Scripts\jquery.textshadow.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
@@ -615,7 +617,7 @@
     <Content Include="Scripts\jquery-ui-timepicker-addon-1.4.js" />
     <Content Include="Scripts\jquery-ui-timepicker-addon-1.4.min.js" />
     <Content Include="Scripts\jquery.dataTables.columnFilter.js" />
-    <Content Include="Scripts\jquery.dataTables.columnFilter.min.js" />
+    <Content Include="Scripts\jquery.dataTables.columnFilter-1.5.6.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-1.11.1.js" />

@@ -16,6 +16,13 @@
             </tr>
 
             <tr class="display-row">
+                <td class="display-label">Date of Birth</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.Dob)
+                </td>
+            </tr>
+
+            <tr class="display-row">
                 <td class="display-label">Study Centre</td>
                 <td class="display-field">
                     @Html.DisplayFor(model => model.StudyCentreName)
@@ -44,13 +51,6 @@
             </tr>
 
             <tr class="display-row">
-                <td class="display-label">Attempted to consent</td>
-                <td class="display-field">
-                    @Html.DisplayFor(model => model.ConsentAttempted)
-                </td>
-            </tr>
-
-            <tr class="display-row">
                 <td class="display-label">Consent refused</td>
                 <td class="display-field">
                     @Html.DisplayFor(model => model.ConsentRefused)
@@ -58,9 +58,16 @@
             </tr>
 
             <tr class="display-row">
+                <td class="display-label">Attempted to consent</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.NoConsentReasonDescription)
+                </td>
+            </tr>
+
+            <tr class="display-row">
                 <td class="display-label">Details pertaining to consent</td>
                 <td class="display-field">
-                    @Html.DisplayFor(model => model.NoConsentDetails)
+                    @Html.DisplayFor(model => model.NoConsentFreeText)
                 </td>
             </tr>
         </tbody>

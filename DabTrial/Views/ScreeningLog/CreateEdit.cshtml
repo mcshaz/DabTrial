@@ -2,9 +2,10 @@
 @{
     ViewBag.Title = "Screened Patients";
     Html.Assets().Libraries.Uses("AjaxFormTools", "jQueryUI");
+    Html.Assets().AddScript("~/Scripts/FollowDisabled.js");
 }
 @Html.Partial("InclusionExclusionCriteria")
-@using (Ajax.BeginForm("CreateEdit", "ScreeningLog", new AjaxOptions { OnSuccess = "ajaxAddOrChangeRow", OnFailure = "handleErrorResponse", LoadingElementId="ajaxRequest_processing"  }, new { id = "screenedPatientForm" }))
+@using (Ajax.BeginForm("CreateEdit", "ScreeningLog", new AjaxOptions { OnSuccess = "ajaxRedraw", OnFailure = "handleErrorResponse", LoadingElementId="ajaxRequest_processing"  }, new { id = "screenedPatientForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -27,7 +28,7 @@
                         @Html.LabelDetailsFor(model => model.HospitalId, Model.CentreData.Abbreviation + " Id", Model.CentreData.RecordSystemName) 
                     </td>
                     <td class="editor-field">
-                        @Html.HiddenFor(model => model.ScreenedPatientId, new { id = "primaryKey" })
+                        @Html.HiddenFor(model => model.ScreenedPatientId, new { data_datatype = "primarykey" })
                         @Html.TextBoxFor(model => model.HospitalId, Model.CentreData.HospitalNoRegEx())
                         @Html.ValidationMessageFor(model => model.HospitalId)
                     </td>
@@ -163,4 +164,4 @@
     </fieldset>
 }
 
-@Html.Partial("Index", Model.ScreeningList)
+@Html.Partial("Index", Model.StudyCentreAbbreviations)

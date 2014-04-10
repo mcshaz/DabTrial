@@ -1,34 +1,15 @@
-﻿@model IEnumerable<DabTrial.Models.ScreenedPatientListItem>
+﻿@using Mvc.JQuery.Datatables
+@using DabTrial.Controllers
+
 @{
-    Html.Assets().Libraries.Uses("DataTables");
-    Html.Assets().AddScript("~/Scripts/FollowDisabled.js");
+    Html.Assets().AddHeaderScript("~/Scripts/EditableDataTable.js");
+    Html.Assets().Libraries.Uses("MvcDataTables", "jQueryUI");
+    
+    Html.DataTableIncludes(jqueryUi: true);
+    var vm = Html.DataTableVm("ScreeningLog", (ScreeningLogController sc) => sc.GetScreenedPatients(null));
+    vm.ColumnFilter = true;
+    vm.FilterOn("StudyCentreAbbreviation").Select(Model);
 }
+
 <h3>All Screened Patients</h3>
-<table class="dataTable">
-    <thead>
-        <tr>
-            <th>
-                Study Centre
-            </th>
-            <th>
-                Hospital Id
-            </th>
-            <th>
-                Admitted to ICU
-            </th>
-            <th>
-                Exclusion Reason
-            </th>
-            <th>
-                Details
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="exludedPatientGrid" class="ajaxUpdatableTBody">
-        @foreach (var item in Model)
-        {
-            @Html.Partial("_IndexRow", item)
-        }
-    </tbody>
-</table>
+@Html.Partial("DataTable", vm)

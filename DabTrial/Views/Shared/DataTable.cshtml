@@ -23,7 +23,7 @@
             </tr>
         }
     </thead>
-    <tbody>
+    <tbody class="ajaxUpdatableTBody">
         <tr>
             <td colspan="@Model.Columns.Count()" class="dataTables_empty">
                 Loading data from server
@@ -37,8 +37,8 @@
         var counter=0;
         (function setDataTable() {
             var $ = window.jQuery;
-            if(!($ && $.fn.dataTable && $.fn.columnFilter)) {
-                if (++counter>200) {
+            if(!($ && $.fn.columnFilter && GetAntiForgeryToken)) {
+                if (++counter>300) {
                     var message;
                     if (!$) {
                         message = 'jQuery';

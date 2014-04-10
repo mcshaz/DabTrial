@@ -20,17 +20,17 @@ namespace DabTrial.Models
         {
             Mapper.CreateMap<ProtocolViolation, ProtocolViolationCreate>()
                 .ForMember(dest=>dest.Violation, opt=>opt.Ignore())
-                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.nullHospNo));
+                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.NullHospNo));
 
             Mapper.CreateMap<ProtocolViolation, ProtocolViolationDetails>()
                 .ForMember(dest=>dest.ViolationClass,opt=>opt.Ignore())
                 .ForMember(dest=>dest.ReportingUserFullName, opt=>opt.MapFrom(src=>src.ReportingUser.FirstName + " " +src.ReportingUser.LastName))
-                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.nullHospNo));
+                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.NullHospNo));
             Mapper.CreateMap<ProtocolViolation, ProtocolViolationListItem>()
                 .ForMember(dest => dest.ViolationClass, opt => opt.Ignore());
             Mapper.CreateMap<ProtocolViolation, ProtocolViolationEdit>()
                 .ForMember(dest=>dest.ViolationSeverity, opt=>opt.Ignore())
-                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.nullHospNo));
+                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.NullHospNo));
         }
     }
     public class ScreeningLogProfile : Profile
@@ -39,24 +39,30 @@ namespace DabTrial.Models
         {
             Mapper.CreateMap<ScreenedPatient, CreateEditScreenedPatient>()
                 .ForMember(dest=>dest.CentreData, opt=>opt.Ignore())
-                .ForMember(dest => dest.ScreeningList, opt => opt.Ignore())
-                .ForMember(dest => dest.HospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.nullHospNo))
+                //.ForMember(dest => dest.ScreeningList, opt => opt.Ignore())
+                .ForMember(dest => dest.HospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.NullHospNo))
                 .ForMember(dest => dest.NoConsentAttemptReasons, opt=>opt.Ignore())
-                .ForMember(dest => dest.NoConsentAttemptRequiresDetail, opt => opt.Ignore());
+                .ForMember(dest => dest.NoConsentAttemptRequiresDetail, opt => opt.Ignore())
+                .ForMember(dest=>dest.StudyCentreAbbreviations, opt=>opt.Ignore());
 
             Mapper.CreateMap<ScreenedPatient, ScreenedPatientListItem>()
-                .ForMember(dest=>dest.IsRowInEditor, opt=>opt.Ignore())
-                .ForMember(dest => dest.ExclusionReasonAbbreviation, opt => opt.MapFrom(src =>
+                //.ForMember(dest=>dest.IsRowInEditor, opt=>opt.Ignore())
+                .ForMember(dest => dest.ExclusionReasonAbbreviation, opt => opt.MapFrom(GetExclusionReason()))
+                .ForMember(dest => dest.HospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.NullHospNo))
+                .ForMember(dest=>dest.NoConsentFreeText, opt => opt.MapFrom(src=>src.NoConsentFreeText.ToBriefString()));
+
+            Mapper.CreateMap<ScreenedPatient, ScreenedPatientDetails>()
+                .ForMember(dest => dest.HospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.NullHospNo));
+        }
+
+        internal static System.Linq.Expressions.Expression<Func<ScreenedPatient, string>> GetExclusionReason()
+        {
+            return src =>
                     !src.AllInclusionCriteriaPresent ? "Inclusions"
                         : !src.AllExclusionCriteriaAbsent ? "Exclusions"
                             : src.NoConsentAttemptId.HasValue ? src.NoConsentReason.Abbreviation
                                 : src.ConsentRefused ? "Refused" 
-                                    : "?"))
-                .ForMember(dest => dest.HospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.nullHospNo))
-                .ForMember(dest=>dest.NoConsentFreeText, opt => opt.MapFrom(src=>src.NoConsentFreeText.ToBriefString()));
-
-            Mapper.CreateMap<ScreenedPatient, ScreenedPatientDetails>()
-                .ForMember(dest => dest.HospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.nullHospNo));
+                                    : "?";
         }
     }
     public class RespSupportChangeMapProfile : Profile
@@ -72,14 +78,14 @@ namespace DabTrial.Models
     }
     public class ParticipantMapProfile : Profile
     {
-        internal const string nullHospNo = "Encrypted";
+        internal const string NullHospNo = "Encrypted";
         protected override void Configure()
         {
 
             Mapper.CreateMap<TrialParticipant, ParticipantListItem>()
                 .ForMember(dest => dest.TrialArm, opt => opt.MapFrom(src => src.IsInterventionArm ? "Intervention Arm" : "Control Arm"))
                 .ForMember(dest=>dest.EnrollingClinicianFullName, opt=>opt.MapFrom(src=>src.EnrollingClinician.FirstName + " " + src.EnrollingClinician.LastName))
-                .ForMember(dest => dest.HospitalId, opt => opt.NullSubstitute(nullHospNo))
+                .ForMember(dest => dest.HospitalId, opt => opt.NullSubstitute(NullHospNo))
                 .ForMember(dest=>dest.DataStage, opt=>opt.ResolveUsing<ParticipantToDataStageResolver>());
 
             Mapper.CreateMap<TrialParticipant, ParticipantDetails>()
@@ -87,7 +93,7 @@ namespace DabTrial.Models
                 .ForMember(dest => dest.Gender, opt=>opt.MapFrom(src => src.IsMaleGender?"Male":"Female"))
                 .ForMember(dest=>dest.TrialArm,opt=>opt.MapFrom(src=>src.IsInterventionArm?"Intervention Arm":"Control Arm"))
                 .ForMember(dest=>dest.RespiratorySupportChanges,opt=>opt.MapFrom(src=>src.RespiratorySupportChanges))
-                .ForMember(dest=>dest.HospitalId,opt=>opt.NullSubstitute(nullHospNo))
+                .ForMember(dest=>dest.HospitalId,opt=>opt.NullSubstitute(NullHospNo))
                 .ForMember(dest => dest.DrugDoses, opt => opt.ResolveUsing <ParticipantToDosingModelResolver>());
 
             Mapper.CreateMap<TrialParticipant, ParticipantUpdate>()
@@ -131,11 +137,11 @@ namespace DabTrial.Models
             Mapper.CreateMap<AdverseEvent, AdverseEventCreateModel>()
                 .ForMember(dest => dest.SeverityLevels, opt => opt.Ignore())
                 .ForMember(dest => dest.EventTypes, opt => opt.Ignore())
-                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.nullHospNo));
+                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.NullHospNo));
             Mapper.CreateMap<AdverseEvent, AdverseEventEditModel>()
                 .ForMember(dest => dest.SeverityLevels, opt => opt.Ignore())
                 .ForMember(dest => dest.EventTypes, opt => opt.Ignore())
-                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.nullHospNo));
+                .ForMember(dest => dest.TrialParticipantHospitalId, opt => opt.NullSubstitute(ParticipantMapProfile.NullHospNo));
             Mapper.CreateMap<AdverseEvent, AdverseEventDetails>()
                 .ForMember(dest=>dest.ReportingUserFullName, opt=>opt.MapFrom(src=>src.ReportingUser.FirstName + " " + src.ReportingUser.LastName));
             Mapper.CreateMap<AdverseEvent, AdverseEventListItem>();

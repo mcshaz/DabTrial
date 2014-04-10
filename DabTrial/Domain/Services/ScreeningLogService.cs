@@ -46,9 +46,16 @@ namespace DabTrial.Domain.Services
             }
             return DecryptHospitalId(returnVar.ToList(),usr).Cast<ScreenedPatient>();
         }
-        public ScreenedPatient GetScreenedPatient(int Id, string currentUserName)
+        public ScreenedPatient GetScreenedPatient(int Id, User user)
         {
-            return (ScreenedPatient)DecryptHospitalId(_db.ScreenedPatients.Find(Id), _db.Users.Where(u => u.UserName == currentUserName).FirstOrDefault());
+            return (ScreenedPatient)DecryptHospitalId(_db.ScreenedPatients.Find(Id), user);
+        }
+        public ScreenedPatient GetScreenedPatientByHospitalId(string hospitalId, User user)
+        {
+            string[] possibleEncyptions = CryptoProvider.PossibleEncryptionValues(hospitalId);
+            return (from s in _db.ScreenedPatients
+                    where user.StudyCentreId == s.StudyCentreId && possibleEncyptions.Contains(s.HospitalId)
+                    select s).FirstOrDefault();
         }
         public IEnumerable<NoConsentAttempt> GetNoConsentReasons()
         {
@@ -72,8 +79,8 @@ namespace DabTrial.Domain.Services
                 _validatonDictionary.AddError("ScreenedPatientId", "Could not find this patient to update");
                 return null;
             }
-            hospitalId = hospitalId.ToUpper();
-            validateScreenedPatient(sp.StudyCentre, hospitalId, icuAdmissionDate, dob, screeningDate, allInclusionCriteriaPresent, allExclusionCriteriaAbsent, noConsentAttemptId, consentRefused, noConsentDetails, screenedPatientId);
+            hospitalId = (string.IsNullOrEmpty(hospitalId))?CryptoProvider.Decrypt(sp.HospitalId):hospitalId.ToUpper();
+            ValidateScreenedPatient(sp.StudyCentre, hospitalId, icuAdmissionDate, dob, screeningDate, allInclusionCriteriaPresent, allExclusionCriteriaAbsent, noConsentAttemptId, consentRefused, noConsentDetails, screenedPatientId);
             if (!_validatonDictionary.IsValid) { return null; }
             sp.NoConsentFreeText = noConsentDetails;
             sp.HospitalId = CryptoProvider.Encrypt(hospitalId);
@@ -102,7 +109,7 @@ namespace DabTrial.Domain.Services
         {
             User researcher = _db.Users.Include("StudyCentre").Where(u => u.UserName == userName).FirstOrDefault();
             hospitalId = hospitalId.ToUpper();
-            validateScreenedPatient(researcher.StudyCentre, hospitalId, icuAdmissionDate, dob, screeningDate, allInclusionCriteriaPresent, allExclusionCriteriaAbsent, noConsentAttemptId, consentRefused, noConsentDetails);
+            ValidateScreenedPatient(researcher.StudyCentre, hospitalId, icuAdmissionDate, dob, screeningDate, allInclusionCriteriaPresent, allExclusionCriteriaAbsent, noConsentAttemptId, consentRefused, noConsentDetails);
             if (!_validatonDictionary.IsValid) { return null; }
             var sp = new ScreenedPatient()
             {
@@ -123,7 +130,7 @@ namespace DabTrial.Domain.Services
             sp.HospitalId = hospitalId; //Ok to serve this back, as they obviously entered it- by rights should detach from entity state manager
             return sp;
         }
-        public void validateScreenedPatient(StudyCentre centre, 
+        public void ValidateScreenedPatient(StudyCentre centre, 
             string hospitalId, 
             DateTime icuAdmissionDate,
             DateTime dob,

@@ -23,7 +23,7 @@
 
     $.fn.columnFilter = function (options) {
 
-        var asInitVals, i, label, th, j;
+        var asInitVals, i, label, th;
 
         //var sTableId = "table";
         var sRangeFormat = "From {from} to {to}";
@@ -68,7 +68,7 @@
             // set up data array	
             var asResultData = new Array();
 
-            for (i = 0, c = aiRows.length; i < c; i++) {
+            for (var i = 0, c = aiRows.length; i < c; i++) {
                 var iRow = aiRows[i];
                 var aData = oTable.fnGetData(iRow);
                 var sValue = aData[iColumn];
@@ -244,7 +244,7 @@
 
         function fnCreateDateRangeInput(oTable) {
 
-            var aoFragments = sRangeFormat.split(/[}{]/), ti;
+            var aoFragments = sRangeFormat.split(/[}{]/);
 
             th.html("");
             //th.html(_fnRangeLabelPart(0));
@@ -342,6 +342,7 @@
 			if(bMultiselect) {
 				r = '<select class="search_init select_filter form-control" rel="' + i + '" multiple>';
 			}
+            var j = 0;
             var iLen = aData.length;
             for (j = 0; j < iLen; j++) {
                 if (typeof (aData[j]) != 'object') {
@@ -768,9 +769,9 @@
                             break;
                         case "text":
                         default:
-                            aoColumn.bRegex = (aoColumn.bRegex == null ? false : aoColumn.bRegex);
-                            aoColumn.bSmart = (aoColumn.bSmart == null ? false : aoColumn.bSmart);
-                            fnCreateInput(oTable, aoColumn.bRegex, aoColumn.bSmart, false, aoColumn.iFilterLength, aoColumn.iMaxLenght);
+                            bRegex = (aoColumn.bRegex == null ? false : aoColumn.bRegex);
+                            bSmart = (aoColumn.bSmart == null ? false : aoColumn.bSmart);
+                            fnCreateInput(oTable, bRegex, bSmart, false, aoColumn.iFilterLength, aoColumn.iMaxLenght);
                             break;
 
                     }
@@ -791,7 +792,7 @@
                 var fnServerDataOriginal = oTable.fnSettings().fnServerData;
 
                 oTable.fnSettings().fnServerData = function (sSource, aoData, fnCallback) {
-                    var k;
+
                     for (j = 0; j < aiCustomSearch_Indexes.length; j++) {
                         var index = aiCustomSearch_Indexes[j];
 

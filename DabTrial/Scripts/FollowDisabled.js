@@ -5,7 +5,11 @@
         tabletop = $table.offset().top-4,
         setdiv = function () {
             var height = 0,
-                $rows = $allRows.has(':disabled');
+                $rows = $allRows.filter(function () {
+                    return $('input,textarea', this).is(function () {
+                        return this.disabled && !this.isEncrypted;
+                    });
+                });
             if (!$rows.length) {
                 $div.hide();
                 return;

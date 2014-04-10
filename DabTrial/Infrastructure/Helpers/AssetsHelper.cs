@@ -35,9 +35,15 @@ namespace MvcHtmlHelpers
             return this;
         }
         private readonly List<string> _scriptRefs = new List<string>();
+        private readonly List<string> _headerScriptRefs = new List<string>();
         public AssetsHelper AddScript(string scriptfile)
         {
             _scriptRefs.Add(scriptfile);
+            return this;
+        }
+        public AssetsHelper AddHeaderScript(string scriptfile)
+        {
+            _headerScriptRefs.Add(scriptfile);
             return this;
         }
         public IHtmlString RenderStyles()
@@ -46,6 +52,13 @@ namespace MvcHtmlHelpers
             styles.Add(Libraries.UsedStyles());
             styles.Add(_styleRefs);
             return styles.Render();
+        }
+        public IHtmlString RenderHeaderScripts()
+        {
+            if (!_headerScriptRefs.Any()) { return new HtmlString(String.Empty); }
+            ItemRegistrar scripts = new ItemRegistrar(ItemRegistrarFormatters.ScriptFormat, _urlHelper);
+            scripts.Add(_headerScriptRefs);
+            return scripts.Render();
         }
         public IHtmlString RenderScripts()
         {

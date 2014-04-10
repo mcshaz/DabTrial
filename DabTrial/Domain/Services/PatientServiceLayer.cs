@@ -39,7 +39,7 @@ namespace DabTrial.Domain.Services
         {
             return DecryptHospitalId(patients, _db.Users.FirstOrDefault(u => u.UserName == userName));
         }
-        protected IEnumerable<IPatient> DecryptHospitalId(IEnumerable<IPatient> patients, User usr)
+        internal IEnumerable<IPatient> DecryptHospitalId(IEnumerable<IPatient> patients, User usr)
         { 
             foreach (var patient in patients)
             {
@@ -54,12 +54,15 @@ namespace DabTrial.Domain.Services
             }
             return patients;
         }
-
         /// <summary>
         /// Bypasses security checks  - BE SURE ONLY users belonging to the same centre as the user are used
         /// </summary>
         /// <param name="patients"></param>
         /// <returns></returns>
+        internal string DecryptHospitalId(string encryptedId)
+        {
+            return CryptoProvider.Decrypt(encryptedId);
+        }
         protected IEnumerable<IPatient> DecryptHospitalId(IEnumerable<IPatient> patients)
         {
             foreach (var patient in patients)

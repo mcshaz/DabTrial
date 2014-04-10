@@ -25,20 +25,25 @@ namespace DabTrial.Domain.Services
                     where u.UserName == userName
                     select u.StudyCentre).FirstOrDefault();
         }
-        public IEnumerable<StudyCentre> getCentres()
+        public IEnumerable<StudyCentre> GetCentres()
         {
             return _db.StudyCentres.ToList();
         }
-        public StudyCentre getCentre(Int32 studyCentreId)
+        public string[] GetCentreAbbreviations()
+        {
+            return (from s in _db.StudyCentres
+                    select s.Abbreviation).ToArray();
+        }
+        public StudyCentre GetCentre(Int32 studyCentreId)
         {
             return _db.StudyCentres.Find(studyCentreId);
         }
-        public void deleteCentre(Int32 studyCentreId)
+        public void DeleteCentre(Int32 studyCentreId)
         {
             var centre = _db.StudyCentres.Find(studyCentreId);
             _db.StudyCentres.Remove(centre);
         }
-        public void updateCentre(Int32 studyCentreId,
+        public void UpdateCentre(Int32 studyCentreId,
                                  String name,
                                  String abbreviation,
                                  String siteRegistrationPwd,

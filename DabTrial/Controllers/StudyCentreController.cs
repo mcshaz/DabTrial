@@ -28,7 +28,7 @@ namespace DabTrial.Controllers
             {
                 return RedirectToAction("Details", new { id = restrict.Value });
             }
-            return View(CentreService.getCentres());
+            return View(CentreService.GetCentres());
         }
 
         //
@@ -37,7 +37,7 @@ namespace DabTrial.Controllers
         {
             int? restrict = UserService.GetUser(CurrentUserName).RestrictedToCentre();
             if (restrict.HasValue) { id = restrict.Value; }
-            var studyCentre = Mapper.Map<StudyCentreDetails>(CentreService.getCentre(id));
+            var studyCentre = Mapper.Map<StudyCentreDetails>(CentreService.GetCentre(id));
             return View(studyCentre);
         }
 
@@ -92,7 +92,7 @@ namespace DabTrial.Controllers
         {
             int? restrict = UserService.GetUser(CurrentUserName).RestrictedToCentre(); 
             if (restrict.HasValue) { id = restrict.Value; }
-            StudyCentreEdit studyCentre = Mapper.Map<StudyCentreEdit>(CentreService.getCentre(id));
+            StudyCentreEdit studyCentre = Mapper.Map<StudyCentreEdit>(CentreService.GetCentre(id));
             SetLists(studyCentre);
             return View(studyCentre);
         }
@@ -107,7 +107,7 @@ namespace DabTrial.Controllers
             if (restrict.HasValue) { model.StudyCentreId = restrict.Value; }
             if (ModelState.IsValid)
             {
-                CentreService.updateCentre(model.StudyCentreId,
+                CentreService.UpdateCentre(model.StudyCentreId,
                     model.Name,
                     model.Abbreviation,
                     model.SiteRegistrationPwd,
@@ -128,7 +128,7 @@ namespace DabTrial.Controllers
         [Authorize(Roles = RoleExtensions.PrincipleInvestigator)]
         public ActionResult Delete(int id)
         {
-            StudyCentre studycentre = CentreService.getCentre(id);
+            StudyCentre studycentre = CentreService.GetCentre(id);
             return View(studycentre);
         }
 
@@ -139,7 +139,7 @@ namespace DabTrial.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CentreService.deleteCentre(id);
+            CentreService.DeleteCentre(id);
             return RedirectToAction("Index");
         }
 

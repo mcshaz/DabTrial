@@ -89,7 +89,7 @@
         jQuery.validator.addMethod("dateITA", function (value, element) {
             var check = false,
                 match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})( ?(\d{1,2}):(\d{1,2})(:(\d{1,2}))?(:(\d{1,}))?)?( ?([aApP])\.?[mM]\.?)?$/.exec(value),
-                dd, MM, aaaa, hh, mm, ss, SS, xdata, suf;
+                dd, MM, yyyy, aaaa, hh, mm, ss, SS, xdata, suf;
             if (match && match.length > 4) {
                 dd = parseInt(match[1], 10);
                 MM = parseInt(match[2], 10);

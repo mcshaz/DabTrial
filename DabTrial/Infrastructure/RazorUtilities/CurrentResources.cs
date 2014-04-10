@@ -40,7 +40,7 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddStyle("~/Content/DataTables-1.9.4/media/css/jquery.dataTables.css")
                 .AddStyle("~/Content/DataTables-1.9.4/media/css/jquery.dataTables_themeroller.css");
             assets.Libraries["MvcDataTables"].Requires("DataTables")
-                .AddScript("~/Scripts/jquery.dataTables.columnFilter.min.js");
+                .AddScript("~/Scripts/jquery.dataTables.columnFilter.js");
             assets.Libraries["DummyData"].Requires("jQuery")
                 .AddScript("~/Scripts/DummyData.js")
                 .AddStyle("~/Content/DummyData.css");
@@ -65,9 +65,9 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddScript("//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js")
                 .AddScript("~/Scripts/jquery.validate.unobtrusive.min.js")
                 .AddScript("~/Scripts/mvcfoolproof.unobtrusive.min.js")
-                .AddScript("~/Scripts/CustomClientValidation-1.1.0.min.js");
+                .AddScript("~/Scripts/CustomClientValidation-1.1.1.min.js");
             assets.Libraries["MyUtilityScripts"].Requires("jQuery")
-                .AddScript("~/Scripts/GeneralOnLoad-1.0.8.min.js").IsImplementingLibrary = true;
+                .AddScript("~/Scripts/GeneralOnLoad-1.0.9.min.js").IsImplementingLibrary = true;
             assets.Libraries["FormTools"].Requires("Validation", "MyUtilityScripts");
             assets.Libraries["AjaxFormTools"].Requires("FormTools", "jQueryUI")
                 .AddScript("~/Scripts/jquery.unobtrusive-ajax.min.js");
@@ -76,7 +76,7 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddStyle("//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css")
                 .AddStyle("//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables_themeroller.css");
             assets.Libraries["MvcDataTables"].Requires("DataTables")
-                .AddScript("~/Scripts/jquery.dataTables.columnFilter.min.js");
+                .AddScript("~/Scripts/jquery.dataTables.columnFilter-1.5.6.min.js");
             assets.Libraries["DummyData"].Requires("jQuery")
                 .AddScript("~/Scripts/DummyData.js")
                 .AddStyle("~/Content/DummyData.css");
