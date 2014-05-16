@@ -1,4 +1,4 @@
-﻿@model DabTrial.Models.DbModel
+﻿@model DabTrial.Models.DbVersionBakModel
 @{
     ViewBag.Title = "Trial Database";
     Html.Assets().Libraries.Uses("AjaxFormTools", "Validation");
@@ -24,7 +24,7 @@
                 {
                 <tr>
                     <td>
-                        <input type="checkbox" value="@item.FileName" name="SelectedFileNames" checked="@Model.SelectedFileNames.Contains(item.FileName)"/>
+                        <input type="checkbox" value="@item.FileName" name="SelectedFileNames" checked="@Model.SelectedFileNames.Contains(item.FileName)" />
                     </td>
                     <td>
                         @item.FileName

@@ -67,7 +67,7 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddScript("~/Scripts/mvcfoolproof.unobtrusive.min.js")
                 .AddScript("~/Scripts/CustomClientValidation-1.1.1.min.js");
             assets.Libraries["MyUtilityScripts"].Requires("jQuery")
-                .AddScript("~/Scripts/GeneralOnLoad-1.0.9.min.js").IsImplementingLibrary = true;
+                .AddScript("~/Scripts/GeneralOnLoad-1.0.10.min.js").IsImplementingLibrary = true;
             assets.Libraries["FormTools"].Requires("Validation", "MyUtilityScripts");
             assets.Libraries["AjaxFormTools"].Requires("FormTools", "jQueryUI")
                 .AddScript("~/Scripts/jquery.unobtrusive-ajax.min.js");
