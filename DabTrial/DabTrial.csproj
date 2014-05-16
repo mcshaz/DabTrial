@@ -7,8 +7,8 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1FE878E4-4C5C-4526-AB1F-DD8ABD170B2A}</ProjectGuid>
-    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectGuid>{9488E07C-D86D-4F69-BB05-B092C9FF6084}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DabTrial</RootNamespace>
@@ -19,18 +19,16 @@
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
-    <TargetFrameworkProfile />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,35 +37,33 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=3.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.dll</HintPath>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper.Net4, Version=3.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+    <Reference Include="AutoMapper, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AutoMapper.Net4, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah.Mvc, Version=2.0.0.29988, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.1\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Mvc">
       <HintPath>..\packages\Elmah.MVC.2.1.1\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="EntityFramework.SqlServerCompact">
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
@@ -75,108 +71,108 @@
       <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
     <Reference Include="MVC Foolproof Validation, Version=0.9.4517.16477, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\foolproof.0.9.4517\lib\MVC Foolproof Validation.dll</HintPath>
     </Reference>
-    <Reference Include="Mvc.JQuery.Datatables, Version=1.0.5185.17190, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Mvc.JQuery.Datatables, Version=1.0.5218.20837, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Mvc.JQuery.Datatables.1.2.93\lib\net40\Mvc.JQuery.Datatables.dll</HintPath>
+      <HintPath>..\packages\Mvc.JQuery.Datatables.1.2.99\lib\net40\Mvc.JQuery.Datatables.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity.Design" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8854.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8854.1\lib\net40\System.Data.SqlServerCe.Entity.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.1.2\lib\net45\System.Web.Http.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Http.WebHost, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.1.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Routing" />
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="UkAdcHtmlAttributeProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\UkadcHtmlAttributeProvider.0.0.2\lib\net40\UkAdcHtmlAttributeProvider.dll</HintPath>
     </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdverseEventController.cs" />
     <Compile Include="Controllers\AdverseEventDrugController.cs" />
     <Compile Include="Controllers\AdverseEventTypeController.cs" />
     <Compile Include="Controllers\AuditLogController.cs" />
     <Compile Include="Controllers\ContactUsController.cs" />
-    <Compile Include="Controllers\ManageFilesController.cs" />
-    <Compile Include="Controllers\NoConsentAttemptController.cs" />
-    <Compile Include="Controllers\ParticipantRelatedController.cs" />
     <Compile Include="Controllers\DataContextController.cs" />
     <Compile Include="Controllers\DbController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InvestigatorAccountController.cs" />
+    <Compile Include="Controllers\ManageFilesController.cs" />
+    <Compile Include="Controllers\NoConsentAttemptController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
+    <Compile Include="Controllers\ParticipantRelatedController.cs" />
     <Compile Include="Controllers\ProtocolViolationController.cs" />
     <Compile Include="Controllers\RecordProviderController.cs" />
     <Compile Include="Controllers\RespSupportChangeController.cs" />
@@ -189,8 +185,6 @@
     <Compile Include="Domain\Services\AdverseEventTypeService.cs" />
     <Compile Include="Domain\Services\AuditLogService.cs" />
     <Compile Include="Domain\Services\ContactService.cs" />
-    <Compile Include="Domain\Tables\DrugRoute.cs" />
-    <Compile Include="Infrastructure\FileSysServices\DbBackupService.cs" />
     <Compile Include="Domain\Services\ParticipantService.cs" />
     <Compile Include="Domain\Services\PatientServiceLayer.cs" />
     <Compile Include="Domain\Services\ProtocolViolationService.cs" />
@@ -202,10 +196,11 @@
     <Compile Include="Domain\Services\StudyCentreService.cs" />
     <Compile Include="Domain\Services\UserService.cs" />
     <Compile Include="Domain\Tables\AdverseEvent.cs" />
-    <Compile Include="Domain\Tables\RegistrationFromIP.cs" />
     <Compile Include="Domain\Tables\AuditLog.cs" />
+    <Compile Include="Domain\Tables\DrugRoute.cs" />
     <Compile Include="Domain\Tables\LocalRecordProvider.cs" />
     <Compile Include="Domain\Tables\ProtocolViolation.cs" />
+    <Compile Include="Domain\Tables\RegistrationFromIP.cs" />
     <Compile Include="Domain\Tables\RespiratorySupport.cs" />
     <Compile Include="Domain\Tables\Role.cs" />
     <Compile Include="Domain\Tables\ScreenedPatient.cs" />
@@ -215,18 +210,23 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\ActionResults\ZipResult.cs" />
     <Compile Include="Infrastructure\Attributes\AjaxAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\EnableIfAttribute.cs" />
     <Compile Include="Infrastructure\ConventionProvider.cs" />
+    <Compile Include="Infrastructure\Crypto\PBKDF2.cs" />
     <Compile Include="Infrastructure\Crypto\ProjectUniqueKeys.cs" />
+    <Compile Include="Infrastructure\Crypto\SimpleAES.cs" />
+    <Compile Include="Infrastructure\FileSysServices\DbBackupService.cs" />
     <Compile Include="Infrastructure\FileSysServices\FileManagementService.cs" />
     <Compile Include="Infrastructure\Helpers\AssetsHelper.cs" />
     <Compile Include="Infrastructure\Helpers\DateIntervalHelper.cs" />
-    <Compile Include="Infrastructure\Helpers\PartialMirrorAttributes.cs" />
-    <Compile Include="Infrastructure\Helpers\EnabledIfAttributes.cs" />
     <Compile Include="Infrastructure\Helpers\DetailDropDownListFor.cs" />
     <Compile Include="Infrastructure\Helpers\DropDownListHelper.cs" />
+    <Compile Include="Infrastructure\Helpers\EnabledIfAttributes.cs" />
     <Compile Include="Infrastructure\Helpers\HelperAnnotations.cs" />
     <Compile Include="Infrastructure\Helpers\LabelHelper.cs" />
+    <Compile Include="Infrastructure\Helpers\PartialMirrorAttributes.cs" />
     <Compile Include="Infrastructure\Helpers\SimpleTagHelper.cs" />
     <Compile Include="Infrastructure\Interfaces\ICryptoProvider.cs" />
     <Compile Include="Infrastructure\Interfaces\IDataContext.cs" />
@@ -236,19 +236,23 @@
     <Compile Include="Infrastructure\ModelBinders\UpdateParticipantBinder.cs" />
     <Compile Include="Infrastructure\RazorUtilities\CurrentResources.cs" />
     <Compile Include="Infrastructure\RazorUtilities\NavigationItems.cs" />
-    <Compile Include="Infrastructure\Crypto\SimpleAES.cs" />
+    <Compile Include="Infrastructure\Utilities\BlockRandomisation.cs" />
+    <Compile Include="Infrastructure\Utilities\Email.cs" />
+    <Compile Include="Infrastructure\Utilities\EnumUtils.cs" />
+    <Compile Include="Infrastructure\Utilities\ModelStateExtensions.cs" />
     <Compile Include="Infrastructure\Utilities\SimpleTypeExtensions.cs" />
+    <Compile Include="Infrastructure\Utilities\StringExtensions.cs" />
+    <Compile Include="Infrastructure\Utilities\UriStringTools.cs" />
     <Compile Include="Infrastructure\Validation\ClientValidation.cs" />
     <Compile Include="Infrastructure\Validation\DateIntervalValidation.cs" />
     <Compile Include="Infrastructure\Validation\DynamicClientValidation.cs" />
     <Compile Include="Infrastructure\Validation\MinRegexCountValidation.cs" />
+    <Compile Include="Infrastructure\Validation\MultipleValidationAttribute.cs" />
     <Compile Include="Infrastructure\Validation\PostedFileAttributes.cs" />
     <Compile Include="Infrastructure\Validation\SimpleValidationExtensions.cs" />
-    <Compile Include="Infrastructure\Validation\MultipleValidationAttribute.cs" />
     <Compile Include="Infrastructure\Validation\Wt4AgeValidation.cs" />
     <Compile Include="Membership\CodeFirstMembershipProvider.cs" />
     <Compile Include="Membership\CodeFirstRoleProvider.cs" />
-    <Compile Include="Infrastructure\Crypto\PBKDF2.cs" />
     <Compile Include="Membership\WebSecurity.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AdverseEventModels.cs" />
@@ -269,23 +273,72 @@
     <Compile Include="Models\ScreeningLogModels.cs" />
     <Compile Include="Models\StudyCentreModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Infrastructure\Utilities\BlockRandomisation.cs" />
-    <Compile Include="Infrastructure\Utilities\Email.cs" />
-    <Compile Include="Infrastructure\Utilities\EnumUtils.cs" />
-    <Compile Include="Infrastructure\Utilities\ModelStateExtensions.cs" />
-    <Compile Include="Infrastructure\Utilities\StringExtensions.cs" />
-    <Compile Include="Infrastructure\Utilities\UriStringTools.cs" />
+    <Compile Include="RegisterDatatablesModelBinder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="App_Data\DABtrial.sdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="App_Data\DABtrial.sdf" />
     <Content Include="App_Data\Elmah.sdf" />
     <Content Include="App_Data\PrivateStatic\PlaceHolder.txt" />
+    <Content Include="bin\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
+    <Content Include="bin\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
+    <Content Include="bin\amd64\sqlceca40.dll" />
+    <Content Include="bin\amd64\sqlcecompact40.dll" />
+    <Content Include="bin\amd64\sqlceer40EN.dll" />
+    <Content Include="bin\amd64\sqlceme40.dll" />
+    <Content Include="bin\amd64\sqlceqp40.dll" />
+    <Content Include="bin\amd64\sqlcese40.dll" />
+    <Content Include="bin\App_Data\DABtrial.sdf" />
+    <Content Include="bin\AutoMapper.dll" />
+    <Content Include="bin\AutoMapper.Net4.dll" />
+    <Content Include="bin\AutoMapper.xml" />
+    <Content Include="bin\DabTrial.dll" />
+    <Content Include="bin\DabTrial.pdb" />
+    <Content Include="bin\Elmah.dll" />
+    <Content Include="bin\Elmah.Mvc.dll" />
+    <Content Include="bin\EntityFramework.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\EntityFramework.SqlServerCompact.dll" />
+    <Content Include="bin\EntityFramework.SqlServerCompact.xml" />
+    <Content Include="bin\EntityFramework.xml" />
+    <Content Include="bin\Ionic.Zip.Reduced.dll" />
+    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="bin\MVC Foolproof Validation.dll" />
+    <Content Include="bin\Mvc.JQuery.Datatables.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Newtonsoft.Json.xml" />
+    <Content Include="bin\System.Data.SqlServerCe.dll" />
+    <Content Include="bin\System.Net.Http.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.xml" />
+    <Content Include="bin\System.Web.Helpers.dll" />
+    <Content Include="bin\System.Web.Helpers.xml" />
+    <Content Include="bin\System.Web.Http.WebHost.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.xml" />
+    <Content Include="bin\System.Web.Mvc.dll" />
+    <Content Include="bin\System.Web.Mvc.xml" />
+    <Content Include="bin\System.Web.Razor.dll" />
+    <Content Include="bin\System.Web.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
+    <Content Include="bin\System.Web.WebPages.Deployment.xml" />
+    <Content Include="bin\System.Web.WebPages.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.xml" />
+    <Content Include="bin\UkAdcHtmlAttributeProvider.dll" />
+    <Content Include="bin\x86\Microsoft.VC90.CRT\msvcr90.dll" />
+    <Content Include="bin\x86\Microsoft.VC90.CRT\README_ENU.txt" />
+    <Content Include="bin\x86\sqlceca40.dll" />
+    <Content Include="bin\x86\sqlcecompact40.dll" />
+    <Content Include="bin\x86\sqlceer40EN.dll" />
+    <Content Include="bin\x86\sqlceme40.dll" />
+    <Content Include="bin\x86\sqlceqp40.dll" />
+    <Content Include="bin\x86\sqlcese40.dll" />
     <Content Include="Content\arrows.png" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DataTables-1.9.4\docs\media\css\doc.css" />
     <Content Include="Content\DataTables-1.9.4\docs\media\css\shCore.css" />
     <Content Include="Content\DataTables-1.9.4\docs\media\css\shThemeDataTables.css" />
@@ -391,7 +444,6 @@
     <Content Include="Content\Site - Copy.css" />
     <Content Include="Content\Site-1.0.4.min.css" />
     <Content Include="Content\Site-1.0.5.min.css" />
-    <Content Include="Content\Site.css" />
     <Content Include="Content\Site_legacy.css" />
     <Content Include="Content\Site_legacy_old.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
@@ -461,7 +513,159 @@
     <Content Include="EmailTemplates\NewUserConfirmation.txt" />
     <Content Include="EmailTemplates\PasswordChanged.txt" />
     <Content Include="EmailTemplates\SignificantEvent.txt" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="App_Data\DbBackups\DAB Trial Database 2013-06-14 1608 %28dif%29.bak" />
+    <Content Include="App_Data\PrivateStatic\Dab Trial Enrol Patient Walkthrough.docx" />
+    <Content Include="App_Data\PrivateStatic\Dab Trial research coordinators tutorial.docx" />
+    <Content Include="App_Data\PrivateStatic\FAQ.pdf" />
+    <Content Include="App_Data\PrivateStatic\Trial Overview.pdf" />
+    <Content Include="bin\amd64\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
+    <Content Include="bin\DabTrial.dll.config" />
+    <Content Include="bin\x86\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\docs\media\images\Thumbs.db" />
+    <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\docs\media\images\Thumbs.db" />
+    <Content Include="Content\DataTables-1.9.4\extras\FixedColumns\docs\media\images\Thumbs.db" />
+    <Content Include="Content\DataTables-1.9.4\extras\Scroller\media\docs\media\images\Thumbs.db" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\collection.psd" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\copy document.psd" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\file_types.psd" />
+    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\printer.psd" />
+    <Content Include="Content\DataTables-1.9.4\media\images\Sorting icons.psd" />
+    <Content Include="Content\jQueryUI\ui-lightness\images\Thumbs.db" />
+    <Content Include="Content\PublicFiles\HealthProfessionals\DAB Trial 2 Page Flyer.pdf" />
+    <Content Include="Content\PublicFiles\HealthProfessionals\DAB Trial Slides.pdf" />
+    <Content Include="Content\PublicFiles\Parents\Information Statement and Consent - MMH.pdf" />
+    <Content Include="Content\PublicFiles\Parents\Information Statement and Consent - PMH.pdf" />
+    <Content Include="Content\PublicFiles\Parents\Information Statement and Consent - RCH.pdf" />
+    <Content Include="Content\PublicFiles\Parents\Information Statement and Consent - SSH.pdf" />
+    <Content Include="Content\themes\base\images\Thumbs.db" />
+    <Content Include="Content\themes\base\minified\images\Thumbs.db" />
+    <Content Include="Content\Thumbs.db" />
+    <Content Include="Images\Thumbs.db" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\js\AutoFill.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\js\ColReorder.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\js\ColVis.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\media\js\FixedColumns.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\js\dataTables.scroller.min.js.gz" />
+    <Content Include="Scripts\DataTables-1.9.4\extras\TableTools\media\js\TableTools.min.js.gz" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
+    <Content Include="Views\Account\Details.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\EmailPassword.cshtml" />
+    <Content Include="Views\Account\EmailPasswordSuccess.cshtml" />
+    <Content Include="Views\Account\LogOn.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\AdverseEventDrug\CreateEdit.cshtml" />
+    <Content Include="Views\AdverseEventDrug\Delete.cshtml" />
+    <Content Include="Views\AdverseEventDrug\Index.cshtml" />
+    <Content Include="Views\AdverseEventDrug\_IndexRow.cshtml" />
+    <Content Include="Views\AdverseEventType\Create.cshtml" />
+    <Content Include="Views\AdverseEventType\Delete.cshtml" />
+    <Content Include="Views\AdverseEventType\Details.cshtml" />
+    <Content Include="Views\AdverseEventType\Edit.cshtml" />
+    <Content Include="Views\AdverseEventType\Index.cshtml" />
+    <Content Include="Views\AdverseEvent\Create.cshtml" />
+    <Content Include="Views\AdverseEvent\Delete.cshtml" />
+    <Content Include="Views\AdverseEvent\Details.cshtml" />
+    <Content Include="Views\AdverseEvent\Edit.cshtml" />
+    <Content Include="Views\AdverseEvent\Index.cshtml" />
+    <Content Include="Views\AdverseEvent\_IndexRow.cshtml" />
+    <Content Include="Views\AuditLog\Details.cshtml" />
+    <Content Include="Views\AuditLog\Index.cshtml" />
+    <Content Include="Views\ContactUs\Index.cshtml" />
+    <Content Include="Views\ContactUs\MailTo.cshtml" />
+    <Content Include="Views\ContactUs\Success.cshtml" />
+    <Content Include="Views\Db\Index.cshtml" />
+    <Content Include="Views\Db\VersionBak.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\InvestigatorAccount\Create.cshtml" />
+    <Content Include="Views\InvestigatorAccount\Delete.cshtml" />
+    <Content Include="Views\InvestigatorAccount\Details.cshtml" />
+    <Content Include="Views\InvestigatorAccount\Edit.cshtml" />
+    <Content Include="Views\InvestigatorAccount\Index.cshtml" />
+    <Content Include="Views\ManageFiles\Delete.cshtml" />
+    <Content Include="Views\ManageFiles\Index.cshtml" />
+    <Content Include="Views\ManageFiles\Upload.cshtml" />
+    <Content Include="Views\NoConsentAttempt\Create.cshtml" />
+    <Content Include="Views\NoConsentAttempt\Delete.cshtml" />
+    <Content Include="Views\NoConsentAttempt\Details.cshtml" />
+    <Content Include="Views\NoConsentAttempt\Edit.cshtml" />
+    <Content Include="Views\NoConsentAttempt\Index.cshtml" />
+    <Content Include="Views\Participant\CalculateDoses.cshtml" />
+    <Content Include="Views\Participant\Details.cshtml" />
+    <Content Include="Views\Participant\Enrol.cshtml" />
+    <Content Include="Views\Participant\Index.cshtml" />
+    <Content Include="Views\Participant\Update.cshtml" />
+    <Content Include="Views\Participant\UpdateIntervention.cshtml" />
+    <Content Include="Views\ProtocolViolation\Create.cshtml" />
+    <Content Include="Views\ProtocolViolation\Delete.cshtml" />
+    <Content Include="Views\ProtocolViolation\Details.cshtml" />
+    <Content Include="Views\ProtocolViolation\Edit.cshtml" />
+    <Content Include="Views\ProtocolViolation\Index.cshtml" />
+    <Content Include="Views\ProtocolViolation\_IndexRow.cshtml" />
+    <Content Include="Views\RecordProvider\Create.cshtml" />
+    <Content Include="Views\RecordProvider\Details.cshtml" />
+    <Content Include="Views\RecordProvider\Edit.cshtml" />
+    <Content Include="Views\RespSupportChange\CreateEdit.cshtml" />
+    <Content Include="Views\RespSupportChange\Index.cshtml" />
+    <Content Include="Views\RespSupportChange\_IndexRow.cshtml" />
+    <Content Include="Views\ScreeningLog\CreateEdit.cshtml" />
+    <Content Include="Views\ScreeningLog\Delete.cshtml" />
+    <Content Include="Views\ScreeningLog\Details.cshtml" />
+    <Content Include="Views\ScreeningLog\Index.cshtml" />
+    <Content Include="Views\ScreeningLog\_IndexRow.cshtml" />
+    <Content Include="Views\Shared\DataTable.cshtml" />
+    <Content Include="Views\Shared\DataTable_old.cshtml" />
+    <Content Include="Views\Shared\DataTable_old2.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Boolean.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Enum_RadioButtonList.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\HiddenDate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\HiddenInput.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PhoneNumber.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
+    <Content Include="Views\Shared\InclusionExclusionCriteria.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_LogOnPartial.cshtml" />
+    <Content Include="Views\Shared\_RoleMenu.cshtml" />
+    <Content Include="Views\StudyCentre\CentreStatistics.cshtml" />
+    <Content Include="Views\StudyCentre\Create.cshtml" />
+    <Content Include="Views\StudyCentre\Delete.cshtml" />
+    <Content Include="Views\StudyCentre\Details.cshtml" />
+    <Content Include="Views\StudyCentre\Edit.cshtml" />
+    <Content Include="Views\StudyCentre\Index.cshtml" />
+    <None Include="Web.ZangItProduction.config" />
+    <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceer40EN.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlcecompact40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceca40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\README_ENU.txt" />
+    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\msvcr90.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlcese40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceqp40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceme40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceer40EN.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlcecompact40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceca40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
+    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
     <Content Include="Images\heroAccent.png" />
@@ -475,12 +679,10 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CustomClientValidation-1.1.0.min.js" />
     <Content Include="Scripts\CustomClientValidation-1.1.1.min.js" />
-    <Content Include="Scripts\date-en-AU.js" />
-    <Content Include="Scripts\EditableDataTable.js" />
-    <Content Include="Scripts\FollowDisabled.js" />
-    <Content Include="Scripts\GeneralOnLoad-1.0.9.min.js" />
-    <Content Include="Scripts\GeneralOnLoad.js" />
     <Content Include="Scripts\CustomClientValidation.js" />
     <Content Include="Scripts\DataTables-1.9.4\docs\media\js\doc.js" />
     <Content Include="Scripts\DataTables-1.9.4\docs\media\js\jquery.js" />
@@ -523,105 +725,49 @@
     <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.dataTables.min.js" />
     <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.js" />
     <Content Include="Scripts\DataTables\jquery.dataTables.js" />
+    <Content Include="Scripts\date-en-AU.js" />
     <Content Include="Scripts\DummyData.js" />
-    <Content Include="Scripts\emailGridUtilities.js" />
+    <Content Include="Scripts\EditableDataTable.js" />
     <Content Include="Scripts\emailGridUtilities-1.0.0.min.js" />
-    <Content Include="App_Data\PrivateStatic\FAQ.pdf" />
-    <Content Include="CodeTemplates\AddView\CSHTML\Create.tt" />
-    <Content Include="CodeTemplates\AddView\CSHTML\Delete.tt" />
-    <Content Include="CodeTemplates\AddView\CSHTML\Details.tt" />
-    <Content Include="CodeTemplates\AddView\CSHTML\Edit.tt" />
-    <Content Include="CodeTemplates\AddView\CSHTML\Empty.tt" />
-    <Content Include="CodeTemplates\AddView\CSHTML\List.tt" />
+    <Content Include="Scripts\emailGridUtilities.js" />
+    <Content Include="Scripts\FollowDisabled.js" />
+    <Content Include="Scripts\GeneralOnLoad-1.0.5.min.js" />
+    <Content Include="Scripts\GeneralOnLoad-1.0.8.min.js" />
+    <Content Include="Scripts\GeneralOnLoad-1.0.9.min.js" />
+    <Content Include="Scripts\GeneralOnLoad.js" />
+    <Content Include="Scripts\GeneralOnLoad_old.js" />
+    <Content Include="Scripts\jquery-1.10.1.js" />
+    <Content Include="Scripts\jquery-1.10.1.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <None Include="Scripts\jquery-2.1.0.intellisense.js" />
-    <Content Include="Scripts\jquery-2.1.0.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-migrate-1.2.1.js" />
     <Content Include="Scripts\jquery-placeholder.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
-    <Content Include="Scripts\jquery.dataTables.columnFilter.unmodified.js" />
-    <Content Include="Scripts\jquery.textshadow.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\Modernizr-2.6.2.js" />
-    <Content Include="Scripts\PIE.js" />
-    <Content Include="Scripts\wt4age-1.0.0.min.js" />
-    <Content Include="Scripts\Wt4Age.js" />
-    <Content Include="Views\Db\Index.cshtml" />
-    <Content Include="Views\Participant\CalculateDoses.cshtml" />
-    <Content Include="Views\Participant\UpdateIntervention.cshtml" />
-    <Content Include="Scripts\Modernizr-2.7.1.min.js" />
-    <Content Include="Views\Shared\DataTable_old2.cshtml" />
-    <Content Include="Views\Shared\DataTable.cshtml" />
-    <Content Include="Scripts\jquery-2.1.0.min.map" />
-    <None Include="Web.ZangItPractice.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\PublishProfiles\ZangItPractice.pubxml" />
-    <Content Include="Scripts\jquery-1.10.1.js" />
-    <Content Include="Scripts\jquery-1.10.1.min.js" />
-    <Content Include="Views\ManageFiles\Delete.cshtml" />
-    <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlceer40EN.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlcecompact40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlceca40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\README_ENU.txt" />
-    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\msvcr90.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlcese40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlceqp40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlceme40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlceer40EN.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlcecompact40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlceca40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
-    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\mvcfoolproof.unobtrusive.min.js" />
-    <Content Include="Scripts\MvcFoolproofJQueryValidation.min.js" />
-    <Content Include="Scripts\MvcFoolproofValidation.min.js" />
-    <Content Include="Views\ManageFiles\Upload.cshtml" />
-    <Content Include="Views\ManageFiles\Index.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\HiddenInput.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Boolean.cshtml" />
-    <None Include="Properties\PublishProfiles\ZangItProduction.pubxml" />
-    <Content Include="Scripts\jquery-migrate-1.2.1.js" />
-    <Content Include="Scripts\jquery-ui-1.9.2.min.js" />
     <Content Include="Scripts\jquery-ui-1.9.2.js" />
-    <Content Include="Scripts\jquery.dataTables-1.9.4.js" />
-    <Content Include="Scripts\jquery.dataTables.min.js" />
-    <Content Include="Views\Account\EmailPassword.cshtml" />
-    <Content Include="Views\Account\EmailPasswordSuccess.cshtml" />
-    <Content Include="Views\Account\Details.cshtml" />
-    <Content Include="Views\Account\Edit.cshtml" />
-    <Content Include="Views\AdverseEventDrug\Delete.cshtml" />
-    <Content Include="Views\NoConsentAttempt\Index.cshtml" />
-    <Content Include="Views\NoConsentAttempt\Details.cshtml" />
-    <Content Include="Views\NoConsentAttempt\Create.cshtml" />
-    <Content Include="Views\NoConsentAttempt\Edit.cshtml" />
-    <Content Include="Views\NoConsentAttempt\Delete.cshtml" />
-    <None Include="Web.ZangItProduction.config">
-      <SubType>Designer</SubType>
-    </None>
+    <Content Include="Scripts\jquery-ui-1.9.2.min.js" />
     <Content Include="Scripts\jquery-ui-sliderAccess.js" />
     <Content Include="Scripts\jquery-ui-sliderAccess.min.js" />
     <Content Include="Scripts\jquery-ui-timepicker-addon-1.4.js" />
     <Content Include="Scripts\jquery-ui-timepicker-addon-1.4.min.js" />
-    <Content Include="Scripts\jquery.dataTables.columnFilter.js" />
+    <Content Include="Scripts\jquery.dataTables-1.9.4.js" />
     <Content Include="Scripts\jquery.dataTables.columnFilter-1.5.6.min.js" />
+    <Content Include="Scripts\jquery.dataTables.columnFilter.js" />
+    <Content Include="Scripts\jquery.dataTables.columnFilter.unmodified.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
+    <Content Include="Scripts\jquery.textshadow.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-1.11.1.js" />
     <Content Include="Scripts\jquery.validate-1.11.1.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\localization\jquery-ui-timepicker-af.js" />
     <Content Include="Scripts\localization\jquery-ui-timepicker-ca.js" />
     <Content Include="Scripts\localization\jquery-ui-timepicker-cs.js" />
@@ -658,122 +804,47 @@
     <Content Include="Scripts\MicrosoftMvcAjax.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\Modernizr-2.6.2.js" />
+    <Content Include="Scripts\Modernizr-2.7.1.min.js" />
+    <Content Include="Scripts\modernizr-2.7.2.js" />
     <Content Include="Scripts\mvcfoolproof.unobtrusive.js" />
+    <Content Include="Scripts\mvcfoolproof.unobtrusive.min.js" />
+    <Content Include="Scripts\MvcFoolproofJQueryValidation.min.js" />
+    <Content Include="Scripts\MvcFoolproofValidation.min.js" />
+    <Content Include="Scripts\PIE.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\wt4age-1.0.0.min.js" />
+    <Content Include="Scripts\Wt4Age.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
     <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Scripts\" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\collection.psd" />
-    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\copy document.psd" />
-    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\file_types.psd" />
-    <Content Include="Content\DataTables-1.9.4\extras\TableTools\media\images\psd\printer.psd" />
-    <Content Include="Content\DataTables-1.9.4\media\images\Sorting icons.psd" />
-    <Content Include="Images\Thumbs.db" />
-    <Content Include="Membership.config" />
-    <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\js\AutoFill.min.js.gz" />
-    <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\js\ColReorder.min.js.gz" />
-    <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\js\ColVis.min.js.gz" />
-    <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\media\js\FixedColumns.min.js.gz" />
-    <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\js\dataTables.scroller.min.js.gz" />
-    <Content Include="Scripts\DataTables-1.9.4\extras\TableTools\media\js\TableTools.min.js.gz" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
-    <Content Include="Views\Account\LogOn.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\AdverseEventDrug\CreateEdit.cshtml" />
-    <Content Include="Views\AdverseEventDrug\Index.cshtml" />
-    <Content Include="Views\AdverseEventDrug\_IndexRow.cshtml" />
-    <Content Include="Views\AdverseEventType\Create.cshtml" />
-    <Content Include="Views\AdverseEventType\Delete.cshtml" />
-    <Content Include="Views\AdverseEventType\Details.cshtml" />
-    <Content Include="Views\AdverseEventType\Edit.cshtml" />
-    <Content Include="Views\AdverseEventType\Index.cshtml" />
-    <Content Include="Views\AdverseEvent\Create.cshtml" />
-    <Content Include="Views\AdverseEvent\Delete.cshtml" />
-    <Content Include="Views\AdverseEvent\Details.cshtml" />
-    <Content Include="Views\AdverseEvent\Edit.cshtml" />
-    <Content Include="Views\AdverseEvent\Index.cshtml" />
-    <Content Include="Views\AdverseEvent\_IndexRow.cshtml" />
-    <Content Include="Views\AuditLog\Details.cshtml" />
-    <Content Include="Views\AuditLog\Index.cshtml" />
-    <Content Include="Views\ContactUs\Index.cshtml" />
-    <Content Include="Views\ContactUs\MailTo.cshtml" />
-    <Content Include="Views\ContactUs\Success.cshtml" />
-    <Content Include="Views\Db\VersionBak.cshtml" />
-    <Content Include="Views\Error\Index.cshtml" />
-    <Content Include="Views\Error\NotFound.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\InvestigatorAccount\Create.cshtml" />
-    <Content Include="Views\InvestigatorAccount\Delete.cshtml" />
-    <Content Include="Views\InvestigatorAccount\Details.cshtml" />
-    <Content Include="Views\InvestigatorAccount\Edit.cshtml" />
-    <Content Include="Views\InvestigatorAccount\Index.cshtml" />
-    <Content Include="Views\Participant\Details.cshtml" />
-    <Content Include="Views\Participant\Enrol.cshtml" />
-    <Content Include="Views\Participant\Index.cshtml" />
-    <Content Include="Views\Participant\Update.cshtml" />
-    <Content Include="Views\ProtocolViolation\Create.cshtml" />
-    <Content Include="Views\ProtocolViolation\Delete.cshtml" />
-    <Content Include="Views\ProtocolViolation\Details.cshtml" />
-    <Content Include="Views\ProtocolViolation\Edit.cshtml" />
-    <Content Include="Views\ProtocolViolation\Index.cshtml" />
-    <Content Include="Views\ProtocolViolation\_IndexRow.cshtml" />
-    <Content Include="Views\RecordProvider\Create.cshtml" />
-    <Content Include="Views\RecordProvider\Details.cshtml" />
-    <Content Include="Views\RecordProvider\Edit.cshtml" />
-    <Content Include="Views\RespSupportChange\CreateEdit.cshtml" />
-    <Content Include="Views\RespSupportChange\Index.cshtml" />
-    <Content Include="Views\RespSupportChange\_IndexRow.cshtml" />
-    <Content Include="Views\ScreeningLog\CreateEdit.cshtml" />
-    <Content Include="Views\ScreeningLog\Delete.cshtml" />
-    <Content Include="Views\ScreeningLog\Details.cshtml" />
-    <Content Include="Views\ScreeningLog\Index.cshtml" />
-    <Content Include="Views\ScreeningLog\_IndexRow.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Enum_RadioButtonList.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\HiddenDate.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\PhoneNumber.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\InclusionExclusionCriteria.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_LogOnPartial.cshtml" />
-    <Content Include="Views\Shared\_RoleMenu.cshtml" />
-    <Content Include="Views\StudyCentre\CentreStatistics.cshtml" />
-    <Content Include="Views\StudyCentre\Create.cshtml" />
-    <Content Include="Views\StudyCentre\Delete.cshtml" />
-    <Content Include="Views\StudyCentre\Details.cshtml" />
-    <Content Include="Views\StudyCentre\Edit.cshtml" />
-    <Content Include="Views\StudyCentre\Index.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\DbBackups\" />
-    <Folder Include="AutomatedBackups\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -791,9 +862,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>49542</DevelopmentServerPort>
+          <DevelopmentServerPort>49789</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:49415/</IISUrl>
+          <IISUrl>http://localhost:49789/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -803,7 +874,8 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

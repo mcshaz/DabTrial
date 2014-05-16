@@ -12,7 +12,7 @@ namespace DabTrial.Infrastructure.RazorUtilities
         {
 #if DEBUG
             assets.Libraries["jQuery"]
-                .AddScript("~/Scripts/jquery-2.1.0.js", BrowserType.W3cCompliant)
+                .AddScript("~/Scripts/jquery-2.1.1.js", BrowserType.W3cCompliant)
                 .AddScript("~/Scripts/jquery-1.11.0.js", BrowserType.IeLegacy);
  //               .AddScript("~/Scripts/jquery-migrate-1.2.1.js"); //generate console warnings - must remember to look
             assets.Libraries["jQueryUI"].Requires("jQuery")
@@ -50,7 +50,7 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddStyle("~/Content/DrugDosing-1.0.css");
 #else
             assets.Libraries["jQuery"]
-                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js",BrowserType.W3cCompliant)
+                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",BrowserType.W3cCompliant)
                 .AddScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js", BrowserType.IeLegacy);
             assets.Libraries["jQueryUI"].Requires("jQuery")
                 .AddScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js",BrowserType.Ie6)

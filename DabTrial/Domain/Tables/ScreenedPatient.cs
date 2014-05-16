@@ -12,6 +12,7 @@ namespace DabTrial.Domain.Tables
         public int ScreenedPatientId { get; set; }
         [Display(Name = "Hospital Id", Description = "Medical record number or health index used by your institution")]
         [Required]
+        [StringLength(44, MinimumLength = 44)]
         public string HospitalId { get; set; }
         [ForeignKey("StudyCentre")]
         [Display(Name = "Study Site")]

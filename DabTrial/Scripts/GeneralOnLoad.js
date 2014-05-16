@@ -112,6 +112,7 @@
         var token;
         if (options.type.toLowerCase() !== 'get') {
             token = GetAntiForgeryToken();
+            if (!token.name) { throw new ReferenceError("Cannot find antiforgery token");}
             if (options.data.indexOf(token.name) === -1) {
                 options.data = options.data + '&' + token.name + '=' + token.value;
             }
@@ -327,16 +328,16 @@
         }
     });
     $(".expando").each(function () {
-        $t = $(this);
-        $toggle = $t.find(".expandoToggle");
-        $slidingDiv = $t.next("div");
-        setClass = function () {
-            if ($slidingDiv.is(":hidden")) {
-                $toggle.removeClass("expandoVisible").addClass("expandoHidden");
-            } else {
-                $toggle.removeClass("expandoHidden").addClass("expandoVisible");
-            }
-        };
+        var $t = $(this),
+            $toggle = $t.find(".expandoToggle"),
+            $slidingDiv = $t.next("div"),
+            setClass = function () {
+                if ($slidingDiv.is(":hidden")) {
+                    $toggle.removeClass("expandoVisible").addClass("expandoHidden");
+                } else {
+                    $toggle.removeClass("expandoHidden").addClass("expandoVisible");
+                }
+            };
         $t.on("click", function () {
             $slidingDiv.slideToggle({
                 complete: function () {
@@ -381,7 +382,7 @@ function onHideAutoWidthDialog(jqDialog) {
 function showDetail() {
     var $this = $(this),
         detail = $this.children()
-                    .filter("option[value=" + this.value + "]:first")
+                    .filter("option[value='" + this.value + "']:first")
                     .data("detail");
     $("#" + $this.attr("detaildisplayid")).html(detail || "");
 };

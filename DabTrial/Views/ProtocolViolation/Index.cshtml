@@ -3,9 +3,8 @@
 @{
     ViewBag.Title = "Protocol Violation";
     Html.Assets().Libraries.Uses("AjaxFormTools", "DataTables", "TimePicker");
-    Html.AntiForgeryToken();
 }
-
+@Html.AntiForgeryToken()
 <h2>Index</h2>
 <table id="violationGrid" class="dataTable">
     <thead>
@@ -24,8 +23,9 @@
             </th>
             <th>
                 Details
+            </th>
             <th></th>
-        </th></tr>
+        </tr>
     </thead>
     <tbody class="ajaxUpdatableTBody">
     @foreach (var item in Model) {

@@ -79,8 +79,7 @@ namespace MvcHtmlHelpers
         {
             return EnumDropDownListFor<TModel, TEnum>(htmlHelper, expression, "");
         }
-         * */
-
+         *** below has been added to the mvc helpers ***---
         public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression, string nullText=null)
         {
             ModelMetadata metaData = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
@@ -112,6 +111,7 @@ namespace MvcHtmlHelpers
                 items
                 );
         }
+         */
         private static Type GetNonNullableModelType(ModelMetadata modelMetadata)
         {
             Type realModelType = modelMetadata.ModelType;

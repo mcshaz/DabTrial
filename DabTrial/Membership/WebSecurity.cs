@@ -58,7 +58,14 @@ public sealed class WebSecurity
         return CreateStatus;
     }
 
-    public static Boolean Login(string Username, string Password, bool persistCookie = false)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Username"></param>
+    /// <param name="Password"></param>
+    /// <param name="persistCookie"></param>
+    /// <returns></returns>
+    public static bool Login(string Username, string Password, out int failedLoginAttempts ,bool persistCookie = false)
     {
         using (DataContext context = new DataContext())
         {
@@ -67,11 +74,13 @@ public sealed class WebSecurity
             { 
                 (new UserService(DBcontext: context)).SetIpStudyCentre(usr.StudyCentreId);
                 FormsAuthentication.SetAuthCookie(Username, persistCookie);
+                failedLoginAttempts = 0;
                 return true;
             }
+            usr = context.Users.Where(u => u.UserName == Username).FirstOrDefault();
+            failedLoginAttempts = usr == null ? -1 : usr.PasswordFailuresSinceLastSuccess;
+            return false;
         }
-        return false;
-
     }
 
     public static void Logout()
