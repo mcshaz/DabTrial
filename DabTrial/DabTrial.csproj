@@ -277,10 +277,8 @@
     <Compile Include="RegisterDatatablesModelBinder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\DABtrial.sdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\Elmah.sdf" />
+    <None Include="App_Data\DABtrial.sdf" />
+    <None Include="App_Data\Elmah.sdf" />
     <Content Include="App_Data\PrivateStatic\PlaceHolder.txt" />
     <Content Include="Content\arrows.png" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -470,7 +468,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="App_Data\DbBackups\DAB Trial Database 2013-06-14 1608 %28dif%29.bak" />
+    <None Include="App_Data\DbBackups\DAB Trial Database 2013-06-14 1608 %28dif%29.bak" />
     <Content Include="App_Data\PrivateStatic\Dab Trial Enrol Patient Walkthrough.docx" />
     <Content Include="App_Data\PrivateStatic\Dab Trial research coordinators tutorial.docx" />
     <Content Include="App_Data\PrivateStatic\FAQ.pdf" />

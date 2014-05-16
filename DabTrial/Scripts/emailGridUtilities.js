@@ -19,7 +19,7 @@ function sendToCheckedEmails() {
     var emailList = getCheckedEmails();
     if (emailList.length)
     {
-       window.location.href = "mailTo:" + emailList.join(",");
+       window.location.href = "mailTo:" + emailList.join(";");
     }
     else
     {
