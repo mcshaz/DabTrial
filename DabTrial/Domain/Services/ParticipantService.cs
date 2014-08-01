@@ -15,38 +15,30 @@ namespace DabTrial.Domain.Services
             : base(valDictionary, DBcontext)
         {
         }
-        private const int blockSize = 4;
+        private const int BlockSize = 4;
         protected void createAllocation(TrialParticipant participant)
         {
-            //try
+            var currentBlock = GetCurrentBlock(participant);
+            int noInBlock = currentBlock.Count();
+            if (noInBlock == 0)
             {
-                IEnumerable<TrialParticipant> currentBlock = GetCurrentBlock(participant);
-                int noInBlock = currentBlock.Count();
-                if (noInBlock == 0)
-                {
-                    //for random block size add:
-                    // newAllocation.BlockSize = BlockRandomisation.BlockSize();
-                    participant.BlockNumber = 1;
-                }
-                else if (noInBlock == blockSize)
-                {
-                    participant.BlockNumber = currentBlock.First().BlockNumber + 1;
-                    currentBlock = new List<TrialParticipant>();
-                }
-                else
-                {
-                    // for Random blocksize need to get the current blocksize 
-                    // int currentBlock.First().Blocksize;
-                    participant.BlockNumber = currentBlock.First().BlockNumber;
+                //for random block size add:
+                // newAllocation.BlockSize = BlockRandomisation.BlockSize();
+                participant.BlockNumber = 1;
+            }
+            else if (noInBlock == BlockSize)
+            {
+                participant.BlockNumber = currentBlock.First().BlockNumber + 1;
+                currentBlock = (new TrialParticipant[0]).AsQueryable();
+            }
+            else
+            {
+                // for Random blocksize need to get the current blocksize 
+                // int currentBlock.First().Blocksize;
+                participant.BlockNumber = currentBlock.Select(p=>p.BlockNumber).First();
 
-                }
-                participant.IsInterventionArm = BlockRandomisation.nextAllocation(blockSize, currentBlock, c => c.IsInterventionArm);
             }
-            /*catch (Exception ex)
-            {
-                throw ex;
-            }
-            */
+            participant.IsInterventionArm = BlockRandomisation.IsNextAllocationInterventionWithCentralTendancy(currentBlock.Select(p=>p.IsInterventionArm),BlockSize,WholeTrialInterventionProportion);
         }
         public TrialParticipant GetParticipant(int participantId)
         {
@@ -72,27 +64,28 @@ namespace DabTrial.Domain.Services
                                       where u.UserName==userName 
                                       select u.StudyCentre.TrialParticipants).FirstOrDefault()).Cast<TrialParticipant>();
         }
-        protected IEnumerable<TrialParticipant> GetCurrentBlock(TrialParticipant newParticipant)
+        protected double WholeTrialInterventionProportion()
         {
-            int respCat = (newParticipant.RespiratorySupportAtRandomisation == null)
-                ?_db.RespiratorySupportTypes.Find(newParticipant.RespSupportTypeId).RandomisationCategory.Value
-                :newParticipant.RespiratorySupportAtRandomisation.RandomisationCategory.Value; //not sure how to put above in 1 linq to entities statement
-
-            int maxBlockNo = (from p2 in _db.TrialParticipants
-                              where p2.StudyCentreId == newParticipant.StudyCentreId &&
-                                  p2.HasCyanoticHeartDisease == newParticipant.HasCyanoticHeartDisease &&
-                                  p2.HasChronicLungDisease == newParticipant.HasChronicLungDisease &&
-                                  p2.RespiratorySupportAtRandomisation.RandomisationCategory == respCat
-                              orderby p2.BlockNumber descending
-                              select p2.BlockNumber).FirstOrDefault();
             return (from p in _db.TrialParticipants
-                    where p.StudyCentreId==newParticipant.StudyCentreId &&
-                          p.HasCyanoticHeartDisease==newParticipant.HasCyanoticHeartDisease &&
-                          p.HasChronicLungDisease==newParticipant.HasChronicLungDisease &&
-                          p.RespiratorySupportAtRandomisation.RandomisationCategory == respCat &&
-                          p.BlockNumber == maxBlockNo
-                    orderby p.LocalTimeRandomised descending // only necessary for random block size
-                    select p).ToList();
+                    select p.IsInterventionArm?1:0).Average();
+        }
+        protected IQueryable<TrialParticipant> GetCurrentBlock(TrialParticipant newParticipant)
+        {
+            if (newParticipant.RespiratorySupportAtRandomisation == null)
+            {
+                newParticipant.RespiratorySupportAtRandomisation = _db.RespiratorySupportTypes.Find(newParticipant.RespSupportTypeId);
+            }
+
+            IEnumerable<TrialParticipant> returnVar =
+                (from p in _db.TrialParticipants
+                 where p.StudyCentreId == newParticipant.StudyCentreId &&
+                         p.HasCyanoticHeartDisease == newParticipant.HasCyanoticHeartDisease &&
+                         p.HasChronicLungDisease == newParticipant.HasChronicLungDisease &&
+                         p.RespiratorySupportAtRandomisation.RandomisationCategory == newParticipant.RespiratorySupportAtRandomisation.RandomisationCategory
+                 group p by p.BlockNumber into g
+                 orderby g.Key descending
+                 select g).FirstOrDefault();
+            return (returnVar ?? new TrialParticipant[0]).AsQueryable(); //.OrderBy(p=>p.LocalTimeRandomised) if wanting to know variable block size assigned to first participant within block
         }
         public TrialParticipant CreateNewParticipant(String hospitalId,
                                                      DateTime Dob,
@@ -355,9 +348,8 @@ namespace DabTrial.Domain.Services
         }
         private void SendNewParticipantEmail(TrialParticipant participant, User clinician)
         {
-            var investigatorRoles = RoleExtensions.InvestigatorRoleNames();
             var emailList = String.Join(",", (from u in _db.Users
-                                              where (u.StudyCentreId == participant.StudyCentreId && u.Roles.Any(r => investigatorRoles.Contains(r.RoleName)))
+                                              where (u.StudyCentreId == participant.StudyCentreId && !u.IsDeactivated && u.Roles.Any(r => RoleExtensions.InvestigatorRoleNames.Contains(r.RoleName)))
                                               select u.Email));
 
             Email.Send(emailList,
@@ -372,11 +364,7 @@ namespace DabTrial.Domain.Services
             var usr = (from u in _db.Users.Include("StudyCentre")
                        where u.UserName == userName
                        select u).First();
-            
-            var emailList = String.Join(",", (from u in _db.Users
-                                              where (u.StudyCentreId == participant.StudyCentreId && u.Roles.Any(r => r.RoleName == RoleExtensions.SiteInvestigator))
-                                                    || u.Roles.Any(r => r.RoleName == RoleExtensions.PrincipleInvestigator)
-                                              select u.Email));
+            var emailList = RoleExtensions.GetInvestigatorEmails(participant.StudyCentreId, _db);
             
             Email.Send(emailList,
                 eventType + " Logged",

@@ -176,41 +176,40 @@ namespace DabTrial.CustomMembership
                 return null;
             }
             
-            User user = null;
-            user = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
-            if (user == null || !user.IsApproved || user.IsLockedOut)
+            User usr = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
+            if (usr == null || !usr.IsApproved || usr.IsLockedOut || usr.IsDeactivated)
             {
                 return null;
             }
 
-            String HashedPassword = user.Password;
-            Boolean VerificationSucceeded = (HashedPassword != null && PBKDF2.VerifyHashedPassword(HashedPassword, password));
+            String hashedPassword = usr.Password;
+            Boolean verificationSucceeded = (hashedPassword != null && PBKDF2.VerifyHashedPassword(hashedPassword, password));
             DateTime now = DateTime.UtcNow;
-            if (VerificationSucceeded)
+            if (verificationSucceeded)
             {
-                user.PasswordFailuresSinceLastSuccess = 0;
-                user.LastLoginDate = now;
-                user.LastActivityDate = now;
+                usr.PasswordFailuresSinceLastSuccess = 0;
+                usr.LastLoginDate = now;
+                usr.LastActivityDate = now;
             }
             else
             {
-                int Failures = user.PasswordFailuresSinceLastSuccess;
-                if (Failures < FixedMaxInvalidPasswordAttempts)
+                int failures = usr.PasswordFailuresSinceLastSuccess;
+                if (failures < FixedMaxInvalidPasswordAttempts)
                 {
-                    user.PasswordFailuresSinceLastSuccess += 1;
-                    user.LastPasswordFailureDate = now;
+                    usr.PasswordFailuresSinceLastSuccess += 1;
+                    usr.LastPasswordFailureDate = now;
                 }
                 else
                 {
-                    user.LastPasswordFailureDate = now;
-                    user.LastLockoutDate = now;
-                    user.IsLockedOut = true;
+                    usr.LastPasswordFailureDate = now;
+                    usr.LastLockoutDate = now;
+                    usr.IsLockedOut = true;
                 }
             }
             context.SaveChanges();
-            if (VerificationSucceeded)
+            if (verificationSucceeded)
             {
-                return user;
+                return usr;
             }
             else
             {
@@ -225,27 +224,27 @@ namespace DabTrial.CustomMembership
                 return null;
             }
 
-            User user = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
-            if (user != null)
+            User usr = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
+            if (usr != null)
             {
                 if (userIsOnline)
                 {
-                    user.LastActivityDate = DateTime.UtcNow;
+                    usr.LastActivityDate = DateTime.UtcNow;
                     context.SaveChanges();
                 }
                 return new MembershipUser(Membership.Provider.Name, 
-                    user.UserName, 
-                    user.UserId, 
-                    user.Email, 
+                    usr.UserName, 
+                    usr.UserId, 
+                    usr.Email, 
                     null, 
                     null, 
-                    user.IsApproved, 
-                    user.IsLockedOut, 
-                    user.CreateDate.Value, 
-                    user.LastLoginDate.Value, 
-                    user.LastActivityDate.Value, 
-                    user.LastPasswordChangedDate.Value, 
-                    user.LastLockoutDate.Value);
+                    usr.IsApproved, 
+                    usr.IsLockedOut, 
+                    usr.CreateDate.Value, 
+                    usr.LastLoginDate.Value, 
+                    usr.LastActivityDate.Value, 
+                    usr.LastPasswordChangedDate.Value, 
+                    usr.LastLockoutDate.Value);
             }
             else
             {
@@ -266,16 +265,15 @@ namespace DabTrial.CustomMembership
 
             using (var Context = new DataContext())
             {
-                User User = null;
-                User = Context.Users.Find(providerUserKey);
-                if (User != null)
+                User usr = Context.Users.Find(providerUserKey);
+                if (usr != null)
                 {
                     if (userIsOnline)
                     {
-                        User.LastActivityDate = DateTime.UtcNow;
+                        usr.LastActivityDate = DateTime.UtcNow;
                         Context.SaveChanges();
                     }
-                    return new MembershipUser(Membership.Provider.Name, User.UserName, User.UserId, User.Email, null, null, User.IsApproved, User.IsLockedOut, User.CreateDate.Value, User.LastLoginDate.Value, User.LastActivityDate.Value, User.LastPasswordChangedDate.Value, User.LastLockoutDate.Value);
+                    return new MembershipUser(Membership.Provider.Name, usr.UserName, usr.UserId, usr.Email, null, null, usr.IsApproved, usr.IsLockedOut, usr.CreateDate.Value, usr.LastLoginDate.Value, usr.LastActivityDate.Value, usr.LastPasswordChangedDate.Value, usr.LastLockoutDate.Value);
                 }
                 else
                 {
@@ -305,53 +303,52 @@ namespace DabTrial.CustomMembership
                 return false;
             }
 
-            User user = null;
-            user = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
-            if (user == null)
+            User usr = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
+            if (usr == null)
             {
                 return false;
             }
-            String HashedPassword = user.Password;
-            Boolean VerificationSucceeded = (HashedPassword != null && PBKDF2.VerifyHashedPassword(HashedPassword, oldPassword));
-            if (VerificationSucceeded)
+            String hashedPassword = usr.Password;
+            Boolean verificationSucceeded = (hashedPassword != null && PBKDF2.VerifyHashedPassword(hashedPassword, oldPassword));
+            if (verificationSucceeded)
             {
-                user.PasswordFailuresSinceLastSuccess = 0;
+                usr.PasswordFailuresSinceLastSuccess = 0;
             }
             else
             {
                 DateTime now = DateTime.UtcNow;
-                int Failures = user.PasswordFailuresSinceLastSuccess;
-                if (Failures < FixedMaxInvalidPasswordAttempts)
+                int failures = usr.PasswordFailuresSinceLastSuccess;
+                if (failures < FixedMaxInvalidPasswordAttempts)
                 {
-                    user.PasswordFailuresSinceLastSuccess += 1;
-                    user.LastPasswordFailureDate = now;
+                    usr.PasswordFailuresSinceLastSuccess += 1;
+                    usr.LastPasswordFailureDate = now;
                 }
                 else
                 {
-                    user.LastPasswordFailureDate = now;
-                    user.LastLockoutDate = now;
-                    user.IsLockedOut = true;
+                    usr.LastPasswordFailureDate = now;
+                    usr.LastLockoutDate = now;
+                    usr.IsLockedOut = true;
                 }
                 context.SaveChanges();
                 return false;
             }
 //
-            if (CreateNewPassword(user, newPassword))
+            if (CreateNewPassword(usr, newPassword))
             {
                 context.SaveChanges();
                 return true;
             }
             return false;
         }
-        private static bool CreateNewPassword(User user, string newPassword)
+        private static bool CreateNewPassword(User usr, string newPassword)
         {
-            String NewHashedPassword = PBKDF2.HashPassword(newPassword);
-            if (NewHashedPassword.Length > 128)
+            String newHashedPassword = PBKDF2.HashPassword(newPassword);
+            if (newHashedPassword.Length > 128)
             {
                 return false;
             }
-            user.Password = NewHashedPassword;
-            user.LastPasswordChangedDate = DateTime.UtcNow;
+            usr.Password = newHashedPassword;
+            usr.LastPasswordChangedDate = DateTime.UtcNow;
             return true;
         }
 
@@ -359,11 +356,11 @@ namespace DabTrial.CustomMembership
         {
             using (var context = new DataContext())
             {
-                User user = context.Users.FirstOrDefault(Usr => Usr.UserName == userName);
-                if (user != null)
+                User usr = context.Users.FirstOrDefault(Usr => Usr.UserName == userName);
+                if (usr != null)
                 {
-                    user.IsLockedOut = false;
-                    user.PasswordFailuresSinceLastSuccess = 0;
+                    usr.IsLockedOut = false;
+                    usr.PasswordFailuresSinceLastSuccess = 0;
                     context.SaveChanges();
                     return true;
                 }
@@ -376,10 +373,10 @@ namespace DabTrial.CustomMembership
 
         public override int GetNumberOfUsersOnline()
         {
-            DateTime DateActive = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(Convert.ToDouble(Membership.UserIsOnlineTimeWindow)));
+            DateTime dateActive = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(Convert.ToDouble(Membership.UserIsOnlineTimeWindow)));
             using (var context = new DataContext())
             {
-                return context.Users.Where(Usr => Usr.LastActivityDate > DateActive).Count();
+                return context.Users.Where(Usr => Usr.LastActivityDate > dateActive).Count();
             }
         }
 
@@ -391,10 +388,10 @@ namespace DabTrial.CustomMembership
             }
             using (var context = new DataContext())
             {
-                User user = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
-                if (user != null)
+                User usr = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
+                if (usr != null)
                 {
-                    context.Users.Remove(user);
+                    context.Users.Remove(usr);
                     context.SaveChanges();
                     return true;
                 }
@@ -409,10 +406,10 @@ namespace DabTrial.CustomMembership
         {
             using (var context = new DataContext())
             {
-                User user = context.Users.FirstOrDefault(Usr => Usr.Email == email);
-                if (user != null)
+                User usr = context.Users.FirstOrDefault(Usr => Usr.Email == email);
+                if (usr != null)
                 {
-                    return user.UserName;
+                    return usr.UserName;
                 }
                 else
                 {
@@ -423,17 +420,17 @@ namespace DabTrial.CustomMembership
 
         public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
-            MembershipUserCollection MembershipUsers = new MembershipUserCollection();
+            MembershipUserCollection membershipUsers = new MembershipUserCollection();
             using (var context = new DataContext())
             {
                 totalRecords = context.Users.Where(Usr => Usr.Email == emailToMatch).Count();
                 IQueryable<User> users = context.Users.Where(Usr => Usr.Email == emailToMatch).OrderBy(Usrn => Usrn.UserName).Skip(pageIndex * pageSize).Take(pageSize);
-                foreach (User user in users)
+                foreach (User usr in users)
                 {
-                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, user.UserName, user.UserId, user.Email, null, null, user.IsApproved, user.IsLockedOut, user.CreateDate.Value, user.LastLoginDate.Value, user.LastActivityDate.Value, user.LastPasswordChangedDate.Value, user.LastLockoutDate.Value));
+                    membershipUsers.Add(new MembershipUser(Membership.Provider.Name, usr.UserName, usr.UserId, usr.Email, null, null, usr.IsApproved, usr.IsLockedOut, usr.CreateDate.Value, usr.LastLoginDate.Value, usr.LastActivityDate.Value, usr.LastPasswordChangedDate.Value, usr.LastLockoutDate.Value));
                 }
             }
-            return MembershipUsers;
+            return membershipUsers;
         }
 
         public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords)
@@ -443,9 +440,9 @@ namespace DabTrial.CustomMembership
             {
                 totalRecords = context.Users.Where(Usr => Usr.UserName == usernameToMatch).Count();
                 IQueryable<User> users = context.Users.Where(Usr => Usr.UserName == usernameToMatch).OrderBy(Usrn => Usrn.UserName).Skip(pageIndex * pageSize).Take(pageSize);
-                foreach (User user in users)
+                foreach (User usr in users)
                 {
-                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, user.UserName, user.UserId, user.Email, null, null, user.IsApproved, user.IsLockedOut, user.CreateDate.Value, user.LastLoginDate.Value, user.LastActivityDate.Value, user.LastPasswordChangedDate.Value, user.LastLockoutDate.Value));
+                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, usr.UserName, usr.UserId, usr.Email, null, null, usr.IsApproved, usr.IsLockedOut, usr.CreateDate.Value, usr.LastLoginDate.Value, usr.LastActivityDate.Value, usr.LastPasswordChangedDate.Value, usr.LastLockoutDate.Value));
                 }
             }
             return MembershipUsers;
@@ -453,17 +450,17 @@ namespace DabTrial.CustomMembership
 
         public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
         {
-            MembershipUserCollection MembershipUsers = new MembershipUserCollection();
+            MembershipUserCollection membershipUsers = new MembershipUserCollection();
             using (var context = new DataContext())
             {
                 totalRecords = context.Users.Count();
                 IQueryable<User> users = context.Users.OrderBy(Usrn => Usrn.UserName).Skip(pageIndex * pageSize).Take(pageSize);
-                foreach (User user in users)
+                foreach (User usr in users)
                 {
-                    MembershipUsers.Add(new MembershipUser(Membership.Provider.Name, user.UserName, user.UserId, user.Email, null, null, user.IsApproved, user.IsLockedOut, user.CreateDate.Value, user.LastLoginDate.Value, user.LastActivityDate.Value, user.LastPasswordChangedDate.Value, user.LastLockoutDate.Value));
+                    membershipUsers.Add(new MembershipUser(Membership.Provider.Name, usr.UserName, usr.UserId, usr.Email, null, null, usr.IsApproved, usr.IsLockedOut, usr.CreateDate.Value, usr.LastLoginDate.Value, usr.LastActivityDate.Value, usr.LastPasswordChangedDate.Value, usr.LastLockoutDate.Value));
                 }
             }
-            return MembershipUsers;
+            return membershipUsers;
         }
 
         public string CreateAccount(string userName, string password, bool requireConfirmationToken)
@@ -498,25 +495,24 @@ namespace DabTrial.CustomMembership
                     token = GenerateToken();
                 }
 
-                User NewUser = new User
-                {
-                    //UserId = Guid.NewGuid(),
-                    UserName = userName,
-                    Password = hashedPassword,
-                    IsApproved = !requireConfirmationToken,
-                    Email = string.Empty,
-                    CreateDate = DateTime.UtcNow,
-                    LastPasswordChangedDate = DateTime.UtcNow,
-                    PasswordFailuresSinceLastSuccess = 0,
-                    LastLoginDate = DateTime.UtcNow,
-                    LastActivityDate = DateTime.UtcNow,
-                    LastLockoutDate = DateTime.UtcNow,
-                    IsLockedOut = false,
-                    LastPasswordFailureDate = DateTime.UtcNow,
-                    ConfirmationToken = token
-                };
+                context.Users.Add(new User
+                    {
+                        //UserId = Guid.NewGuid(),
+                        UserName = userName,
+                        Password = hashedPassword,
+                        IsApproved = !requireConfirmationToken,
+                        Email = string.Empty,
+                        CreateDate = DateTime.UtcNow,
+                        LastPasswordChangedDate = DateTime.UtcNow,
+                        PasswordFailuresSinceLastSuccess = 0,
+                        LastLoginDate = DateTime.UtcNow,
+                        LastActivityDate = DateTime.UtcNow,
+                        LastLockoutDate = DateTime.UtcNow,
+                        IsLockedOut = false,
+                        LastPasswordFailureDate = DateTime.UtcNow,
+                        ConfirmationToken = token
+                    });
 
-                context.Users.Add(NewUser);
                 context.SaveChanges();
                 return token;
             }
@@ -552,9 +548,9 @@ namespace DabTrial.CustomMembership
         {
             using (DataContext context = new DataContext())
             {
-                User user = context.Users.FirstOrDefault(u=>u.UserName==username);
-                if (user == null) { return null; }
-                return ResetPassword(user/*, answer */);
+                User usr = context.Users.FirstOrDefault(u=>u.UserName==username);
+                if (usr == null) { return null; }
+                return ResetPassword(usr/*, answer */);
             }
         }
         public static string ResetPassword(User user /*, string answer*/)

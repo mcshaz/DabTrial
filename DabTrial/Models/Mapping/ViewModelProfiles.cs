@@ -299,9 +299,9 @@ namespace DabTrial.Models
                 DexamethasoneMg = 0.6 * weightInKg,
                 AdrenalineMl = (adrenalineIs1pc ? 0.05 : 0.5) * weightInKg,
                 AdrenalineIs1pc = adrenalineIs1pc,
-                LastDoseAdrenaline = DateApproximationString(doseGiven.AddHours(72)),
-                LastHighDoseSteroid = DateApproximationString(doseGiven.AddHours(80)),
-                LastDoseSteroid = DateApproximationString(doseGiven.AddHours(152))
+                LastDoseAdrenaline = DateApproximationString(doseGiven.AddHours(72.0)),
+                LastHighDoseSteroid = DateApproximationString(doseGiven.AddHours(72.0)),
+                LastDoseSteroid = DateApproximationString(doseGiven.AddHours(144.0))
             };
             if (returnVar.AdrenalineMl > 6) { returnVar.AdrenalineMl = 6; }
             return returnVar;

@@ -103,7 +103,8 @@ namespace DabTrial.Controllers
                     professionalRole:model.ProfessionalRole.Value,
                     roleName: model.Role,
                     isPublicContact: model.IsPublicContact,
-                    isLockedOut:model.IsLockedOut);
+                    isLockedOut:model.IsLockedOut,
+                    isDeactivated:model.IsDeactivated);
                 if (ModelState.IsValid) { return RedirectToAction("Index");}
             } 
             SetLists(model);
@@ -127,7 +128,10 @@ namespace DabTrial.Controllers
         {
             if (ModelState.IsValid) {
                 UserService.DeleteUser(CurrentUserName, id);
-                return RedirectToAction("Index"); 
+                if (ModelState.IsValid)
+                {
+                    return RedirectToAction("Index"); 
+                }
             }
             return View(model);
         }

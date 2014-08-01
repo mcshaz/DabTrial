@@ -200,6 +200,7 @@ namespace DabTrial.Domain.Services
                                String roleName,
                                Boolean dbAdmin,
                                Boolean isLockedOut,
+                               Boolean isDeactivated,
                                Boolean isPublicContact = false,
                                Boolean isApproved = false,
                                Boolean emailOnSuccess = false)
@@ -216,6 +217,7 @@ namespace DabTrial.Domain.Services
                        roleType.Value,
                        dbAdmin,
                        isLockedOut,
+                       isDeactivated,
                        isPublicContact,
                        isApproved,
                        emailOnSuccess);
@@ -230,6 +232,7 @@ namespace DabTrial.Domain.Services
                                InvestigatorRole roleType,
                                Boolean dbAdmin,
                                Boolean isLockedOut,
+                               Boolean isDeactivated,
                                Boolean isPublicContact = false,
                                Boolean isApproved = false,
                                Boolean emailOnSuccess = false)
@@ -251,6 +254,7 @@ namespace DabTrial.Domain.Services
                 roleType,
                 dbAdmin,
                 isLockedOut,
+                isDeactivated,
                 isPublicContact,
                 isApproved,
                 emailOnSuccess);
@@ -265,6 +269,7 @@ namespace DabTrial.Domain.Services
                                InvestigatorRole roleType,
                                Boolean dbAdmin,
                                Boolean isLockedOut,
+                               Boolean isDeactivated,
                                Boolean isPublicContact = false,
                                Boolean isApproved = false,
                                Boolean emailOnSuccess = false)
@@ -282,7 +287,8 @@ namespace DabTrial.Domain.Services
                 userForUpdate.PasswordFailuresSinceLastSuccess = 0;
             }
             userForUpdate.IsLockedOut = isLockedOut;
-            userForUpdate.IsPublicContact = isPublicContact;
+            userForUpdate.IsDeactivated = isDeactivated;
+            userForUpdate.IsPublicContact = isPublicContact && !isDeactivated;
             var roleNames = UpdateRoles(userForUpdate, roleType, dbAdmin);
             _db.SaveChanges(userMakingChanges.UserName);
             if (emailOnSuccess)

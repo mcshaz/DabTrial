@@ -51,6 +51,7 @@ namespace DabTrial.Domain.Tables
         public string Comment { get; set; }
         public bool IsPublicContact { get; set; }
         public bool IsApproved { get; set; }
+        public bool IsDeactivated { get; set; }
         public int PasswordFailuresSinceLastSuccess { get; set; }
         public DateTime? LastPasswordFailureDate { get; set; }
         public DateTime? LastActivityDate { get; set; }

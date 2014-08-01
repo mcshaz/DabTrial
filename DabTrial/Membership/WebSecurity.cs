@@ -34,50 +34,50 @@ public sealed class WebSecurity
         get { return User.Identity.IsAuthenticated; }
     }
 
-    public static MembershipCreateStatus Register(string Username, string Password, string Email, bool IsApproved, string FirstName, string LastName)
+    public static MembershipCreateStatus Register(string username, string password, string email, bool isApproved, string firstName, string lastName)
     {
-        MembershipCreateStatus CreateStatus;
-        Membership.CreateUser(Username, Password, Email, null, null, IsApproved, Guid.NewGuid(), out CreateStatus);
+        MembershipCreateStatus createStatus;
+        Membership.CreateUser(username, password, email, null, null, isApproved, Guid.NewGuid(), out createStatus);
 
-        if (CreateStatus == MembershipCreateStatus.Success)
+        if (createStatus == MembershipCreateStatus.Success)
         {
-            using (DataContext Context = new DataContext())
+            using (DataContext context = new DataContext())
             {
-                DabTrial.Domain.Tables.User user = Context.Users.FirstOrDefault(Usr => Usr.UserName == Username);
-                user.FirstName = FirstName;
-                user.LastName = LastName;
-                Context.SaveChanges();
+                DabTrial.Domain.Tables.User user = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
+                user.FirstName = firstName;
+                user.LastName = lastName;
+                context.SaveChanges();
             }
 
-            if (IsApproved)
+            if (isApproved)
             {
-                FormsAuthentication.SetAuthCookie(Username, false);
+                FormsAuthentication.SetAuthCookie(username, false);
             }
         }
 
-        return CreateStatus;
+        return createStatus;
     }
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="Username"></param>
-    /// <param name="Password"></param>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
     /// <param name="persistCookie"></param>
     /// <returns></returns>
-    public static bool Login(string Username, string Password, out int failedLoginAttempts ,bool persistCookie = false)
+    public static bool Login(string username, string password, out int failedLoginAttempts ,bool persistCookie = false)
     {
         using (DataContext context = new DataContext())
         {
-            var usr = CodeFirstMembershipProvider.ValidateUser(context, Username, Password);
+            var usr = CodeFirstMembershipProvider.ValidateUser(context, username, password);
             if (usr != null) 
             { 
                 (new UserService(DBcontext: context)).SetIpStudyCentre(usr.StudyCentreId);
-                FormsAuthentication.SetAuthCookie(Username, persistCookie);
+                FormsAuthentication.SetAuthCookie(username, persistCookie);
                 failedLoginAttempts = 0;
                 return true;
             }
-            usr = context.Users.Where(u => u.UserName == Username).FirstOrDefault();
+            usr = context.Users.Where(u => u.UserName == username).FirstOrDefault();
             failedLoginAttempts = usr == null ? -1 : usr.PasswordFailuresSinceLastSuccess;
             return false;
         }
@@ -127,8 +127,8 @@ public sealed class WebSecurity
 
     public static string CreateAccount(string userName, string password, bool requireConfirmationToken = false)
     {
-        CodeFirstMembershipProvider CodeFirstMembership = Membership.Provider as CodeFirstMembershipProvider;
-        return CodeFirstMembership.CreateAccount(userName, password, requireConfirmationToken);
+        CodeFirstMembershipProvider codeFirstMembership = (CodeFirstMembershipProvider)Membership.Provider;
+        return codeFirstMembership.CreateAccount(userName, password, requireConfirmationToken);
     }
 
     public static string CreateUserAndAccount(string userName, string password)
@@ -148,33 +148,29 @@ public sealed class WebSecurity
 
     public static string CreateUserAndAccount(string userName, string password, object propertyValues = null, bool requireConfirmationToken = false)
     {
-        CodeFirstMembershipProvider CodeFirstMembership = Membership.Provider as CodeFirstMembershipProvider;
-
-        IDictionary<string, object> values = null;
-        if (propertyValues != null)
-        {
-            values = new RouteValueDictionary(propertyValues);
-        }
-
-        return CodeFirstMembership.CreateUserAndAccount(userName, password, requireConfirmationToken, values);
+        IDictionary<string, object> values = (propertyValues == null)
+            ?null
+            :values = new RouteValueDictionary(propertyValues);
+        CodeFirstMembershipProvider codeFirstMembership = (CodeFirstMembershipProvider)Membership.Provider;
+        return codeFirstMembership.CreateUserAndAccount(userName, password, requireConfirmationToken, values);
     }
 
-    public static List<MembershipUser> FindUsersByEmail(string Email, int PageIndex, int PageSize)
+    public static List<MembershipUser> FindUsersByEmail(string email, int pageIndex, int pageSize)
     {
         int totalRecords;
-        return Membership.FindUsersByEmail(Email, PageIndex, PageSize, out totalRecords).Cast<MembershipUser>().ToList();
+        return Membership.FindUsersByEmail(email, pageIndex, pageSize, out totalRecords).Cast<MembershipUser>().ToList();
     }
 
-    public static List<MembershipUser> FindUsersByName(string Username, int PageIndex, int PageSize)
+    public static List<MembershipUser> FindUsersByName(string username, int pageIndex, int pageSize)
     {
         int totalRecords;
-        return Membership.FindUsersByName(Username, PageIndex, PageSize, out totalRecords).Cast<MembershipUser>().ToList();
+        return Membership.FindUsersByName(username, pageIndex, pageSize, out totalRecords).Cast<MembershipUser>().ToList();
     }
 
-    public static List<MembershipUser> GetAllUsers(int PageIndex, int PageSize)
+    public static List<MembershipUser> GetAllUsers(int pageIndex, int pageSize)
     {
         int totalRecords;
-        return Membership.GetAllUsers(PageIndex, PageSize, out totalRecords).Cast<MembershipUser>().ToList();
+        return Membership.GetAllUsers(pageIndex, pageSize, out totalRecords).Cast<MembershipUser>().ToList();
     }
 
     public static void InitializeDatabaseConnection(string connectionStringName, string userTableName, string userIdColumn, string userNameColumn, bool autoCreateTables)

@@ -7,15 +7,32 @@ namespace DabTrial.Utilities
 {
     public static class BlockRandomisation
     {
-        const double third = 1/3;
-        const double twothird = 2/3;
-        public static int BlockSize()
+        public static bool IsNextAllocationInterventionWithCentralTendancy(IEnumerable<bool> interventionArmWithinBlock, int blockSize,Func<double> wholeTrialProportionIntervention)
         {
+            double remainingAllocations = blockSize;
+            double remainingInterventions = blockSize / 2;
+            foreach (bool isIntervention in interventionArmWithinBlock)
+            {
+                remainingAllocations--;
+                if (isIntervention)
+                {
+                    remainingInterventions--;
+                }
+            }
+            if (remainingAllocations <= 0) { throw new ArgumentException("No remaining allocations"); }
+            if (remainingAllocations == blockSize && wholeTrialProportionIntervention!=null)
+            {
+                return wholeTrialProportionIntervention() < 0.5;
+            }
+            double Pintervention = remainingInterventions / remainingAllocations;
             double rdm = new Random().NextDouble();
-            if (rdm < third) return 4;
-            if (rdm < twothird) return 6;
-            return 8;
+            return (rdm <= Pintervention);
         }
+        public static bool IsNextAllocationIntervention(IEnumerable<bool> interventionArmWithinBlock, int blockSize)
+        {
+            return IsNextAllocationInterventionWithCentralTendancy(interventionArmWithinBlock, blockSize, null);
+        }
+        /*
         public static bool nextAllocation<T>(int blockSize, IEnumerable<T> patientDataCollection, Func<T,bool> predicate)
         {
             double remainingAllocations = blockSize - patientDataCollection.Count();
@@ -25,7 +42,7 @@ namespace DabTrial.Utilities
             double rdm = new Random().NextDouble();
             return (rdm <= Pintervention);
         }
-        /*
+        
          * old (working) version.
         public static bool nextAllocation<T>(int blockSize, IEnumerable<T> patientDataCollection, string allocationPropertyName)
         {

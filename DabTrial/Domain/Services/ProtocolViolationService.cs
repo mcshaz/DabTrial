@@ -96,10 +96,7 @@ namespace DabTrial.Domain.Services
         }
         private void SendEventEmail(TrialParticipant participant, User usr, ProtocolViolation violation)
         {
-            var emailList = String.Join(",", (from u in _db.Users
-                                              where (u.StudyCentreId == participant.StudyCentreId && u.Roles.Any(r => r.RoleName == RoleExtensions.SiteInvestigator))
-                                                    || u.Roles.Any(r => r.RoleName == RoleExtensions.PrincipleInvestigator)
-                                              select u.Email));
+            var emailList = RoleExtensions.GetInvestigatorEmails(participant.StudyCentreId, _db);
             string violationSeverity = violation.MajorViolation?"Major":"Minor";
             Email.Send(emailList,
                 String.Format("Protocol violation (Classed {0})", violationSeverity),

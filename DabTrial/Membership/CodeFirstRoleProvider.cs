@@ -54,8 +54,8 @@ namespace DabTrial.CustomMembership
             }
             using (var context = new DataContext())
             {
-                User user = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
-                if (user == null)
+                User usr = context.Users.FirstOrDefault(Usr => Usr.UserName == username);
+                if (usr == null)
                 {
                     return false;
                 }
@@ -64,7 +64,7 @@ namespace DabTrial.CustomMembership
                 {
                     return false;
                 }
-                return user.Roles.Contains(role);
+                return usr.Roles.Contains(role);
             }
         }
 
@@ -105,10 +105,10 @@ namespace DabTrial.CustomMembership
             }
             using (var Context = new DataContext())
             {
-                User user = Context.Users.FirstOrDefault(Usr => Usr.UserName == username);
-                if (user != null)
+                User usr = Context.Users.FirstOrDefault(Usr => Usr.UserName == username);
+                if (usr != null)
                 {
-                    return user.Roles.Select(Rl => Rl.RoleName).ToArray();
+                    return usr.Roles.Select(rl => rl.RoleName).ToArray();
                 }
                 else
                 {
@@ -129,9 +129,9 @@ namespace DabTrial.CustomMembership
                 return null;
             }
 
-            using (var Context = new DataContext())
+            using (var context = new DataContext())
             {
-                return (from Rl in Context.Roles from Usr in Rl.Users where Rl.RoleName == roleName && Usr.UserName.Contains(usernameToMatch) select Usr.UserName).ToArray();
+                return (from rl in context.Roles from Usr in rl.Users where rl.RoleName == roleName && Usr.UserName.Contains(usernameToMatch) select Usr.UserName).ToArray();
             }
         }
 
@@ -144,12 +144,11 @@ namespace DabTrial.CustomMembership
                     Role role = context.Roles.FirstOrDefault(Rl => Rl.RoleName == roleName);
                     if (role == null)
                     {
-                        Role NewRole = new Role
-                        {
-                            //RoleId = Guid.NewGuid(), Identity (DB assigned)
-                            RoleName = roleName
-                        };
-                        context.Roles.Add(NewRole);
+                        context.Roles.Add(new Role
+                            {
+                                //RoleId = Guid.NewGuid(), Identity (DB assigned)
+                                RoleName = roleName
+                            });
                         context.SaveChanges();
                     }
                 }
@@ -192,13 +191,13 @@ namespace DabTrial.CustomMembership
             {
                 List<User> users = context.Users.Where(Usr => usernames.Contains(Usr.UserName)).ToList();
                 List<Role> roles = context.Roles.Where(Rl => roleNames.Contains(Rl.RoleName)).ToList();
-                foreach (User user in users)
+                foreach (User usr in users)
                 {
                     foreach (Role role in roles)
                     {
-                        if (!user.Roles.Contains(role))
+                        if (!usr.Roles.Contains(role))
                         {
-                            user.Roles.Add(role);
+                            usr.Roles.Add(role);
                         }
                     }
                 }
@@ -208,11 +207,11 @@ namespace DabTrial.CustomMembership
 
         public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
         {
-            using (var Context = new DataContext())
+            using (var context = new DataContext())
             {
                 foreach (String username in usernames)
                 {
-                    User user = Context.Users.FirstOrDefault(U => U.UserName == username);
+                    User user = context.Users.FirstOrDefault(U => U.UserName == username);
                     if (user != null)
                     {
                         foreach (String roleName in roleNames)
@@ -225,7 +224,7 @@ namespace DabTrial.CustomMembership
                         }
                     }
                 }
-                Context.SaveChanges();
+                context.SaveChanges();
             }
         }
     }

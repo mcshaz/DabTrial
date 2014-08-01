@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DabTrial.Utilities;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace DabTrial.Domain.Tables
 {
@@ -51,9 +52,14 @@ namespace DabTrial.Domain.Tables
                 return role.Description;
             }
         }
-        public static string[] InvestigatorRoleNames()
+        public static readonly string[] InvestigatorRoleNames = new string[] { PrincipleInvestigator, SiteInvestigator };
+        public static string GetInvestigatorEmails(int centreId, DabTrial.Domain.Providers.IDataContext context)
         {
-            return new string[] { PrincipleInvestigator, SiteInvestigator };
+            return String.Join(",", (from u in context.Users
+                                     where !u.IsDeactivated &&
+                                         (u.StudyCentreId == centreId && u.Roles.Any(r => r.RoleName == RoleExtensions.SiteInvestigator))
+                                         || u.Roles.Any(r => r.RoleName == RoleExtensions.PrincipleInvestigator)
+                                     select u.Email));
         }
     }
 }

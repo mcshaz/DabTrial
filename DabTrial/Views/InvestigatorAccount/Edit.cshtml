@@ -57,6 +57,16 @@
                 </tr>
                 <tr class="editor-row">
                     <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.IsDeactivated)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.IsDeactivated)
+
+                        @Html.ValidationMessageFor(model => model.IsDeactivated)
+                    </td>
+                </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
                         @Html.LabelDetailsFor(model => model.StudyCentreId)
                     </td>
                     <td class="editor-field">

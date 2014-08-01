@@ -41,6 +41,8 @@ namespace DabTrial.Models
         public Boolean IsPublicContact { get; set; }
         [DisplayName("Locked Out")]
         public Boolean IsLockedOut {get; set;}
+        [DisplayName("Deactivated")]
+        public Boolean IsDeactivated { get; set; }
     }
     public class InvestigatorDetailsBrief
     {
@@ -58,6 +60,8 @@ namespace DabTrial.Models
         public Boolean IsPublicContact { get; set; }
         [DisplayName("Locked Out")]
         public Boolean IsLockedOut { get; set; }
+        [DisplayName("Deactivated")]
+        public Boolean IsDeactivated { get; set; }
     }
     public class InvestigatorListItem
     {
