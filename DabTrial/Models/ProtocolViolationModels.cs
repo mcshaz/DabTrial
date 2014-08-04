@@ -51,7 +51,7 @@ namespace DabTrial.Models
         [ComesAfter("TrialParticipantLocalTimeRandomised", AnnotationArgumentType.PropertyName)]
         [ComesBeforeNowAtClient]
         [DataType(DataType.DateTime)]
-        public DateTime? TimeOfViolation { get; set; }
+        public DateTime? EventTime { get; set; }
         [Required]
         [DataType(DataType.MultilineText)]
         public string Details { get; set; }
@@ -67,7 +67,7 @@ namespace DabTrial.Models
     public class ProtocolViolationEdit
     {
         [HiddenInput]
-        public int ViolationId { get; set; }
+        public int Id { get; set; }
         public int ParticipantId { get; set; }
         [Display(Name = "Hospital Id")]
         public string TrialParticipantHospitalId { get; set; }
@@ -78,7 +78,7 @@ namespace DabTrial.Models
         [DisplayFormat(DataFormatString = "{0:d/M/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         [ComesAfter("TrialParticipantLocalTimeRandomised", AnnotationArgumentType.PropertyName)]
         [ComesBeforeNowAtClient]
-        public DateTime TimeOfViolation { get; set; }
+        public DateTime EventTime { get; set; }
         [DataType(DataType.MultilineText)]
         public string Details { get; set; }
         public Boolean MajorViolation { get; set; }
@@ -93,9 +93,9 @@ namespace DabTrial.Models
     }
     public class ProtocolViolationListItem
     {
-        public int ViolationId { get; set; }
+        public int Id { get; set; }
         [DisplayFormat(DataFormatString = "{0:d/M/yyyy HH:mm}")]
-        public DateTime TimeOfViolation { get; set; }
+        public DateTime EventTime { get; set; }
         public string Details { get; set; }
         public Boolean MajorViolation { get; set; }
         public String ViolationClass
@@ -112,12 +112,12 @@ namespace DabTrial.Models
     }
     public class ProtocolViolationDetails
     {
-        public int ViolationId { get; set; }
+        public int Id { get; set; }
         public int ParticipantId { get; set; }
         [Display(Name = "Hospital Id")]
         public string TrialParticipantHospitalId { get; set; }
         [DisplayFormat(DataFormatString="{0:d/M/yyyy HH:mm}")]
-        public DateTime TimeOfViolation { get; set; }
+        public DateTime EventTime { get; set; }
         public string Details { get; set; }
         public Boolean MajorViolation { get; set; }
         public String ViolationClass

@@ -80,35 +80,11 @@ namespace DabTrial.Domain.Tables
             return "HospitalRecord:\"" + HospitalId + '"';
         }
     }
-    public class ParticipantWithdrawal : IDescribableEntity
+    public class ParticipantWithdrawal : OneTo1DiscrepancyReport
     {
-        [Key]
-        public int Id { get; set; }
-        public DateTime Time { get; set; }
-        public string Reason { get; set; }
-
-        //can set up 1:1 later
-        //public virtual TrialParticipant Participant { get; set; }
-
-        public string Describe()
-        {
-            return String.Format("ParticipantId:\"{0}\"", Id);
-        }
     }
-    public class ParticipantDeath : IDescribableEntity
+    public class ParticipantDeath : OneTo1DiscrepancyReport
     {
-        [Key]
-        public int Id { get; set; }
-        public DateTime Time { get; set; }
-        public string Details { get; set; }
-
-        //can set up 1:1 later
-        //public virtual TrialParticipant Participant { get; set; }
-
-        public string Describe()
-        {
-            return String.Format("ParticipantId:\"{0}\"", Id);
-        }
     }
     public static class ParticipantExtensions
     {

@@ -6,6 +6,7 @@ using System.Net;
 using DabTrial.Domain.Providers;
 using DabTrial.Domain.Tables;
 using DabTrial.Infrastructure.Interfaces;
+using Hangfire;
 namespace DabTrial.Domain.Services
 {
     public class ProtocolViolationService : PatientServiceLayer
@@ -22,7 +23,7 @@ namespace DabTrial.Domain.Services
         }
         public IEnumerable<ProtocolViolation> GetViolationsByParticipant(int participantId)
         {
-            return _db.ProtocolViolations.Include("TrialParticipant").Where(a => a.ParticipantId == participantId).OrderBy(v => v.TimeOfViolation).ToList();
+            return _db.ProtocolViolations.Include("TrialParticipant").Where(a => a.ParticipantId == participantId).OrderBy(v => v.EventTime).ToList();
         }
         public IEnumerable<ProtocolViolation> GetAllViolations(string userName)
         {
@@ -36,13 +37,13 @@ namespace DabTrial.Domain.Services
         }
         public ProtocolViolation GetViolation(int violationId)
         {
-            var returnVar = _db.ProtocolViolations.Include("TrialParticipant").Include("TrialParticipant.StudyCentre").FirstOrDefault(v => v.ViolationId == violationId);
+            var returnVar = _db.ProtocolViolations.Include("TrialParticipant").Include("TrialParticipant.StudyCentre").FirstOrDefault(v => v.Id == violationId);
             returnVar.TrialParticipant.HospitalId = null;         
             return returnVar;
         }
         public ProtocolViolation GetViolation(int violationId, string userName)
         {
-            var returnVar = _db.ProtocolViolations.Include("TrialParticipant").Include("TrialParticipant.StudyCentre").FirstOrDefault(v => v.ViolationId == violationId);
+            var returnVar = _db.ProtocolViolations.Include("TrialParticipant").Include("TrialParticipant.StudyCentre").FirstOrDefault(v => v.Id == violationId);
             DecryptHospitalId(returnVar.TrialParticipant, userName);
             return returnVar;
         }
@@ -56,15 +57,15 @@ namespace DabTrial.Domain.Services
             var newEvent = new ProtocolViolation()
             {
                 ParticipantId = participantId,
-                TimeOfViolation = timeOfViolation,
+                EventTime = timeOfViolation,
                 Details = details,
                 ReportingUserId = usr.UserId,
                 MajorViolation = majorViolation,
                 ReportingTimeLocal = participant.StudyCentre.LocalTime()
             };
-            SendEventEmail(participant, usr, newEvent);
             _db.ProtocolViolations.Add(newEvent);
             _db.SaveChanges(currentUser);
+            BackgroundJob.Enqueue(() => CreateEmailService.NotifyProtocolViolation(newEvent.Id));
             return newEvent;
         }
         public HttpStatusCode Delete(int id, string userName)
@@ -85,30 +86,14 @@ namespace DabTrial.Domain.Services
         }
         public ProtocolViolation UpdateViolation(Int32 violationId, DateTime timeOfViolation, Boolean majorViolation, String details, string currentUser)
         {
-            var eventToUpdate = _db.ProtocolViolations.Include("TrialParticipant").FirstOrDefault(e => e.ViolationId == violationId);
+            var eventToUpdate = _db.ProtocolViolations.Include("TrialParticipant").FirstOrDefault(e => e.Id == violationId);
             ValidateViolation(eventToUpdate.TrialParticipant, details, timeOfViolation);
             if (!_validatonDictionary.IsValid) { return null; }
-            eventToUpdate.TimeOfViolation = timeOfViolation;
+            eventToUpdate.EventTime = timeOfViolation;
             eventToUpdate.MajorViolation = majorViolation;
             eventToUpdate.Details = details;
             _db.SaveChanges(currentUser);
             return eventToUpdate;
-        }
-        private void SendEventEmail(TrialParticipant participant, User usr, ProtocolViolation violation)
-        {
-            var emailList = RoleExtensions.GetInvestigatorEmails(participant.StudyCentreId, _db);
-            string violationSeverity = violation.MajorViolation?"Major":"Minor";
-            Email.Send(emailList,
-                String.Format("Protocol violation (Classed {0})", violationSeverity),
-                "SignificantEvent.txt",
-                Email.EventDetails(violationSeverity + " Protocol Violation",
-                                   usr.FirstName + " " + usr.LastName,
-                                   usr.StudyCentre.Name,
-                                   DateTime.Now.ToString(),
-                                   participant.ParticipantId,
-                                   violation.TimeOfViolation,
-                                   violation.Details),
-                usr.Email);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace DabTrial.Models
     public class AdverseEventEditModel: IAdverseEventModel
     {
         [HiddenInput(DisplayValue = false)]
-        public Int32 AdverseEventId { get; set; }
+        public Int32 Id { get; set; }
         [Display(Name = "DAB Trial Id")]
         public Int32 ParticipantId { get; set; }
         [UIHint("HiddenDate")]
@@ -75,7 +75,7 @@ namespace DabTrial.Models
     }
     public class AdverseEventDetails
     {
-        public Int32 AdverseEventId { get; set; }
+        public Int32 Id { get; set; }
         [Display(Name = "DAB trial Id", Description = "Unique identifier for trial")]
         public string TrialParticipantParticipantId { get; set; }
         public string ReportingUserFullName { get; set; }
@@ -100,7 +100,7 @@ namespace DabTrial.Models
         public string ParticipantId { get; set; }
         public string TrialParticipantStudyCentreAbbreviation { get; set; }
         [HiddenInput(DisplayValue = false)]
-        public Int32 AdverseEventId { get; set; }
+        public Int32 Id { get; set; }
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/M/yyyy HH:mm}")]
         public DateTime EventTime { get; set; }
@@ -128,7 +128,7 @@ namespace DabTrial.Models
         {
             set
             {
-                AdverseEventId = value.AdverseEventId;
+                AdverseEventId = value.Id;
                 AdverseEventTrialParticipantDob = value.TrialParticipant.Dob.ToString("s");
             }
         }

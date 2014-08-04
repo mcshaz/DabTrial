@@ -38,16 +38,10 @@ namespace DabTrial.Domain.Tables
         public string LastName { get; set; }
         [ForeignKey("StudyCentre")]
         public int? StudyCentreId { get; set; }
-        public virtual StudyCentre StudyCentre { get; set; }
-        public int? ProfessionalRoleId { get; set; }
-        [NotMapped]
-        public virtual ProfessionalRoles? ProfessionalRole {
-            get { return(ProfessionalRoles?)ProfessionalRoleId;}
-            set { ProfessionalRoleId = (Int32)value; }
-        } 
+        public ProfessionalRoles ProfessionalRole {get;set;} 
 
         [DataType(DataType.MultilineText)]
-        [StringLength(150)]
+        [StringLength(150)] 
         public string Comment { get; set; }
         public bool IsPublicContact { get; set; }
         public bool IsApproved { get; set; }
@@ -66,11 +60,14 @@ namespace DabTrial.Domain.Tables
         public string PasswordVerificationToken { get; set; }
         public DateTime? PasswordVerificationTokenExpirationDate { get; set; }
 
+        public virtual StudyCentre StudyCentre { get; set; }
+
         public virtual ICollection<Role> Roles { get; set; }
         public virtual ICollection<TrialParticipant> EnrolledParticipants { get; set; }
-
         public virtual ICollection<ProtocolViolation> ReportedViolations { get; set; }
         public virtual ICollection<AdverseEvent> ReportedAdverseEvents { get; set; }
+        public virtual ICollection<ParticipantDeath> ReportedDeaths { get; set; }
+        public virtual ICollection<ParticipantWithdrawal> ReportedWithdrawals { get; set; }
 
         public string Describe()
         {

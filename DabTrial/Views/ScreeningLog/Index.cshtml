@@ -5,7 +5,7 @@
     Html.Assets().AddHeaderScript("~/Scripts/EditableDataTable.js");
     Html.Assets().Libraries.Uses("MvcDataTables", "jQueryUI");
     
-    Html.DataTableIncludes(jqueryUi: true);
+    //Html.DataTableIncludes(jqueryUi: true);
     var vm = Html.DataTableVm("ScreeningLog", (ScreeningLogController sc) => sc.GetScreenedPatients(null));
     vm.ColumnFilter = true;
     vm.FilterOn("StudyCentreAbbreviation").Select(Model);

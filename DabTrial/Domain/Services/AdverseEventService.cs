@@ -6,6 +6,7 @@ using System.Linq;
 using DabTrial.Domain.Tables;
 using DabTrial.Domain.Providers;
 using DabTrial.Infrastructure.Interfaces;
+using Hangfire;
 namespace DabTrial.Domain.Services
 {
     public class AdverseEventService : PatientServiceLayer
@@ -50,13 +51,13 @@ namespace DabTrial.Domain.Services
         }
         public AdverseEvent GetAdverseEvent(int adverseEventId)
         {
-            var returnVar = _db.AdverseEvents.Include("Drugs").Include("TrialParticipant").Include("ReportingUser").FirstOrDefault(a => a.AdverseEventId == adverseEventId);
+            var returnVar = _db.AdverseEvents.Include("Drugs").Include("TrialParticipant").Include("ReportingUser").FirstOrDefault(a => a.Id == adverseEventId);
             returnVar.TrialParticipant.HospitalId = null;
             return returnVar;
         }
         public AdverseEvent GetAdverseEvent(int adverseEventId, string userName)
         {
-            var returnVar = _db.AdverseEvents.Include("Drugs").Include("TrialParticipant").Include("ReportingUser").FirstOrDefault(a => a.AdverseEventId == adverseEventId);
+            var returnVar = _db.AdverseEvents.Include("Drugs").Include("TrialParticipant").Include("ReportingUser").FirstOrDefault(a => a.Id == adverseEventId);
             DecryptHospitalId(returnVar.TrialParticipant, userName);
             return returnVar;
         }
@@ -79,14 +80,14 @@ namespace DabTrial.Domain.Services
                 ReportingUserId = usr.UserId,
                 ReportingTimeLocal = participant.StudyCentre.LocalTime()
             };
-            SendEventEmail(participant, usr, newEvent);
             _db.AdverseEvents.Add(newEvent);
             if (fatalEvent && participant.Death==null) 
             {
-                var deathDetails = new ParticipantDeath() { Id=participantId, Details = "Fatal Adverse Event Logged: "+ details, Time = eventTime };
+                var deathDetails = new ParticipantDeath() { Id=participantId, Details = "Fatal Adverse Event Logged: "+ details, EventTime = eventTime };
                 participant.Death = deathDetails;
             }
             _db.SaveChanges(currentUser);
+            BackgroundJob.Enqueue(() => CreateEmailService.NotifyAdverseEvent(newEvent.Id));
             return newEvent;
         }
         private void ValidateAdverseEvent(TrialParticipant participant, String details, DateTime eventTime)
@@ -99,7 +100,7 @@ namespace DabTrial.Domain.Services
         }
         public AdverseEvent UpdateAdverseEvent(Int32 adverseEventId, DateTime eventTime, Int32 severityLevelId, Int32 adverseEventTypeId, Boolean sequelae, Boolean fatalEvent, String details, string currentUser)
         {
-            var eventToUpdate = _db.AdverseEvents.Include("TrialParticipant").FirstOrDefault(e=> e.AdverseEventId == adverseEventId);
+            var eventToUpdate = _db.AdverseEvents.Include("TrialParticipant").FirstOrDefault(e=> e.Id == adverseEventId);
             ValidateAdverseEvent(eventToUpdate.TrialParticipant, details, eventTime);
             if (!_validatonDictionary.IsValid) { return null; }
             eventToUpdate.EventTime = eventTime;
@@ -118,22 +119,6 @@ namespace DabTrial.Domain.Services
             _db.AdverseEvents.Remove(pv);
             _db.SaveChanges(userName);
             return HttpStatusCode.OK;
-        }
-        private void SendEventEmail(TrialParticipant participant, User usr, AdverseEvent adverseEvent)
-        {
-            var emailList = RoleExtensions.GetInvestigatorEmails(participant.StudyCentreId, _db);
-
-            Email.Send(emailList,
-                String.Format("Adverse Event (Category {0})",adverseEvent.SeverityLevelId),
-                "SignificantEvent.txt",
-                Email.EventDetails(adverseEvent.Severity.Description,
-                                   usr.FirstName + " " + usr.LastName,
-                                   usr.StudyCentre.Name,
-                                   DateTime.Now.ToString(),
-                                   participant.ParticipantId,
-                                   adverseEvent.EventTime,
-                                   adverseEvent.Details),
-                usr.Email);
         }
     }
 }

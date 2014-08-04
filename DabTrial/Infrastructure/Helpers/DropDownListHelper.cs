@@ -64,7 +64,7 @@ namespace MvcHtmlHelpers
                     if (radioAttr.ContainsKey("checked")) { radioAttr.Remove("checked"); }
                 }
                 var radio = htmlHelper.RadioButton(expressionText, name, radioAttr).ToHtmlString();//need to set @checked = value.Equals(metaData.Model)
-                var label = htmlHelper.Label(name.ToSeparatedWords(), labelAttr);
+                var label = htmlHelper.Label(name.ToSeparateWords(), labelAttr);
                 sb.AppendFormat(ItemTemplate,
                     radio,
                     label

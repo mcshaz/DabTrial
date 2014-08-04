@@ -9,7 +9,7 @@
         @Html.DisplayFor(model=> model.TrialParticipantStudyCentreAbbreviation)
     </td>
     <td>
-        @Html.DisplayFor(model => model.TimeOfViolation)
+        @Html.DisplayFor(model => model.EventTime)
     </td>
     <td>
         @Html.DisplayFor(model => model.ViolationClass)
@@ -18,8 +18,8 @@
         <span title="@Model.Details">@Model.Details.ToBriefString()</span> 
     </td>
     <td>
-        @Ajax.ActionLink("Edit", "Edit", new { id = Model.ViolationId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  }, new { @class = "editLink" }) |
-        @Ajax.ActionLink("Details", "Details", new { id = Model.ViolationId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxResultDialog", LoadingElementId="ajaxRequest_processing"  }) |
-        @Ajax.ActionLink("Delete", "Delete", new { id = Model.ViolationId }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "rowDeleted", OnFailure="failedAjaxDelete" , LoadingElementId="ajaxRequest_processing" ,Confirm = String.Format("Are you sure you want to delete protocol violation for participant {0} at {1} ?", Model.ParticipantId, Model.TimeOfViolation) }, new { @class = "deleteAction" })
+        @Ajax.ActionLink("Edit", "Edit", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  }, new { @class = "editLink" }) |
+        @Ajax.ActionLink("Details", "Details", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxResultDialog", LoadingElementId="ajaxRequest_processing"  }) |
+        @Ajax.ActionLink("Delete", "Delete", new { id = Model.Id }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "rowDeleted", OnFailure="failedAjaxDelete" , LoadingElementId="ajaxRequest_processing" ,Confirm = String.Format("Are you sure you want to delete protocol violation for participant {0} at {1} ?", Model.ParticipantId, Model.EventTime) }, new { @class = "deleteAction" })
     </td>
 </tr>

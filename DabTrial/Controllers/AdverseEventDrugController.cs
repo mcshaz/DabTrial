@@ -39,7 +39,7 @@ namespace DabTrial.Controllers
             //if user centre not equal to participant centre, redirect to uneditable form
             if (userService.GetUser(currentUserName).StudyCentreId != model.EventDetails.TrialParticipantStudyCentreId)
             {
-                return RedirectToActionPermanent("EventDetails", new { id = model.AdverseEventId });
+                return RedirectToActionPermanent("EventDetails", new { id = model.Id });
             }
             return View(model);
              * */

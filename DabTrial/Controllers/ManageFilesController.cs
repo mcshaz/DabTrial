@@ -123,7 +123,7 @@ namespace DabTrial.Controllers
             {
                 returnVar.Add(new SelectListItem
                     {
-                        Text = converter.ConvertToString(d).ToSeparatedWords(),
+                        Text = converter.ConvertToString(d).ToSeparateWords(),
                         Value = d.ToString()
                     });
             }

@@ -17,7 +17,7 @@ namespace Web
         {
             var meta = base.CreateMetadata(attributes, containerType, modelAccessor, modelType, propertyName);
             if (meta.DisplayName == null)
-                meta.DisplayName = meta.PropertyName.ToSeparatedWords();
+                meta.DisplayName = meta.PropertyName.ToSeparateWords();
             return meta;
         }
     }

@@ -10,7 +10,7 @@ namespace DabTrial.Controllers
 {
     public abstract class DataContextController : Controller, IDisposable
     {
-        #region members
+        #region fields
         protected readonly IDataContext dbContext;
         private ModelStateWrapper _valDictionary;
         protected readonly String CurrentUserName;
@@ -18,6 +18,7 @@ namespace DabTrial.Controllers
         private UserService _userService;
         private TrialParticipantService _participantService;
         #endregion
+
         #region instantiation
         public DataContextController()
             : this(new DataContext())

@@ -80,7 +80,7 @@ namespace DabTrial.Controllers
                     //Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     return ModelState.JsonValidation();
                 }
-                if (ModelState.IsValid) { return RedirectToAction("Details", new { adverseEventId = adverseEvnt.AdverseEventId }); }
+                if (ModelState.IsValid) { return RedirectToAction("Details", new { adverseEventId = adverseEvnt.Id }); }
             };
             setLists(model);
             return View(model);
@@ -103,7 +103,7 @@ namespace DabTrial.Controllers
         {
             if (ModelState.IsValid)
             {
-                var adverseEvent = AdvEventService.UpdateAdverseEvent(model.AdverseEventId,
+                var adverseEvent = AdvEventService.UpdateAdverseEvent(model.Id,
                                                             model.EventTime.Value,
                                                             model.SeverityLevelId.Value,
                                                             model.AdverseEventTypeId.Value,

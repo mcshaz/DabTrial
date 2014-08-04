@@ -7,6 +7,7 @@ using Foolproof;
 using MvcHtmlHelpers;
 using System.ComponentModel.DataAnnotations.Schema;
 using DabTrial.Infrastructure.Validation;
+using DabTrial.Infrastructure.Utilities;
 
 
 namespace DabTrial.Models
@@ -29,8 +30,7 @@ namespace DabTrial.Models
         public String TrialArm { get; set; }
         public String EnrollingClinicianFullName { get; set; }
 
-        public enum TrialStage { Active, Complete, HospDischRqd, RespRqd, DetailsRqd }
-        public TrialStage DataStage { get; set; }
+        public DabTrial.Infrastructure.Utilities.DataStageUtilities.TrialStage DataStage { get; set; }
     }
     public class ParticipantDetails
     {
@@ -62,6 +62,36 @@ namespace DabTrial.Models
         { 
             get { return _respiratorySupportChanges; }
             set { _respiratorySupportChanges = value.OrderBy(r => r.ChangeTime); }
+        }
+    }
+
+    public class MissingParticipantDataModel
+    {
+        [Display(Name = "Study Number")]
+        public int ParticipantId { get; set; }
+        public DataStageUtilities.TrialStage Stage { get; set; }
+        [Display(Name="Centre")]
+        public String StudyCentreAbbreviation { get; set; }
+        public int StudyCentreId { get; set; }
+        public int DaysSinceEnrolled { get; set; }
+        public bool ActualDischarge {get;set;}
+        public bool ReadyForDischarge {get; set;}
+        public bool AdrenalineForStridor {get;set;}
+        public bool SteroidsForStridor {get;set;}
+        public bool HMPV {get;set;}
+        public bool RSV {get;set;}
+        public MissingInterventionDetails InterventionDetails {get;set;}
+        public bool HospDischarge {get;set;}
+        public string LastLoggedSupport { get; set; }
+        public int DaysSinceRespSupportLogged { get; set; }
+
+        public class MissingInterventionDetails
+        {
+            public bool InitialSteroidRoute { get; set; }
+            public bool NumberOfSteroidDoses { get; set; }
+            public bool FirstAdrenalineNeb { get; set; }
+            public bool FifthAdrenalineNebAt { get; set; }
+            public bool NumberOfAdrenalineNebulisers { get; set; }
         }
     }
 
@@ -119,7 +149,7 @@ namespace DabTrial.Models
         [ComesAfter("MostRecentLoggedEvent", AnnotationArgumentType.PropertyName)]
         [RequiredIfTrue("Died")]
         [ComesBeforeNowAtClient]
-        public DateTime? DeathTime { get; set; }
+        public DateTime? DeathEventTime { get; set; }
 
         [RequiredIfTrue("Died")]
         [DataType(DataType.MultilineText)]
@@ -131,11 +161,11 @@ namespace DabTrial.Models
         [ComesAfter("MostRecentLoggedEvent", AnnotationArgumentType.PropertyName)]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:d/M/yyyy HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime? WithdrawalTime { get; set; }
+        public DateTime? WithdrawalEventTime { get; set; }
 
         [RequiredIfTrue("WithdrawnFromStudy")]
         [DataType(DataType.MultilineText)]
-        public String WithdrawalReason { get; set; }
+        public String WithdrawalDetails { get; set; }
     }
 
     public class ParticipantInterventionUpdate : ParticipantUpdate

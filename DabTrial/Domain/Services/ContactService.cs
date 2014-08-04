@@ -4,36 +4,59 @@ using DabTrial.Utilities;
 using DabTrial.Domain.Providers;
 using DabTrial.Domain.Tables;
 using DabTrial.Infrastructure.Interfaces;
+using DabTrial.Models;
 
 
 namespace DabTrial.Domain.Services
 {
     public class ContactService :ServiceLayer
     {
-        /// <summary>
-        /// Will register and assign User to membership role specified.
-        /// </summary>
-        /// <param name="newUser"></param>
-        /// <param name="Password">The password for the new User. If ommitted or null, a new password will be emailed</param>
         public ContactService(IValidationDictionary valDictionary = null, IDataContext DBcontext = null)
             : base(valDictionary, DBcontext)
         {
         }
-        public IEnumerable<User> GetAdministrators()
+        public void SendMail(int investigatorId, string enquirerEmail, string subject, string message)
         {
-            string[] adminRoles = new string[] { InvestigatorRole.PrincipleInvestigator.ToString(), InvestigatorRole.SiteInvestigator.ToString() };
-            return _db.Roles.Include("Users").Include("Users.StudyCentre")
-                        .Where(r=>adminRoles.Contains(r.RoleName))
-                        .SelectMany(r=>r.Users)
-                        .OrderBy(u=>u.StudyCentreId)
-                        .ThenByDescending(u=>u.ProfessionalRoleId)
-                        .ToList();
+            
+            /*
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(message);
+
+            doc.DocumentNode.Descendants()
+                            .Where(n => n.Name == "script" || n.Name == "#comment")
+                            .ToList()
+                            .ForEach(n => n.Remove());
+
+            */
+            var model = new ForwardMailInvestigator
+            {
+                To = _db.Users.Find(investigatorId).Email,
+                EnquirerEmail = enquirerEmail,
+                Subject = subject,
+                Message = message
+            };
+
+            CreateEmailService.GetEmailService().Send(model);
         }
-        public void sendMail(int userId, string fromAddress, string subject, string message)
+        public IEnumerable<SiteContact> GetAdministrators()
         {
-            User usr = _db.Users.Find(userId);
-            if (usr == null) { _validatonDictionary.AddError("UserId", "Investigator Not Found"); }
-            Email.Send(usr.Email, "DAB Trial website enquiry:" + subject, message, fromAddress);
+            string[] adminTypes = new string[] {RoleExtensions.SiteInvestigator, RoleExtensions.PrincipleInvestigator};
+            return (from s in _db.StudyCentres
+                    select new SiteContact
+                    {
+                        Name = s.Name,
+                        PublicPhoneNumber = s.PublicPhoneNumber,
+                        Investigators = s.Investigators.Where(i=>i.Roles.Any(r=>adminTypes.Contains(r.RoleName)))
+                            .Select(i => new InvestigatorContact
+                        {
+                            FullName = i.FirstName + " " + i.LastName,
+                            IsPI = i.Roles.Any(r => r.RoleName == RoleExtensions.PrincipleInvestigator),
+                            IsPublicContact = i.IsPublicContact,
+                            Role = i.ProfessionalRole,
+                            UserId = i.UserId
+                        }).OrderByDescending(i=>i.IsPublicContact)
+                    }).ToList();
+
         }
     }
 }

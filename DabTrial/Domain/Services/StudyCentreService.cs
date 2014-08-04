@@ -6,6 +6,8 @@ using DabTrial.Domain.Providers;
 using DabTrial.Domain.Tables;
 using DabTrial.Infrastructure.Interfaces;
 using DabTrial.Models;
+using DabTrial.Infrastructure.Utilities;
+using LinqKit;
 
 namespace DabTrial.Domain.Services
 {
@@ -71,27 +73,7 @@ namespace DabTrial.Domain.Services
                 _db.SaveChanges(currentUserName);
             }
         }
-        public IEnumerable<StudyCentreStatistic> GetStatistics()
-        {
-            return  (from s in _db.StudyCentres
-                     select new StudyCentreStatistic
-                     {
-                         StudyCentreId = s.StudyCentreId,
-                         Abbreviation = s.Abbreviation,
-                         TotalParticiapants = s.TrialParticipants.Count,
-                         CurrentParticipants = s.TrialParticipants.Count(p => p.ActualIcuDischarge==null),
-                         InterventionArmCount = s.TrialParticipants.Count(p=>p.IsInterventionArm),
-                         DeathCount = s.TrialParticipants.Count(p=>p.Death!=null),
-                         ViolationCount = s.TrialParticipants.SelectMany(p=>p.Violations).Count(),
-                         AdverseEventCount = s.TrialParticipants.SelectMany(p=>p.AdverseEvents).Count(),
-                         WithdrawnCount = s.TrialParticipants.Count(p => p.Withdrawal != null),
-                         Screened = s.ScreenedPatients.Count,
-                         Eligible = s.ScreenedPatients.Count(sp=>sp.AllExclusionCriteriaAbsent && sp.AllInclusionCriteriaPresent),
-                         MostRecentScreen = (from p in s.ScreenedPatients
-                                             orderby p.IcuAdmissionDate descending
-                                             select (DateTime?)p.IcuAdmissionDate).FirstOrDefault()
-                     }).ToList();
-        }
+
         public const string MrnDescriptionDefault = "Unique {0} record number";
         public void CreateCentre(String name,
                                  String abbreviation,

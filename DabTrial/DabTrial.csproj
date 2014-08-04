@@ -51,48 +51,87 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah">
-      <HintPath>..\packages\elmah.corelibrary.1.2.1\lib\Elmah.dll</HintPath>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CronExpressionDescriptor">
+      <HintPath>..\packages\CronExpressionDescriptor.1.10.1\lib\net35\CronExpressionDescriptor.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper">
+      <HintPath>..\packages\Dapper.1.13\lib\net45\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="Elmah.Mvc">
       <HintPath>..\packages\Elmah.MVC.2.1.1\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServerCompact">
-      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Core">
+      <HintPath>..\packages\Hangfire.Core.1.0.2\lib\net45\Hangfire.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer">
+      <HintPath>..\packages\Hangfire.SqlServer.1.0.2\lib\net45\Hangfire.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
+    <Reference Include="LinqKit">
+      <HintPath>..\packages\LINQKit.1.1.1\lib\net45\LinqKit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="MVC Foolproof Validation, Version=0.9.4517.16477, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\foolproof.0.9.4517\lib\MVC Foolproof Validation.dll</HintPath>
     </Reference>
-    <Reference Include="Mvc.JQuery.Datatables, Version=1.0.5218.20837, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Mvc.JQuery.Datatables, Version=1.0.5319.18817, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Mvc.JQuery.Datatables.1.2.99\lib\net40\Mvc.JQuery.Datatables.dll</HintPath>
+      <HintPath>..\packages\Mvc.JQuery.Datatables.1.2.111\lib\net40\Mvc.JQuery.Datatables.dll</HintPath>
+    </Reference>
+    <Reference Include="NCrontab">
+      <HintPath>..\packages\ncrontab.1.0.0\lib\NCrontab.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Postal">
+      <HintPath>..\packages\Postal.Mvc5.1.0.0\lib\net45\Postal.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8854.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SqlServerCe.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8854.1\lib\net40\System.Data.SqlServerCe.Entity.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
@@ -101,6 +140,30 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -119,32 +182,8 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="UkAdcHtmlAttributeProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -166,6 +205,7 @@
     <Compile Include="Controllers\AuditLogController.cs" />
     <Compile Include="Controllers\ContactUsController.cs" />
     <Compile Include="Controllers\DataContextController.cs" />
+    <Compile Include="Controllers\DataSummaryController.cs" />
     <Compile Include="Controllers\DbController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -186,6 +226,8 @@
     <Compile Include="Domain\Services\AdverseEventTypeService.cs" />
     <Compile Include="Domain\Services\AuditLogService.cs" />
     <Compile Include="Domain\Services\ContactService.cs" />
+    <Compile Include="Domain\Services\DataSummaryService.cs" />
+    <Compile Include="Domain\Services\CreateEmailServices.cs" />
     <Compile Include="Domain\Services\ParticipantService.cs" />
     <Compile Include="Domain\Services\PatientServiceLayer.cs" />
     <Compile Include="Domain\Services\ProtocolViolationService.cs" />
@@ -198,6 +240,7 @@
     <Compile Include="Domain\Services\UserService.cs" />
     <Compile Include="Domain\Tables\AdverseEvent.cs" />
     <Compile Include="Domain\Tables\AuditLog.cs" />
+    <Compile Include="Domain\Tables\DiscrepancyReport.cs" />
     <Compile Include="Domain\Tables\DrugRoute.cs" />
     <Compile Include="Domain\Tables\LocalRecordProvider.cs" />
     <Compile Include="Domain\Tables\ProtocolViolation.cs" />
@@ -238,7 +281,8 @@
     <Compile Include="Infrastructure\RazorUtilities\CurrentResources.cs" />
     <Compile Include="Infrastructure\RazorUtilities\NavigationItems.cs" />
     <Compile Include="Infrastructure\Utilities\BlockRandomisation.cs" />
-    <Compile Include="Infrastructure\Utilities\Email.cs" />
+    <Compile Include="Infrastructure\Utilities\DataStageUtilities.cs" />
+    <Compile Include="Models\EmailModels.cs" />
     <Compile Include="Infrastructure\Utilities\EnumUtils.cs" />
     <Compile Include="Infrastructure\Utilities\ModelStateExtensions.cs" />
     <Compile Include="Infrastructure\Utilities\SimpleTypeExtensions.cs" />
@@ -275,8 +319,35 @@
     <Compile Include="Models\StudyCentreModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterDatatablesModelBinder.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\DataRequiredCss.css" />
+    <Content Include="Views\DataSummary\AllCentreDataStage.cshtml" />
+    <Content Include="Views\DataSummary\Index.cshtml" />
+    <Content Include="Views\Emails\EmailDataUpdate.cshtml">
+      <LastGenOutput>EmailDataUpdate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Emails\Web.config" />
+    <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Emails\_signature.cshtml" />
+    <Content Include="Views\Emails\ForwardMail.cshtml" />
+    <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceer40EN.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlcecompact40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\sqlceca40.dll" />
+    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\README_ENU.txt" />
+    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\msvcr90.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlcese40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceqp40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceme40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceer40EN.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlcecompact40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\sqlceca40.dll" />
+    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
+    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
     <None Include="App_Data\DABtrial.sdf" />
     <None Include="App_Data\Elmah.sdf" />
     <Content Include="App_Data\PrivateStatic\PlaceHolder.txt" />
@@ -454,20 +525,14 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
-    <Content Include="EmailTemplates\ChangePassword.txt" />
-    <Content Include="EmailTemplates\NewParticipant.txt" />
-    <Content Include="EmailTemplates\NewUserConfirmation.txt" />
-    <Content Include="EmailTemplates\PasswordChanged.txt" />
-    <Content Include="EmailTemplates\SignificantEvent.txt" />
+    <Content Include="Views\Emails\PasswordChanged.cshtml" />
+    <Content Include="Views\Emails\NewParticipant.cshtml" />
+    <Content Include="Views\Emails\NewUserConfirmation.cshtml" />
+    <Content Include="Views\Emails\SignificantEvent.cshtml" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
     <None Include="App_Data\DbBackups\DAB Trial Database 2013-06-14 1608 %28dif%29.bak" />
     <Content Include="App_Data\PrivateStatic\Dab Trial Enrol Patient Walkthrough.docx" />
     <Content Include="App_Data\PrivateStatic\Dab Trial research coordinators tutorial.docx" />
@@ -493,6 +558,8 @@
     <Content Include="Content\themes\base\minified\images\Thumbs.db" />
     <Content Include="Content\Thumbs.db" />
     <Content Include="Images\Thumbs.db" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\DataTables-1.9.4\extras\AutoFill\media\js\AutoFill.min.js.gz" />
     <Content Include="Scripts\DataTables-1.9.4\extras\ColReorder\media\js\ColReorder.min.js.gz" />
     <Content Include="Scripts\DataTables-1.9.4\extras\ColVis\media\js\ColVis.min.js.gz" />
@@ -500,6 +567,11 @@
     <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\js\dataTables.scroller.min.js.gz" />
     <Content Include="Scripts\DataTables-1.9.4\extras\TableTools\media\js\TableTools.min.js.gz" />
     <Content Include="Scripts\GeneralOnLoad-1.0.10.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
@@ -584,30 +656,19 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_RoleMenu.cshtml" />
-    <Content Include="Views\StudyCentre\CentreStatistics.cshtml" />
+    <Content Include="Views\DataSummary\CentreStatistics.cshtml" />
     <Content Include="Views\StudyCentre\Create.cshtml" />
     <Content Include="Views\StudyCentre\Delete.cshtml" />
     <Content Include="Views\StudyCentre\Details.cshtml" />
     <Content Include="Views\StudyCentre\Edit.cshtml" />
     <Content Include="Views\StudyCentre\Index.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
     <None Include="Properties\PublishProfiles\ZangItProduction.pubxml" />
     <None Include="Web.ZangItProduction.config" />
-    <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlceer40EN.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlcecompact40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\sqlceca40.dll" />
-    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\README_ENU.txt" />
-    <None Include="_bin_deployableAssemblies\x86\Microsoft.VC90.CRT\msvcr90.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlcese40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlceqp40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlceme40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlceer40EN.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlcecompact40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\sqlceca40.dll" />
-    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
-    <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
@@ -622,8 +683,6 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\CustomClientValidation-1.1.1.min.js" />
     <Content Include="Scripts\CustomClientValidation.js" />
     <Content Include="Scripts\DataTables-1.9.4\docs\media\js\doc.js" />
@@ -666,7 +725,6 @@
     <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.dataTables.js" />
     <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.dataTables.min.js" />
     <Content Include="Scripts\DataTables-1.9.4\media\js\jquery.js" />
-    <Content Include="Scripts\DataTables\jquery.dataTables.js" />
     <Content Include="Scripts\date-en-AU.js" />
     <Content Include="Scripts\DummyData.js" />
     <Content Include="Scripts\EditableDataTable.js" />
@@ -680,7 +738,6 @@
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-migrate-1.2.1.js" />
     <Content Include="Scripts\jquery-placeholder.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
@@ -701,10 +758,6 @@
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-1.11.1.js" />
     <Content Include="Scripts\jquery.validate-1.11.1.min.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\localization\jquery-ui-timepicker-af.js" />
     <Content Include="Scripts\localization\jquery-ui-timepicker-ca.js" />
     <Content Include="Scripts\localization\jquery-ui-timepicker-cs.js" />

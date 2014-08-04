@@ -9,35 +9,22 @@ using DabTrial.Domain.Tables;
 
 namespace DabTrial.Models
 {
-    public class InvestigatorContact : ContactLink
-    {
-        public InvestigatorRole Role { get; set; }
-        public CentreDetails StudyCentre { get; set; }
-        public class CentreDetails
-        {
-            public String Name { get; set; }
-            public String PublicPhoneNumber { get; set; }
-        }
-    }
-    public class ContactLink
+    public class InvestigatorContact 
     {
         public Int32 UserId { get; set; }
         public String FullName { get; set; }
-        public String ProfessionalRole { get; set; }
-        public Boolean IsPublicContact { get; set; }
+        public ProfessionalRoles Role { set { ProfessionalRole = value.ToString().ToSeparateWords(); } } //bit of a hack
+        public String ProfessionalRole { get; private set; }
+        public bool IsPublicContact { get; set; }
+        public bool IsPI { get; set; }
     }
-    public class InvestigatorContactList
+    public class SiteContact
     {
-        public IEnumerable<InvestigatorContact> ContactList { get; set; }
-        public IEnumerable<InvestigatorContact> GetPrincipleInvestigators()
-        {
-            return ContactList.Where(c => c.Role == InvestigatorRole.PrincipleInvestigator);
-        }
-        public IEnumerable<IGrouping<InvestigatorContact.CentreDetails, ContactLink>> GetInvestigatorsByCentre()
-        {
-            return ContactList.GroupBy(i => i.StudyCentre, i => new ContactLink{ FullName=i.FullName, UserId=i.UserId, ProfessionalRole=i.ProfessionalRole, IsPublicContact=i.IsPublicContact });
-        }
+        public string Name {get; set;}
+        public string PublicPhoneNumber {get; set;}
+        public IEnumerable<InvestigatorContact> Investigators { get; set; }
     }
+
     public class MailInvestigator
     {
         [HiddenInput]
@@ -61,5 +48,12 @@ namespace DabTrial.Models
             public string Role { get; set; }
             public string Hospital { get; set; }
         }
+    }
+
+    public class ForwardMailInvestigator:EmailModel
+    {
+        public string EnquirerEmail { get; set; }
+        public string Subject { get; set; }
+        public string Message { get; set; }
     }
 }

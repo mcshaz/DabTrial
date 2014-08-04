@@ -117,12 +117,12 @@
 		        </tr>
                 <tr class="editor-row deathDetails">
 			        <td class="editor-label">
-				        @Html.LabelDetailsFor(model => model.DeathTime)
+				        @Html.LabelDetailsFor(model => model.DeathEventTime)
 			        </td>
 			        <td class="editor-field">
-				        @Html.EditorFor(model => model.DeathTime)
+				        @Html.EditorFor(model => model.DeathEventTime)
                     
-				        @Html.ValidationMessageFor(model => model.DeathTime)
+				        @Html.ValidationMessageFor(model => model.DeathEventTime)
 			        </td>
                 </tr>
 
@@ -149,23 +149,23 @@
                 
                 <tr class="editor-row  withdrawDetails">
                     <td class="editor-label">
-                        @Html.LabelDetailsFor(model => model.WithdrawalTime)
+                        @Html.LabelDetailsFor(model => model.WithdrawalEventTime)
                     </td>
                     <td class="editor-field">
-                        @Html.EditorFor(model => model.WithdrawalTime)
+                        @Html.EditorFor(model => model.WithdrawalEventTime)
                     
-                         @Html.ValidationMessageFor(model => model.WithdrawalTime)
+                         @Html.ValidationMessageFor(model => model.WithdrawalEventTime)
                     </td>
                 </tr>
                 
                 <tr class="editor-row withdrawDetails">
                     <td class="editor-label">
-                        @Html.LabelDetailsFor(model => model.WithdrawalReason)
+                        @Html.LabelDetailsFor(model => model.WithdrawalDetails)
                     </td>
                     <td class="editor-field">
-                        @Html.EditorFor(model => model.WithdrawalReason)
+                        @Html.EditorFor(model => model.WithdrawalDetails)
                     
-                        @Html.ValidationMessageFor(model => model.WithdrawalReason)
+                        @Html.ValidationMessageFor(model => model.WithdrawalDetails)
                     </td>
                 </tr>
 

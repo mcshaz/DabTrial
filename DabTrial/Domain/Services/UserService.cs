@@ -9,6 +9,7 @@ using DabTrial.Domain.Tables;
 using DabTrial.CustomMembership;
 using DabTrial.Infrastructure.Interfaces;
 using DabTrial.Domain.Providers;
+using Hangfire;
 
 
 namespace DabTrial.Domain.Services
@@ -111,21 +112,12 @@ namespace DabTrial.Domain.Services
                 password = Membership.GeneratePassword(Membership.MinRequiredPasswordLength + 2, Membership.MinRequiredNonAlphanumericCharacters + 1);
             }
             MembershipCreateStatus createStatus;
-            CodeFirstMembershipProvider.CreateUser(_db, userName, password, email, null, null, isApproved, null, out createStatus);
+            var mu = CodeFirstMembershipProvider.CreateUser(_db, userName, password, email, null, null, isApproved, null, out createStatus);
             if (createStatus == MembershipCreateStatus.Success)
             {
-                bool isChangingSelf = userMakingChanges==null || userName == userMakingChanges.UserName;
                 if (noPassword || emailOnSuccess)
                 {
-                    var emailInfo = new Dictionary<string, string>(3);
-                    emailInfo.Add("changePasswordUrl", "~/Account/ChangePassword/");
-                    emailInfo.Add("UserName", userName);
-                    emailInfo.Add("Password", password);
-                    Email.Send( toAddress: email,
-                                subject: "DAB trial access",
-                                fileName: "newUserConfirmation.txt",
-                                replacements: emailInfo,
-                                replyAddress: isChangingSelf ? null : userMakingChanges.Email);
+                    BackgroundJob.Enqueue(() => CreateEmailService.WelcomeNewUser((int)mu.ProviderUserKey));
                 }
                 User newUser = _db.Users.Where(u => u.UserName == userName).FirstOrDefault();
                 newUser.FirstName = firstName;
@@ -134,7 +126,7 @@ namespace DabTrial.Domain.Services
                 newUser.ProfessionalRole = professionalRole;
                 newUser.IsPublicContact = isPublicContact;
                 UpdateRoles(newUser, roleType, dbAdmin);
-                _db.SaveChanges(isChangingSelf?userName:userMakingChanges.UserName);
+                _db.SaveChanges(userMakingChanges == null ? userName : userMakingChanges.UserName);
             }
             else
             {
@@ -160,13 +152,7 @@ namespace DabTrial.Domain.Services
             }
             if (EmailSuccess)
             {
-                var emailInfo = new Dictionary<string, string>(3);
-                emailInfo.Add("UserName", userName);
-                emailInfo.Add("NewPassword", NewPassword);
-                Email.Send( toAddress: member.Email,
-                            subject: "DAB trial account password changed",
-                            fileName: "PasswordChanged.txt",
-                            replacements: emailInfo);
+                CreateEmailService.NotifyResetUserPassword((int)member.ProviderUserKey, _db);
             }
         }
         public void UpdateSelf(String userName,
@@ -187,8 +173,7 @@ namespace DabTrial.Domain.Services
                 user.IsDbAdmin(),
                 user.IsLockedOut,
                 user.IsPublicContact,
-                user.IsApproved,
-                false);
+                user.IsApproved);
         }
         public void UpdateUser(String userNameMakingChanges,
                                String userName,
@@ -202,8 +187,7 @@ namespace DabTrial.Domain.Services
                                Boolean isLockedOut,
                                Boolean isDeactivated,
                                Boolean isPublicContact = false,
-                               Boolean isApproved = false,
-                               Boolean emailOnSuccess = false)
+                               Boolean isApproved = false)
         {
             var roleType = GetRole(roleName);
             if (!roleType.HasValue) {return;}
@@ -219,8 +203,7 @@ namespace DabTrial.Domain.Services
                        isLockedOut,
                        isDeactivated,
                        isPublicContact,
-                       isApproved,
-                       emailOnSuccess);
+                       isApproved);
         }
         public void UpdateUser(String userNameMakingChanges,
                                String userName,
@@ -234,8 +217,7 @@ namespace DabTrial.Domain.Services
                                Boolean isLockedOut,
                                Boolean isDeactivated,
                                Boolean isPublicContact = false,
-                               Boolean isApproved = false,
-                               Boolean emailOnSuccess = false)
+                               Boolean isApproved = false)
         {
             User userForUpdate = _db.Users.Include("Roles").Include("StudyCentre").Where(u => u.UserName == userName).FirstOrDefault();
             User userMakingChanges = _db.Users.Include("Roles").Include("StudyCentre").Where(u => u.UserName == userNameMakingChanges).FirstOrDefault();
@@ -256,8 +238,7 @@ namespace DabTrial.Domain.Services
                 isLockedOut,
                 isDeactivated,
                 isPublicContact,
-                isApproved,
-                emailOnSuccess);
+                isApproved);
         }
         private void UpdateUser(User userMakingChanges,
                                User userForUpdate,
@@ -271,8 +252,7 @@ namespace DabTrial.Domain.Services
                                Boolean isLockedOut,
                                Boolean isDeactivated,
                                Boolean isPublicContact = false,
-                               Boolean isApproved = false,
-                               Boolean emailOnSuccess = false)
+                               Boolean isApproved = false)
         {
             Validate(email, roleType, dbAdmin, isPublicContact, userForUpdate.StudyCentre, userMakingChanges);
             if (!_validatonDictionary.IsValid) { return; }
@@ -291,20 +271,6 @@ namespace DabTrial.Domain.Services
             userForUpdate.IsPublicContact = isPublicContact && !isDeactivated;
             var roleNames = UpdateRoles(userForUpdate, roleType, dbAdmin);
             _db.SaveChanges(userMakingChanges.UserName);
-            if (emailOnSuccess)
-            {
-                var emailInfo = new Dictionary<string, string>(3);
-                emailInfo.Add("UserName", userForUpdate.UserName);
-                emailInfo.Add("Email", email);
-                emailInfo.Add("FirsName", firstName);
-                emailInfo.Add("LastName", lastName);
-                emailInfo.Add("ProfessionalRole", Enum.GetName(typeof(ProfessionalRoles), professionalRole).ToSeparatedWords());
-                emailInfo.Add("Roles", roleNames.Aggregate((current, next) => current + ", " + next));
-                Email.Send( toAddress: email,
-                            subject: "DAB trial account changed",
-                            fileName: "UserDetailsChanged.txt",
-                            replacements: emailInfo);
-            }
         }
         private string[] UpdateRoles(User usr, InvestigatorRole roleType, Boolean dbAdmin)
         {
@@ -416,16 +382,9 @@ namespace DabTrial.Domain.Services
                 _validatonDictionary.AddError("Email","Not found");
                 return; 
             }
-            string password = CodeFirstMembershipProvider.ResetPassword(usr);
+            usr.Password = CodeFirstMembershipProvider.ResetPassword(usr);
             _db.SaveChanges();
-            var emailInfo = new Dictionary<string, string>(3);
-            emailInfo.Add("changePasswordUrl", "~/Account/ChangePassword/");
-            emailInfo.Add("UserName", usr.UserName);
-            emailInfo.Add("Password", password);
-            Email.Send( toAddress: email,
-                        subject: "DAB trial password",
-                        fileName: "ChangePassword.txt",
-                        replacements: emailInfo);
+            CreateEmailService.NotifyResetUserPassword(usr.UserId, _db);
         }
         public void DeleteUser(string userMakingChanges, string userName)
         {

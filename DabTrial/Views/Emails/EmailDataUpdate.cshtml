@@ -1,0 +1,27 @@
+﻿@model DabTrial.Models.DataUpdateEmailModel
+
+To: @Model.To
+From: dabtrial@dabtrial.com
+Subject:Participant Data Potentially Requiring Updating
+
+
+<p>
+   This is a monthly reminder of data which is may require updating in order to
+   keep DAB ttial participant information as current and accurate as possible.
+</p>
+
+<p>
+	The following participants were enrolled over @Model.DaysBeforeNotifying days ago, 
+	and are still not registered as complete. For further information, please look at the
+	@Html.ActionLink("Missing Variables","Index","DataSummary") page of the dabtrial website.
+</p>
+<ul>
+    @foreach (var p in Model.Participants4Update)
+    {
+		<li>
+			<strong>Participant @p.ParticipantId</strong> - Enrolled @p.DaysSinceEnrolled days ago, is currently classed as 
+            <em>@p.DataStage</em>
+		</li>
+	}
+</ul>
+@Html.Partial("_signature")

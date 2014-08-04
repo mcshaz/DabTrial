@@ -6,26 +6,16 @@ using System.Linq;
 
 namespace DabTrial.Domain.Tables
 {
-    public class AdverseEvent : IDescribableEntity
+    public class AdverseEvent : DiscrepancyReport
     {
-        [Key]
-        public int AdverseEventId {get; set; }
-        [ForeignKey("TrialParticipant")]
-        public int ParticipantId { get; set; }
-        public DateTime EventTime { get; set; }
         public int SeverityLevelId { get; set; }
         [ForeignKey("AdverseEventType")]
         public int AdverseEventTypeId { get; set; }
         public bool Sequelae { get; set; }
-        [ForeignKey("ReportingUser")]
-        public int ReportingUserId { get; set; }
-        public DateTime ReportingTimeLocal { get; set; }
         public bool FatalEvent { get; set; }
-        public string Details { get; set; } 
 
         public virtual AdverseEventType AdverseEventType {get;set;}
-        public virtual TrialParticipant TrialParticipant { get; set; }
-        public virtual User ReportingUser { get; set; }
+
         public virtual ICollection<Drug> Drugs { get; set; }
         public Severity Severity
         {
@@ -33,11 +23,6 @@ namespace DabTrial.Domain.Tables
             {
                 return Severity.Levels.FirstOrDefault(s => s.SeverityId == this.SeverityLevelId);
             }
-        }
-
-        public string Describe()
-        {
-            return String.Format("ParticipantId:\"{0}\" EventTime:\"{1:d/M/yyyy HH:mm}\"", ParticipantId, EventTime); 
         }
     }
     //entity framework does not support nested classes as yet - could be nested in above class

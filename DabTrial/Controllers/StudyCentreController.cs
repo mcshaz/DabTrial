@@ -41,12 +41,6 @@ namespace DabTrial.Controllers
             return View(studyCentre);
         }
 
-        public ViewResult CentreStatistics()
-        {
-            var model = new StudyCentreStats(CentreService.GetStatistics(), UserService.GetUser(CurrentUserName).RestrictedToCentre());
-            return View(model);
-        }
-
         //
         // GET: /StudyCentre/Create
         [Authorize(Roles = RoleExtensions.PrincipleInvestigator)]

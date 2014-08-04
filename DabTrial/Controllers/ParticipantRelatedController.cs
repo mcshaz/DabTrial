@@ -7,9 +7,10 @@ namespace DabTrial.Controllers
 {
     public abstract class ParticipantRelatedController : DataContextController
     {
-        #region members
+        #region fields
         bool? _isAjax;
         #endregion
+
         #region instantiation
         public ParticipantRelatedController()
             : base()

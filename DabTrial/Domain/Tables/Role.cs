@@ -45,7 +45,7 @@ namespace DabTrial.Domain.Tables
         {
             if (String.IsNullOrEmpty(role.Description))
             {
-                return role.RoleName.ToSeparatedWords();
+                return role.RoleName.ToSeparateWords();
             }
             else
             {
@@ -53,13 +53,5 @@ namespace DabTrial.Domain.Tables
             }
         }
         public static readonly string[] InvestigatorRoleNames = new string[] { PrincipleInvestigator, SiteInvestigator };
-        public static string GetInvestigatorEmails(int centreId, DabTrial.Domain.Providers.IDataContext context)
-        {
-            return String.Join(",", (from u in context.Users
-                                     where !u.IsDeactivated &&
-                                         (u.StudyCentreId == centreId && u.Roles.Any(r => r.RoleName == RoleExtensions.SiteInvestigator))
-                                         || u.Roles.Any(r => r.RoleName == RoleExtensions.PrincipleInvestigator)
-                                     select u.Email));
-        }
     }
 }

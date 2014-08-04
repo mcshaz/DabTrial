@@ -15,22 +15,15 @@ namespace DabTrial.Domain.Providers
         public DataContext() : base("DataContext") { }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AdverseEvent>().Map(m =>m.MapInheritedProperties());
+            modelBuilder.Entity<ProtocolViolation>().Map(m => m.MapInheritedProperties());
+            modelBuilder.Entity<ParticipantDeath>().Map(m => m.MapInheritedProperties());
+            modelBuilder.Entity<ParticipantWithdrawal>().Map(m => m.MapInheritedProperties());
+
             modelBuilder.Entity<RespiratorySupportType>()
-                        .HasMany(t => t.RespiratorySupportChanges)
-                        .WithRequired(c => c.RespiratorySupportType)
-                        .HasForeignKey(c => c.RespiratorySupportTypeId)
-                        .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.ReportedViolations)
-                .WithRequired(v => v.ReportingUser)
-                .HasForeignKey(v => v.ReportingUserId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.ReportedAdverseEvents)
-                .WithRequired(ae => ae.ReportingUser)
-                .HasForeignKey(ae => ae.ReportingUserId)
+                .HasMany(t => t.RespiratorySupportChanges)
+                .WithRequired(c => c.RespiratorySupportType)
+                .HasForeignKey(c => c.RespiratorySupportTypeId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TrialParticipant>().HasOptional(p=>p.Death)
@@ -77,6 +70,7 @@ namespace DabTrial.Domain.Providers
         //}
         public int SaveChanges(String userId)
         {
+#if DEBUG
             try
             {
                 CheckValidation();
@@ -85,22 +79,23 @@ namespace DabTrial.Domain.Providers
             {
                 throw;
             }
-            foreach (var ent in this.ChangeTracker.Entries().Where(p => p.State == System.Data.Entity.EntityState.Added || p.State == System.Data.Entity.EntityState.Deleted || p.State == System.Data.Entity.EntityState.Modified))
+#endif
+            foreach (var ent in this.ChangeTracker.Entries())
             {
-                // For each changed record, get the audit record entries and add them
-                foreach (AuditLogEntry x in GetAuditRecordsForChange(ent, userId))
+                if (ent.State == System.Data.Entity.EntityState.Added || ent.State == System.Data.Entity.EntityState.Deleted || ent.State == System.Data.Entity.EntityState.Modified)
                 {
-                    this.AuditLog.Add(x);
+                    // For each changed record, get the audit record entries and add them
+                    foreach (AuditLogEntry x in GetAuditRecordsForChange(ent, userId))
+                    {
+                        this.AuditLog.Add(x);
+                    }
                 }
             }
+#if DEBUG
             CheckValidation("AuditRecords");
-            // Call the original SaveChanges(), which will save both the changes made and the audit records
+#endif
             return base.SaveChanges();
-            //}
-            //Catch (Exception ex)
-            //{
-            //  throw ex;
-            //}
+
         }
         private void CheckValidation(string details="")
         {

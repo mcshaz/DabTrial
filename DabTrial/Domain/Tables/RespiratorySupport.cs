@@ -19,6 +19,8 @@ namespace DabTrial.Domain.Tables
         [Display(Description="Blank equates to not applicable")]
         public int? RandomisationCategory { get; set; }
         public bool IsWardCompatible { get; set; }
+        [StringLength(12)]
+        public string Abbrev { get; set; }
 
         public virtual ICollection<TrialParticipant> TrialParticipants { get; set; }
         public virtual ICollection<RespiratorySupportChange> RespiratorySupportChanges { get; set; }

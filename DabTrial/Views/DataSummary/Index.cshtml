@@ -1,0 +1,202 @@
+﻿@model IEnumerable<DabTrial.Models.MissingParticipantDataModel>
+
+@{
+    ViewBag.Title = "Index";
+    Html.Assets().AddStyle("~/Content/DataRequiredCss.css");
+}
+
+<h2>Missing Participant Data</h2>
+
+<table class="table" id="missingVariableTable">
+    <tr class="headers">
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.StudyCentreAbbreviation)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.ParticipantId)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.DaysSinceEnrolled)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.LastLoggedSupport)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.DaysSinceRespSupportLogged)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.ReadyForDischarge)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.ActualDischarge)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.AdrenalineForStridor)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.SteroidsForStridor)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.HMPV)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.RSV)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.HospDischarge)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.InterventionDetails.InitialSteroidRoute)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.InterventionDetails.NumberOfSteroidDoses)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.InterventionDetails.FirstAdrenalineNeb)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.InterventionDetails.FifthAdrenalineNebAt)
+                </span>
+            </div>
+        </th>
+        <th>
+            <div>
+                <span>
+                    @Html.DisplayNameFor(model => model.InterventionDetails.NumberOfAdrenalineNebulisers)
+                </span>
+            </div>
+        </th>
+    </tr>
+    <tr class="subHeaders">
+        <td colspan="5" class="empty"/>
+        <th colspan="12">Missing Values (<input type="checkbox" checked="checked" disabled="disabled"/> = awaiting data)</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.StudyCentreAbbreviation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ParticipantId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DaysSinceEnrolled)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastLoggedSupport)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DaysSinceRespSupportLogged)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReadyForDischarge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActualDischarge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdrenalineForStridor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SteroidsForStridor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HMPV)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RSV)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HospDischarge)
+        </td>
+        @if (item.InterventionDetails == null)
+        {
+            <td colspan="5">
+                N/A (control)
+            </td>
+        }
+        else
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.InterventionDetails.InitialSteroidRoute)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterventionDetails.NumberOfSteroidDoses)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterventionDetails.FirstAdrenalineNeb)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterventionDetails.FifthAdrenalineNebAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterventionDetails.NumberOfAdrenalineNebulisers)
+            </td>
+        }
+    </tr>
+}
+
+</table>

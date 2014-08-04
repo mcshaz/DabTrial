@@ -21,7 +21,7 @@
                 Stopped
             </th>
             <th>
-                @Ajax.ActionLink("Add", "CreateEdit", "AdverseEventDrug", new { AdverseEventId = Model.AdverseEventId }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  })
+                @Ajax.ActionLink("Add", "CreateEdit", "AdverseEventDrug", new { AdverseEventId = Model.Id }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  })
             </th>
         </tr>
     </thead>

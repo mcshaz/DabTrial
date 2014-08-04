@@ -28,7 +28,7 @@ namespace DabTrial.Utilities
             if (destinationType == typeof(string))
             {
                 string stringValue = (string)base.ConvertTo(context, culture, value, destinationType);
-                return stringValue.ToSeparatedWords();
+                return stringValue.ToSeparateWords();
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }

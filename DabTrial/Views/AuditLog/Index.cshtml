@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Audit Log";
     Html.Assets().Libraries.Uses("MvcDataTables", "jQueryUI");
-    Html.DataTableIncludes(jqueryUi: true);
+    //Html.DataTableIncludes(jqueryUi: true);
     var vm = Html.DataTableVm("AuditLog", (AuditLogController ac) => ac.GetAuditLogEntries(null));
     vm.ColumnFilter = true;
     vm.FilterOn("EventType").Select("C", "D", "M");

@@ -53,7 +53,7 @@
                 <td>
                     @using (Html.BeginForm()) {
                         @Html.AntiForgeryToken()
-                        @Html.HiddenFor(model=>model.AdverseEventId)
+                        @Html.HiddenFor(model=>model.Id)
                         <input type="submit" value="Delete" /> 
                     }
                 </td>

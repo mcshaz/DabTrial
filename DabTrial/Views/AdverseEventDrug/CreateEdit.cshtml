@@ -9,7 +9,7 @@
     <fieldset>
         <legend>Medications</legend>
         @Html.HiddenFor(model => model.DrugId, new { id = "primaryKey" })
-        @Html.HiddenFor(model => model.AdverseEventId, new { @class = "maintainState" })
+        @Html.HiddenFor(model => model.Id, new { @class = "maintainState" })
         @Html.HiddenFor(model => model.AdverseEventTrialParticipantDob, new { @class = "maintainState" })
         <table>
             <tbody>

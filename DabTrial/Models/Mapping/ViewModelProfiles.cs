@@ -4,6 +4,7 @@ using System.Linq;
 using System;
 using DabTrial.Utilities;
 using DabTrial.Domain.Tables;
+using DabTrial.Infrastructure.Utilities;
 
 namespace DabTrial.Models
 {
@@ -169,8 +170,11 @@ namespace DabTrial.Models
             Mapper.CreateMap<StudyCentre, CentreSpecificPatientValidationInfo>();
             //.ForMember(dest => dest.Abbreviation, opt=>opt.MapFrom(src=>src.Abbreviation + " Id"));
 
-            Mapper.CreateMap<StudyCentre, InvestigatorContact.CentreDetails>();
-
+            string[] total = new string[] { "Total" };
+            Mapper.CreateMap<ILookup<string, DabTrial.Domain.Services.DataSummaryService.StageCount>, CentreDataStageMatrixModel>()
+                .ForMember(dest => dest.RowCentreNames, opt => opt.MapFrom(src => src.Select(s => s.Key).Concat(total)))
+                .ForMember(dest => dest.ColDataStages, opt => opt.MapFrom(src => Enum.GetValues(typeof(DataStageUtilities.TrialStage)).Cast<DataStageUtilities.TrialStage>().Select(s => s.ToString().ToSeparateWords()).Concat(total)))
+                .ForMember(dest => dest.Counts, opt => opt.ResolveUsing<StageLookupToMatrixResolver>());
         }
     }
     internal class EmailRegexToList : ValueResolver<string, string>
@@ -202,7 +206,7 @@ namespace DabTrial.Models
                 .Include<User,InvestigatorDetailsFull>();
 
             Mapper.CreateMap<User, InvestigatorDetailsFull>()
-                .ForMember(dest=>dest.Role, opt=>opt.MapFrom(src=>src.Roles.First().RoleName.ToSeparatedWords()));
+                .ForMember(dest=>dest.Role, opt=>opt.MapFrom(src=>src.Roles.First().RoleName.ToSeparateWords()));
 
             Mapper.CreateMap<User, InvestigatorListItem>()
                 .ForMember(dest => dest.FullName, opts => opts.MapFrom(usr => usr.FirstName + " " + usr.LastName));
@@ -212,10 +216,13 @@ namespace DabTrial.Models
 
             Mapper.CreateMap<ProfessionalRoles?, string>()
                 .ConvertUsing<ProfessionalRoleToStringConverter>();
-
-            Mapper.CreateMap<User, InvestigatorContact>()
-                .ForMember(dest => dest.FullName, opts => opts.MapFrom(usr => usr.FirstName + " " + usr.LastName))
-                .ForMember(dest=>dest.Role, opts => opts.MapFrom(usr =>usr.InvestigatorRole()));
+            /*
+            Mapper.CreateMap<MailInvestigator, ForwardMailInvestigator>()
+                .ForMember(dest => dest.To, opts => opts.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Attachments, opts => opts.Ignore())
+                .ForMember(dest => dest.ViewData, opts => opts.Ignore())
+                .ForMember(dest => dest.ViewName, opts => opts.Ignore());
+             * */
         }
     }
     public class AuditLogProfile : Profile
@@ -232,7 +239,7 @@ namespace DabTrial.Models
         {
             if (context.SourceValue == null) { return string.Empty; }
             var professionalRole = ((ProfessionalRoles?)context.SourceValue).Value;
-            return Enum.GetName(typeof(ProfessionalRoles), professionalRole).ToSeparatedWords();
+            return Enum.GetName(typeof(ProfessionalRoles), professionalRole).ToSeparateWords();
         }
     }
 
@@ -242,44 +249,47 @@ namespace DabTrial.Models
         {
             var role = (ICollection<Role>)context.SourceValue;
             if (role == null || !role.Any()) { return string.Empty; }
-            return role.Select(r => r.RoleName.ToSeparatedWords())
+            return role.Select(r => r.RoleName.ToSeparateWords())
                         .Aggregate((current, next) => current + "/" + next)
                         .Replace("database", "DB", StringComparison.OrdinalIgnoreCase);
         }
     }
 
-    internal class ParticipantToDataStageResolver : ValueResolver<TrialParticipant, ParticipantListItem.TrialStage>
+    internal class StageLookupToMatrixResolver : ValueResolver<ILookup<string, DabTrial.Domain.Services.DataSummaryService.StageCount>, IList<IList<int>>>
     {
-        
-        protected override ParticipantListItem.TrialStage ResolveCore(TrialParticipant participant)
+        protected override IList<IList<int>> ResolveCore(ILookup<string, DabTrial.Domain.Services.DataSummaryService.StageCount> stats)
         {
-            if (participant.ActualIcuDischarge == null)
+            Array vals = Enum.GetValues(typeof(DataStageUtilities.TrialStage));
+            int minDataSage = (int)vals.GetValue(0);
+            int len = vals.Length - minDataSage + 1;
+            int[] colTotal = new int[len];
+            var matrix = new int[stats.Count+1][];
+            int i = 0;
+            foreach (var g in stats)
             {
-                return ParticipantListItem.TrialStage.Active;
+                int[] rowCounts = matrix[i] = new int[len];
+                int rowTotal = 0;
+                foreach (var r in g)
+                {
+                    int colIndx = (int)r.Stage - minDataSage;
+                    rowCounts[colIndx] = r.Count;
+                    rowTotal += r.Count;
+                    colTotal[colIndx] += r.Count;
+                    rowCounts[len - 1] = rowTotal;
+                }
+                i++;
             }
-            if (participant.ReadyForIcuDischarge == null ||
-                participant.AdrenalineForPostExtubationStridor == null ||
-                participant.IsHmpvPositive == null ||
-                participant.IsRsvPositive == null ||
-                participant.SteroidsForPostExtubationStridor == null ||
-                participant.IsInterventionArm &&
-                (participant.InitialSteroidRouteId == null ||
-                 participant.NumberOfSteroidDoses == null ||
-                 participant.FirstAdrenalineNebAt == null ||
-                 participant.FifthAdrenalineNebAt == null ||
-                 participant.NumberOfAdrenalineNebulisers == null))
-            {
-                return ParticipantListItem.TrialStage.DetailsRqd;
-            }
-            if (participant.Death==null && !participant.AllPriorRespSupports().First().RespiratorySupportType.IsWardCompatible)
-            {
-                return ParticipantListItem.TrialStage.RespRqd;
-            }
-            if (participant.HospitalDischarge == null)
-            {
-                return ParticipantListItem.TrialStage.HospDischRqd;
-            }
-            return ParticipantListItem.TrialStage.Complete;
+            colTotal[colTotal.Length - 1] = colTotal.Sum();
+            matrix[matrix.Length-1] = colTotal;
+            return matrix;
+        }
+    }
+
+    internal class ParticipantToDataStageResolver : ValueResolver<TrialParticipant, DabTrial.Infrastructure.Utilities.DataStageUtilities.TrialStage>
+    {
+        protected override DabTrial.Infrastructure.Utilities.DataStageUtilities.TrialStage ResolveCore(TrialParticipant participant)
+        {
+            return DataStageUtilities.GetCompiledStageExpression()(participant);
         }
     }
     internal class ParticipantToDosingModelResolver : ValueResolver<TrialParticipant, DosingModel>

@@ -78,7 +78,7 @@ namespace DabTrial.Controllers
 
             if (ModelState.IsValid)
             {
-                ViolationService.CreateViolation(model.ParticipantId, model.TimeOfViolation.Value, model.MajorViolation.Value, model.Details, CurrentUserName);
+                ViolationService.CreateViolation(model.ParticipantId, model.EventTime.Value, model.MajorViolation.Value, model.Details, CurrentUserName);
                 if (Request.IsAjaxRequest())
                 {
                     if (ModelState.IsValid)
@@ -115,7 +115,7 @@ namespace DabTrial.Controllers
         {
             if (ModelState.IsValid)
             {
-                var violationEvent = ViolationService.UpdateViolation(model.ViolationId, model.TimeOfViolation, model.MajorViolation, model.Details, CurrentUserName);
+                var violationEvent = ViolationService.UpdateViolation(model.Id, model.EventTime, model.MajorViolation, model.Details, CurrentUserName);
                 if (Request.IsAjaxRequest())
                 {
                     if (ModelState.IsValid)

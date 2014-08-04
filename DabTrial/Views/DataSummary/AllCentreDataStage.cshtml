@@ -1,0 +1,35 @@
+﻿@model DabTrial.Models.CentreDataStageMatrixModel
+
+@{
+    ViewBag.Title = "All Centres Data Stage";
+    Html.Assets().AddStyle("~/Content/DataRequiredCss.css");
+    var lastCol = Model.ColDataStages.Count - 1;
+}
+
+<h2>All Centres Data Stage</h2>
+
+<table id="allCentresStage">
+    <tbody>
+        <tr>
+            <td></td>
+            @for (int j=0;j<Model.ColDataStages.Count;j++)
+            {
+                <th class="@(j==lastCol?"total":"")">@Model.ColDataStages[j]</th>
+            }
+        </tr>
+        @{  
+            var lastRow = Model.RowCentreNames.Count-1;
+            for(int i=0;i<Model.RowCentreNames.Count;i++)
+            {
+                <tr class="@(i==lastRow?"total":"")">
+                    <th>@Model.RowCentreNames[i]</th>
+                    @for (int j = 0; j < Model.ColDataStages.Count; j++)
+                    {
+                        <td class="@(j==lastCol?"total":"")">@Model.Counts[i][j]</td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

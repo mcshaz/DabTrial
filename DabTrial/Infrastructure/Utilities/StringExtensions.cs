@@ -2,16 +2,63 @@
 using System.Text.RegularExpressions;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace DabTrial.Utilities
 {
     public static class StringExtensions
     {
-        public static string ToSeparatedWords(this string value)
+        /*
+        static Regex _seperateWordsRegex;
+        public static string ToSeparateWords(this string value)
         {
-            if (value != null)
-                return Regex.Replace(value, "([A-Z][a-z]?)", " $1").Trim();
-            return null;
+            if (value == null)
+            {
+                return null;
+            }
+
+            return (_seperateWordsRegex ?? (_seperateWordsRegex = new Regex("([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))")))
+                .Replace(value, "$1 ");
+        }
+        */
+        public static string ToSeparateWords(this string value)
+        {
+            if (value==null){return null;}
+            if(value.Length <=1){return value;}
+            char[] inChars = value.ToCharArray();
+            List<int> uCWithAnyLC = new List<int>();
+            int i = 0;
+            while (i < inChars.Length && char.IsUpper(inChars[i])) { ++i; }
+            for (; i < inChars.Length; i++)
+            {
+                if (char.IsUpper(inChars[i]))
+                {
+                    uCWithAnyLC.Add(i);
+                    if (++i < inChars.Length && char.IsUpper(inChars[i]))
+                    {
+                        while (++i < inChars.Length) 
+                        {
+                            if (!char.IsUpper(inChars[i]))
+                            {
+                                uCWithAnyLC.Add(i - 1);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            char[] outChars = new char[inChars.Length + uCWithAnyLC.Count];
+            int lastIndex = 0;
+            for (i=0;i<uCWithAnyLC.Count;i++)
+            {
+                int currentIndex = uCWithAnyLC[i];
+                Array.Copy(inChars, lastIndex, outChars, lastIndex + i, currentIndex - lastIndex);
+                outChars[currentIndex + i] = ' ';
+                lastIndex = currentIndex;
+            }
+            int lastPos = lastIndex + uCWithAnyLC.Count;
+            Array.Copy(inChars, lastIndex, outChars, lastPos, outChars.Length - lastPos);
+            return new string(outChars);
         }
         public static string ToBriefString(this string value) // expression trees cannot handle default values - do it manually
         {

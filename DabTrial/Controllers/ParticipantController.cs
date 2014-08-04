@@ -98,10 +98,10 @@ namespace DabTrial.Controllers
                         null,
                         model.SteroidsForPostExtubationStridor,
                         model.AdrenalineForPostExtubationStridor,
-                        model.DeathTime,
+                        model.DeathEventTime,
                         model.DeathDetails,
-                        model.WithdrawalTime,
-                        model.WithdrawalReason,
+                        model.WithdrawalEventTime,
+                        model.WithdrawalDetails,
                         CurrentUserName);
                 }
                 else
@@ -119,10 +119,10 @@ namespace DabTrial.Controllers
                         participantIntervention.FifthAdrenalineNebAt,
                         model.SteroidsForPostExtubationStridor,
                         model.AdrenalineForPostExtubationStridor,
-                        model.DeathTime,
+                        model.DeathEventTime,
                         model.DeathDetails,
-                        model.WithdrawalTime,
-                        model.WithdrawalReason,
+                        model.WithdrawalEventTime,
+                        model.WithdrawalDetails,
                         CurrentUserName);
                 }
                 if (IsAjax)

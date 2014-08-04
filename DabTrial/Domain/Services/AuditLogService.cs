@@ -9,8 +9,8 @@ namespace DabTrial.Domain.Services
 {
     public class AuditLogService : ServiceLayer
     {
-        public AuditLogService(IValidationDictionary valDictionary = null, IDataContext DBcontext = null)
-            : base(valDictionary, DBcontext)
+        public AuditLogService(IValidationDictionary valDictionary = null, IDataContext dBcontext = null)
+            : base(valDictionary, dBcontext)
         {
         }
         public const int defaultRecords = 100;

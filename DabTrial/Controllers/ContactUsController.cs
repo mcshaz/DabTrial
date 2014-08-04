@@ -22,9 +22,7 @@ namespace DabTrial.Controllers
 
         public ActionResult Index()
         {
-            var model = new InvestigatorContactList();
-            model.ContactList = Mapper.Map <IEnumerable<InvestigatorContact>>(ContactUsService.GetAdministrators());
-            return View(model);
+            return View(ContactUsService.GetAdministrators());
         }
         public ActionResult MailTo(int id, string name, string role, string hospital)
         {
@@ -41,7 +39,7 @@ namespace DabTrial.Controllers
         {
             if (ModelState.IsValid)
             {
-                ContactUsService.sendMail(model.InvestigatorId, model.Email, model.Subject, model.Message);
+                ContactUsService.SendMail(model.InvestigatorId, model.Email, model.Subject, model.Message);
                 if (Request.IsAjaxRequest())
                 {
                     if (ModelState.IsValid) {

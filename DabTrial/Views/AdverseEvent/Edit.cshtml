@@ -6,7 +6,7 @@
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Adverse Event</legend>
-        @Html.HiddenFor(model => model.AdverseEventId)
+        @Html.HiddenFor(model => model.Id)
         @Html.EditorFor(model => model.TrialParticipantLocalTimeRandomised)
         <table>
             <tbody>

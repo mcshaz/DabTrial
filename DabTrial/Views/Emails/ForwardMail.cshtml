@@ -1,0 +1,16 @@
+﻿@model DabTrial.Models.ForwardMailInvestigator
+
+To: @Model.To
+From: @Model.EnquirerEmail
+Subject:DAB trial forwarded enquiry(@Model.Subject)
+<p>
+    An enquiry was entered in the dabtrial website
+</p>
+
+<div style="border:double 4px navy">
+    @Model.Message.Replace("\r\n", "<br>");
+</div>
+
+
+@Html.Partial("_signature")
+

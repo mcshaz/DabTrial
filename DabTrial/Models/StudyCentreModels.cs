@@ -217,6 +217,12 @@ namespace DabTrial.Models
         public IEnumerable<StudyCentreStatistic> CentreStatList {get; private set;}
         public StudyCentreStatistic OverallStats {get; private set;}
     }
+    public class CentreDataStageMatrixModel
+    {
+        public IList<string> RowCentreNames { get; set; }
+        public IList<string> ColDataStages { get; set; }
+        public IList<IList<int>> Counts { get; set; }
+    }
     public class CentreSpecificPatientValidationInfo
     {
         public string Abbreviation { get; set; }

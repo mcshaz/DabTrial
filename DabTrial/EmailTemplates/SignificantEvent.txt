@@ -1,8 +1,0 @@
-﻿A(n) <% eventType %> has been logged by <% userName %> from <% studyCentre %> at <% loggedTime %>.
-
-<strong>Parcipant Id: <% participantId %></strong>
-
-<strong>Time of Event</strong>
-<% eventTime %>
-<strong>Details:</strong>
-<% eventDetails %>

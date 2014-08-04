@@ -6,6 +6,7 @@ using DabTrial.Domain.Tables;
 using DabTrial.Domain.Providers;
 using DabTrial.Infrastructure.Interfaces;
 using DabTrial.Infrastructure.Validation;
+using Hangfire;
 
 namespace DabTrial.Domain.Services
 {
@@ -75,17 +76,28 @@ namespace DabTrial.Domain.Services
             {
                 newParticipant.RespiratorySupportAtRandomisation = _db.RespiratorySupportTypes.Find(newParticipant.RespSupportTypeId);
             }
+            IQueryable<TrialParticipant> partsInGroup = _db.TrialParticipants.Where(p=>p.StudyCentreId == newParticipant.StudyCentreId &&
+                         p.HasCyanoticHeartDisease == newParticipant.HasCyanoticHeartDisease &&
+                         p.HasChronicLungDisease == newParticipant.HasChronicLungDisease &&
+                         p.RespiratorySupportAtRandomisation.RandomisationCategory == newParticipant.RespiratorySupportAtRandomisation.RandomisationCategory);
 
-            IEnumerable<TrialParticipant> returnVar =
-                (from p in _db.TrialParticipants
+            int? maxBlockNumberInGrp = partsInGroup.Max(p => (int?)p.BlockNumber);
+            if (maxBlockNumberInGrp.HasValue)
+            {
+                return partsInGroup.Where(p=>p.BlockNumber==maxBlockNumberInGrp.Value);
+            }
+            return (new TrialParticipant[0]).AsQueryable();
+            //.OrderBy(p=>p.LocalTimeRandomised) if wanting to know variable block size assigned to first participant within block
+            /*
+            (from p in _db.TrialParticipants
                  where p.StudyCentreId == newParticipant.StudyCentreId &&
                          p.HasCyanoticHeartDisease == newParticipant.HasCyanoticHeartDisease &&
                          p.HasChronicLungDisease == newParticipant.HasChronicLungDisease &&
                          p.RespiratorySupportAtRandomisation.RandomisationCategory == newParticipant.RespiratorySupportAtRandomisation.RandomisationCategory
                  group p by p.BlockNumber into g
                  orderby g.Key descending
-                 select g).FirstOrDefault();
-            return (returnVar ?? new TrialParticipant[0]).AsQueryable(); //.OrderBy(p=>p.LocalTimeRandomised) if wanting to know variable block size assigned to first participant within block
+                 select g).FirstOrDefault()
+             */ 
         }
         public TrialParticipant CreateNewParticipant(String hospitalId,
                                                      DateTime Dob,
@@ -126,7 +138,9 @@ namespace DabTrial.Domain.Services
                 
                 _db.SaveChanges(currentUser);
 
-                SendNewParticipantEmail(participant, clinician);
+                //for garbage collection of the participant model
+                int participantId = participant.ParticipantId;
+                BackgroundJob.Enqueue(() => CreateEmailService.NotifyNewParticipant(participantId)); ;
 
                 return participant;
 
@@ -154,6 +168,7 @@ namespace DabTrial.Domain.Services
         {
             var participant = _db.TrialParticipants.Include("Withdrawal")
                 .Include("Death")
+                .Include("StudyCentre")
                 .Include("RespiratorySupportChanges")
                 .Include("RespiratorySupportChanges.RespiratorySupportType")
                 .First(p => p.ParticipantId == participantId);
@@ -176,8 +191,8 @@ namespace DabTrial.Domain.Services
             {
                 if (withdrawalTime.HasValue) //entered value - update
                 {
-                    participant.Withdrawal.Time = withdrawalTime.Value;
-                    participant.Withdrawal.Reason = withdrawalReason;
+                    participant.Withdrawal.EventTime = withdrawalTime.Value;
+                    participant.Withdrawal.Details = withdrawalReason;
                 }
                 else //no entered value - delete
                 {
@@ -186,21 +201,26 @@ namespace DabTrial.Domain.Services
             }
             else if (withdrawalTime.HasValue) //has no DB record but value entered - create
             {
-                SendEventEmail(participant, userName, "participant withdrawal from trial", withdrawalTime.Value, withdrawalReason);
                 var withdrawalDetails = new ParticipantWithdrawal()
                     {
                         Id = participantId,
-                        Time = withdrawalTime.Value,
-                        Reason = withdrawalReason
+                        EventTime = withdrawalTime.Value,
+                        Details = withdrawalReason,
+                        ReportingTimeLocal = participant.StudyCentre.LocalTime(), 
+                        ReportingUserId = (from u in _db.Users
+                                           where u.UserName == userName
+                                           select u.UserId).First()
                     };
                 participant.Withdrawal = withdrawalDetails;
+                _db.SaveChanges(userName);
+                BackgroundJob.Enqueue(() => CreateEmailService.NotifyParticipantWithdrawn(participantId));
             }
             //deal with death
             if (participant.Death != null) //has DB record
             {
                 if (deathTime.HasValue) //entered value - update
                 {
-                    participant.Death.Time = deathTime.Value;
+                    participant.Death.EventTime = deathTime.Value;
                     participant.Death.Details = deathDetails;
                 }
                 else //no entered value - delete
@@ -210,14 +230,19 @@ namespace DabTrial.Domain.Services
             }
             else if (deathTime.HasValue) //has no DB record but value entered - create
             {
-                SendEventEmail(participant, userName, "participant death", deathTime.Value, deathDetails);
                 var deathEvent = new ParticipantDeath()
                 {
                     Id = participantId,
-                    Time = deathTime.Value,
-                    Details = deathDetails
+                    EventTime = deathTime.Value,
+                    Details = deathDetails,
+                    ReportingTimeLocal = participant.StudyCentre.LocalTime(),
+                    ReportingUserId = (from u in _db.Users
+                                       where u.UserName == userName
+                                       select u.UserId).First()
                 };
                 participant.Death = deathEvent;
+                _db.SaveChanges(userName);
+                BackgroundJob.Enqueue(() => CreateEmailService.NotifyParticipantDeath(participantId));
             }
             _db.SaveChanges(userName);
         }
@@ -345,38 +370,6 @@ namespace DabTrial.Domain.Services
             }
             var allHospitalIds = recordSystemParticipants.Select(p => p.HospitalId).ToArray();
             return allHospitalIds.Any(h => CryptoProvider.Decrypt(h) == hospitalId);
-        }
-        private void SendNewParticipantEmail(TrialParticipant participant, User clinician)
-        {
-            var emailList = String.Join(",", (from u in _db.Users
-                                              where (u.StudyCentreId == participant.StudyCentreId && !u.IsDeactivated && u.Roles.Any(r => RoleExtensions.InvestigatorRoleNames.Contains(r.RoleName)))
-                                              select u.Email));
-
-            Email.Send(emailList,
-                "New DAB trial participant enrolled in your site",
-                "NewParticipant.txt",
-                Email.EnrollDetails(clinician.FirstName + " " + clinician.LastName,
-                                    participant.LocalTimeRandomised,
-                                    participant.ParticipantId));
-        }
-        private void SendEventEmail(TrialParticipant participant, string userName, string eventType ,DateTime eventTime, string details)
-        {
-            var usr = (from u in _db.Users.Include("StudyCentre")
-                       where u.UserName == userName
-                       select u).First();
-            var emailList = RoleExtensions.GetInvestigatorEmails(participant.StudyCentreId, _db);
-            
-            Email.Send(emailList,
-                eventType + " Logged",
-                "SignificantEvent.txt",
-                Email.EventDetails(eventType,
-                                   usr.FirstName + " " + usr.LastName,
-                                   usr.StudyCentre.Name,
-                                   DateTime.Now.ToString(),
-                                   participant.ParticipantId,
-                                   eventTime,
-                                   details),
-                usr.Email);
         }
     }
 }

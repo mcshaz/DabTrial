@@ -36,7 +36,7 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddScript("~/Scripts/jquery.unobtrusive-ajax.js");
                 //.AddScript("//ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.unobtrusive-ajax.js"); //not compliant with modern jQuery syntax
             assets.Libraries["DataTables"].Requires("jQuery", "MyUtilityScripts")
-                .AddScript("~/Scripts/jquery.dataTables-1.9.4.js")
+                .AddScript("~/Scripts/DataTables-1.9.4/media/js/jquery.dataTables.js")
                 .AddStyle("~/Content/DataTables-1.9.4/media/css/jquery.dataTables.css")
                 .AddStyle("~/Content/DataTables-1.9.4/media/css/jquery.dataTables_themeroller.css");
             assets.Libraries["MvcDataTables"].Requires("DataTables")
