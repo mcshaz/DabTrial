@@ -17,12 +17,8 @@ namespace DabTrial.Models
         public String ProfessionalRole { get; private set; }
         public bool IsPublicContact { get; set; }
         public bool IsPI { get; set; }
-    }
-    public class SiteContact
-    {
-        public string Name {get; set;}
-        public string PublicPhoneNumber {get; set;}
-        public IEnumerable<InvestigatorContact> Investigators { get; set; }
+        public string SiteName { get; set; }
+        public string SitePublicPhoneNumber { get; set; }
     }
 
     public class MailInvestigator
@@ -52,7 +48,6 @@ namespace DabTrial.Models
 
     public class ForwardMailInvestigator:EmailModel
     {
-        public string EnquirerEmail { get; set; }
         public string Subject { get; set; }
         public string Message { get; set; }
     }

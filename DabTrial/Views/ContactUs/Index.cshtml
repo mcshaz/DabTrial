@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DabTrial.Models.SiteContact>
+﻿@model IEnumerable<DabTrial.Models.InvestigatorContact>
 
 @{
     ViewBag.Title = "Contact Us";
@@ -8,46 +8,43 @@
 <h2>Contact Us</h2>
 <h3>Principle Investigators:</h3>
 <ul>
-@foreach (var centre in Model) //Model.SelectMany(c=>c.Investigators).Where(i=>i.IsPI)
+@foreach (var investigator in Model.Where(i=>i.IsPI))
 {
-    foreach (var investigator in centre.Investigators)
-    {
-        if (investigator.IsPI)
+    <li>
+        <i>
+            @investigator.ProfessionalRole:
+        </i>
+        @if (investigator.IsPublicContact)
         {
-            <li>
-                <i>
-                    @investigator.ProfessionalRole:
-                </i>
-                @if (investigator.IsPublicContact)
-                {
-                    @Ajax.ActionLink(investigator.FullName, "MailTo", new { id = investigator.UserId, name = investigator.FullName, role = investigator.ProfessionalRole, hospital = centre.Name }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId = "ajaxRequest_processing" });
-                }
-                else
-                {
-                    @(investigator.FullName)
-                }
-            </li>
+            @Ajax.ActionLink(investigator.FullName, "MailTo", new { id = investigator.UserId, name = investigator.FullName, role = investigator.ProfessionalRole, hospital = investigator.SiteName }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId = "ajaxRequest_processing" });
         }
-    }
+        else
+        {
+            @(investigator.FullName)
+        }
+    </li>
 }  
 </ul>
 <h3>Site Investigators:</h3>
 <ul>
-@foreach (var centre in Model)
+@foreach (var centre in Model.GroupBy(i => new { i.SiteName, i.SitePublicPhoneNumber}))
 {
     <li>
-        <h4>@centre.Name</h4> 
-        Ph: @centre.PublicPhoneNumber
+        <h4>@centre.Key.SiteName</h4> 
+        Ph: @centre.Key.SitePublicPhoneNumber
         <ul>
-        @foreach (var investigator in centre.Investigators)
+        @foreach (var investigator in centre)
         {
             <li>
                 <i>
                     @(investigator.ProfessionalRole):
                 </i> 
-                @if(investigator.IsPublicContact){
-                    @Ajax.ActionLink(investigator.FullName, "MailTo", new { id = investigator.UserId, name = investigator.FullName, role = investigator.ProfessionalRole, hospital = centre.Name }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId="ajaxRequest_processing"  });
-                } else {
+                @if (investigator.IsPublicContact)
+                {
+                    @Ajax.ActionLink(investigator.FullName, "MailTo", new { id = investigator.UserId, name = investigator.FullName, role = investigator.ProfessionalRole, hospital = centre.Key.SiteName }, new AjaxOptions { HttpMethod = "Get", OnSuccess = "displayAjaxFormDialog", LoadingElementId = "ajaxRequest_processing" });
+                }
+                else
+                {
                     @(investigator.FullName)
                 }
             </li>

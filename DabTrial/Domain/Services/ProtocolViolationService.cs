@@ -65,7 +65,7 @@ namespace DabTrial.Domain.Services
             };
             _db.ProtocolViolations.Add(newEvent);
             _db.SaveChanges(currentUser);
-            BackgroundJob.Enqueue(() => CreateEmailService.NotifyProtocolViolation(newEvent.Id));
+            BackgroundJob.Enqueue<CreateEmailService>(c => c.NotifyProtocolViolation(newEvent.Id));
             return newEvent;
         }
         public HttpStatusCode Delete(int id, string userName)

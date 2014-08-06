@@ -1,13 +1,12 @@
 ﻿@model DabTrial.Models.NewParticipantEmailModel
 
 To: @Model.To
-From: dabtrial@dabtrial.com
-Subject:New DAB participant enrolled in your PICU
+From: @Model.From
+subject:New DAB participant enrolled in your PICU
+
 <p>
     A new participant has been enrolled by @Model.UserName at @Model.DateTimeRandomised
 </p>
 <p>
     <strong>Parcipant Id: @Model.ParticipantId</strong>
 </p>
-
-

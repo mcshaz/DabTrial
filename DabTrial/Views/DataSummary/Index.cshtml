@@ -128,6 +128,9 @@
                 </span>
             </div>
         </th>
+        <td>
+
+        </td>
     </tr>
     <tr class="subHeaders">
         <td colspan="5" class="empty"/>
@@ -196,6 +199,9 @@
                 @Html.DisplayFor(modelItem => item.InterventionDetails.NumberOfAdrenalineNebulisers)
             </td>
         }
+        <td>
+            @Html.ActionLink("Details", "Details", new { id = item.ParticipantId })
+        </td>
     </tr>
 }
 

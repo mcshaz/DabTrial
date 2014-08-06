@@ -96,15 +96,8 @@ public sealed class WebSecurity
     public static bool ChangePassword(string userName, string currentPassword, string newPassword)
     {
         bool success = false;
-        try
-        {
-            MembershipUser currentUser = Membership.GetUser(userName, true);
-            success = currentUser.ChangePassword(currentPassword, newPassword);
-        }
-        catch (ArgumentException)
-        {
-
-        }
+        MembershipUser currentUser = Membership.GetUser(userName, true);
+        success = currentUser.ChangePassword(currentPassword, newPassword);
 
         return success;
     }

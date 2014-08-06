@@ -114,24 +114,10 @@ namespace DabTrial.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                // ChangePassword will throw an exception rather
-                // than return false in certain failure scenarios.
-                bool changePasswordSucceeded;
-                changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
-                /*
-                catch (Exception e)
-                {
-                    changePasswordSucceeded = false;
-                }
-                */
-                if (changePasswordSucceeded)
+                UserService.ChangePassword(CurrentUserName, model.OldPassword,model.NewPassword,model.IncludePasswordInConfirmation);
+                if (ModelState.IsValid)
                 {
                     return RedirectToAction("ChangePasswordSuccess");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
                 }
             }
 

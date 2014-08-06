@@ -10,6 +10,7 @@ using DabTrial.CustomMembership;
 using DabTrial.Infrastructure.Interfaces;
 using DabTrial.Domain.Providers;
 using Hangfire;
+using DabTrial.Models;
 
 
 namespace DabTrial.Domain.Services
@@ -25,6 +26,13 @@ namespace DabTrial.Domain.Services
             : base(valDictionary, DBcontext)
         {
         }
+        public enum EmailUser 
+        { 
+            PlainTextPassword = PasswordPresentations.PlainText, 
+            EmailWithoutPassword = PasswordPresentations.None, 
+            ObfuscatedPassword = PasswordPresentations.Obfuscated,
+            DoNotSendEmail
+        }
         public void CreateUser(String userNameMakingChanges,
                                String userName,
                                String email,
@@ -38,43 +46,13 @@ namespace DabTrial.Domain.Services
                                String password = null,
                                Boolean isPublicContact = false,
                                Boolean isApproved = false,
-                               Boolean emailOnSuccess = false)
+                               EmailUser emailOnSuccess =  EmailUser.DoNotSendEmail)
         {
             var roleType = GetRole(roleName);
             if (!roleType.HasValue) {return;}
             User userMakingChanges = _db.Users.Include("StudyCentre").Include("Roles").First(u => u.UserName == userNameMakingChanges);
             StudyCentre userCentre = _db.StudyCentres.Find(studyCentreId);
-            CreateUser(userMakingChanges,
-                       userName,
-                       email,
-                       firstName,
-                       lastName,
-                       userCentre,
-                       comment,
-                       professionalRole,
-                       roleType.Value,
-                       dbAdmin,
-                       password,
-                       isPublicContact,
-                       isApproved,
-                       emailOnSuccess);
-        }
-        public void CreateUser(User userMakingChanges,
-                               String userName,
-                               String email,
-                               String firstName,
-                               String lastName,
-                               StudyCentre userCentre,
-                               String comment,
-                               ProfessionalRoles professionalRole,
-                               InvestigatorRole roleType,
-                               Boolean dbAdmin = false,
-                               String password = null,
-                               Boolean isPublicContact = false,
-                               Boolean isApproved = false,
-                               Boolean emailOnSuccess = false)
-        {
-            Validate(email, roleType, dbAdmin, isPublicContact, userCentre, userMakingChanges);
+            Validate(email, roleType.Value, dbAdmin, isPublicContact, userCentre, userMakingChanges);
             if (!_validatonDictionary.IsValid) { return; }
             ExecuteCreateUser(userName,
                        email,
@@ -83,7 +61,7 @@ namespace DabTrial.Domain.Services
                        userCentre.StudyCentreId,
                        comment,
                        professionalRole,
-                       roleType,
+                       roleType.Value,
                        dbAdmin,
                        password,
                        isPublicContact,
@@ -103,21 +81,21 @@ namespace DabTrial.Domain.Services
                                String password,
                                Boolean isPublicContact,
                                Boolean isApproved,
-                               Boolean emailOnSuccess,
+                               EmailUser passwordDisplay,
                                User userMakingChanges = null)
         {
-            bool noPassword = String.IsNullOrEmpty(password);
-            if (noPassword)
+            if (String.IsNullOrEmpty(password))
             {
                 password = Membership.GeneratePassword(Membership.MinRequiredPasswordLength + 2, Membership.MinRequiredNonAlphanumericCharacters + 1);
+                passwordDisplay = EmailUser.PlainTextPassword;
             }
             MembershipCreateStatus createStatus;
             var mu = CodeFirstMembershipProvider.CreateUser(_db, userName, password, email, null, null, isApproved, null, out createStatus);
             if (createStatus == MembershipCreateStatus.Success)
             {
-                if (noPassword || emailOnSuccess)
+                if (passwordDisplay != EmailUser.DoNotSendEmail)
                 {
-                    BackgroundJob.Enqueue(() => CreateEmailService.WelcomeNewUser((int)mu.ProviderUserKey));
+                    BackgroundJob.Enqueue<CreateEmailService>(c => c.WelcomeNewUser(userName, password, (PasswordPresentations)passwordDisplay, userMakingChanges == null ? null : userMakingChanges.Email));
                 }
                 User newUser = _db.Users.Where(u => u.UserName == userName).FirstOrDefault();
                 newUser.FirstName = firstName;
@@ -131,28 +109,6 @@ namespace DabTrial.Domain.Services
             else
             {
                 SetCreateStatusError(createStatus);
-            }
-        }
-        public void UpdatePassword(string userName, string OldPassword, string NewPassword, bool EmailSuccess = true)
-        {
-            MembershipUser member = CodeFirstMembershipProvider.GetUser(_db, userName, true);
-            if (!String.IsNullOrEmpty(NewPassword))
-            {
-                try
-                {
-                    if (CodeFirstMembershipProvider.ChangePassword(_db, userName, OldPassword, NewPassword))
-                    {
-                        _validatonDictionary.AddError("Password", "Password change failed. Please re-enter your values and try again.");
-                    }
-                }
-                catch (Exception e)
-                {
-                    _validatonDictionary.AddError("", "An exception occurred: " + HttpUtility.HtmlEncode(e.Message) + ". Please re-enter your values and try again.");
-                }
-            }
-            if (EmailSuccess)
-            {
-                CreateEmailService.NotifyResetUserPassword((int)member.ProviderUserKey, _db);
             }
         }
         public void UpdateSelf(String userName,
@@ -299,7 +255,7 @@ namespace DabTrial.Domain.Services
                                String firstName,
                                String lastName,
                                ProfessionalRoles professionalRole,
-                               Boolean emailOnSuccess = false)
+                               Boolean includePasswordWithEmail = false)
         {
             StudyCentre clinicianCentre = new StudyCentreService(_validatonDictionary, _db).GetCentreByPassword(SiteSpecificPassword);
             if (clinicianCentre == null)
@@ -326,8 +282,7 @@ namespace DabTrial.Domain.Services
                 personalPassword,
                 false,
                 true, //approve user at this stage - might be worth email token to finalise approval in future
-                emailOnSuccess);
-
+                includePasswordWithEmail?EmailUser.ObfuscatedPassword:EmailUser.EmailWithoutPassword);
         }
 
         internal void SetIpStudyCentre(int? studyCentreId)
@@ -374,6 +329,17 @@ namespace DabTrial.Domain.Services
         {
             return _db.Users.Include("Roles").Include("StudyCentre").Where(u => u.UserName == userName).FirstOrDefault();
         }
+        public void ChangePassword(string userName, string oldPassword, string newPassword, bool includePasswordInEmail)
+        {
+            if (WebSecurity.ChangePassword(userName, oldPassword, newPassword))
+            {
+                BackgroundJob.Enqueue<CreateEmailService>(c => c.NotifyResetUserPassword(userName, newPassword,includePasswordInEmail?PasswordPresentations.Obfuscated:PasswordPresentations.None));
+            }
+            else
+            {
+                _validatonDictionary.AddError("", "The current password is incorrect or the new password is invalid.");
+            }
+        }
         public void EmailNewPassword(string email)
         {
             User usr = _db.Users.Where(u => u.Email == email).FirstOrDefault();
@@ -382,9 +348,9 @@ namespace DabTrial.Domain.Services
                 _validatonDictionary.AddError("Email","Not found");
                 return; 
             }
-            usr.Password = CodeFirstMembershipProvider.ResetPassword(usr);
+            string password = CodeFirstMembershipProvider.ResetPassword(usr);
             _db.SaveChanges();
-            CreateEmailService.NotifyResetUserPassword(usr.UserId, _db);
+            (new CreateEmailService()).NotifyResetUserPassword(usr.UserName, password,PasswordPresentations.PlainText);
         }
         public void DeleteUser(string userMakingChanges, string userName)
         {

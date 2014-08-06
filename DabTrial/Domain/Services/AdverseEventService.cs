@@ -87,7 +87,7 @@ namespace DabTrial.Domain.Services
                 participant.Death = deathDetails;
             }
             _db.SaveChanges(currentUser);
-            BackgroundJob.Enqueue(() => CreateEmailService.NotifyAdverseEvent(newEvent.Id));
+            BackgroundJob.Enqueue<CreateEmailService>(c => c.NotifyAdverseEvent(newEvent.Id));
             return newEvent;
         }
         private void ValidateAdverseEvent(TrialParticipant participant, String details, DateTime eventTime)

@@ -28,33 +28,29 @@ namespace DabTrial.Domain.Services
                             .ForEach(n => n.Remove());
 
             */
-            var model = new ForwardMailInvestigator
-            {
-                To = _db.Users.Find(investigatorId).Email,
-                EnquirerEmail = enquirerEmail,
-                Subject = subject,
-                Message = message
-            };
+            (new CreateEmailService()).ForwardWebMessage(enquirerEmail, _db.Users.Find(investigatorId).Email, subject, message);
 
-            CreateEmailService.GetEmailService().Send(model);
+
+            
         }
-        public IEnumerable<SiteContact> GetAdministrators()
+        public IEnumerable<InvestigatorContact> GetAdministrators()
         {
             string[] adminTypes = new string[] {RoleExtensions.SiteInvestigator, RoleExtensions.PrincipleInvestigator};
-            return (from s in _db.StudyCentres
-                    select new SiteContact
+            return (from i in _db.Users
+                    let site = i.StudyCentre
+                    let roles = i.Roles
+                    let isPi = roles.Any(r => r.RoleName == RoleExtensions.PrincipleInvestigator)
+                    where !i.IsDeactivated && (isPi || roles.Any(r => r.RoleName == RoleExtensions.SiteInvestigator))
+                    orderby i.IsPublicContact descending, isPi descending
+                    select new InvestigatorContact
                     {
-                        Name = s.Name,
-                        PublicPhoneNumber = s.PublicPhoneNumber,
-                        Investigators = s.Investigators.Where(i=>i.Roles.Any(r=>adminTypes.Contains(r.RoleName)))
-                            .Select(i => new InvestigatorContact
-                        {
-                            FullName = i.FirstName + " " + i.LastName,
-                            IsPI = i.Roles.Any(r => r.RoleName == RoleExtensions.PrincipleInvestigator),
-                            IsPublicContact = i.IsPublicContact,
-                            Role = i.ProfessionalRole,
-                            UserId = i.UserId
-                        }).OrderByDescending(i=>i.IsPublicContact)
+                        FullName = i.FirstName + " " + i.LastName,
+                        IsPI = isPi,
+                        IsPublicContact = i.IsPublicContact,
+                        Role = i.ProfessionalRole,
+                        UserId = i.UserId,
+                        SiteName = site.Name, 
+                        SitePublicPhoneNumber=site.PublicPhoneNumber
                     }).ToList();
 
         }

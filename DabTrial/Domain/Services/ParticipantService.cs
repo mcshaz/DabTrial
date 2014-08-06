@@ -138,9 +138,7 @@ namespace DabTrial.Domain.Services
                 
                 _db.SaveChanges(currentUser);
 
-                //for garbage collection of the participant model
-                int participantId = participant.ParticipantId;
-                BackgroundJob.Enqueue(() => CreateEmailService.NotifyNewParticipant(participantId)); ;
+                BackgroundJob.Enqueue<CreateEmailService>(c => c.NotifyNewParticipant(participant.ParticipantId)); ;
 
                 return participant;
 
@@ -213,7 +211,7 @@ namespace DabTrial.Domain.Services
                     };
                 participant.Withdrawal = withdrawalDetails;
                 _db.SaveChanges(userName);
-                BackgroundJob.Enqueue(() => CreateEmailService.NotifyParticipantWithdrawn(participantId));
+                BackgroundJob.Enqueue<CreateEmailService>(c => c.NotifyParticipantWithdrawn(participantId));
             }
             //deal with death
             if (participant.Death != null) //has DB record
@@ -242,7 +240,7 @@ namespace DabTrial.Domain.Services
                 };
                 participant.Death = deathEvent;
                 _db.SaveChanges(userName);
-                BackgroundJob.Enqueue(() => CreateEmailService.NotifyParticipantDeath(participantId));
+                BackgroundJob.Enqueue<CreateEmailService>(c => c.NotifyParticipantDeath(participantId));
             }
             _db.SaveChanges(userName);
         }

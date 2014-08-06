@@ -109,6 +109,17 @@
                     </td>
                 </tr>
 
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(m => m.IncludePasswordInConfirmation)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(m => m.IncludePasswordInConfirmation)
+
+                        @Html.ValidationMessageFor(m => m.IncludePasswordInConfirmation)
+                    </td>
+                </tr>
+
                 <tr>
                     <td></td>
                     <td>

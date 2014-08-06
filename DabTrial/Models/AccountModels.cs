@@ -26,6 +26,9 @@ namespace DabTrial.Models
         [Display(Name = "Confirm new password")]
         [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Include password in confirmation email", Description="Leave unchecked if you also use this password for other logins")]
+        public bool IncludePasswordInConfirmation { get; set; }
     }
 
     public class LogOnModel
@@ -83,6 +86,7 @@ namespace DabTrial.Models
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        //private string _userCentre;
+        [Display(Name = "Include password in confirmation email", Description = "Leave unchecked if you also use this password for other logins")]
+        public bool IncludePasswordInConfirmation { get; set; }
     }
 }

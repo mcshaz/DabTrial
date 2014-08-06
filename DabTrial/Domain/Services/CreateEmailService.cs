@@ -1,24 +1,72 @@
 ﻿using DabTrial.Domain.Providers;
 using DabTrial.Domain.Tables;
-using DabTrial.Infrastructure.Interfaces;
 using DabTrial.Infrastructure.Utilities;
 using DabTrial.Models;
 using Postal;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using DabTrial.Utilities;
+using System.Reflection;
+using System.Net.Mime;
+using System.Text;
+using HtmlAgilityPack;
+using System.Net.Mail;
 
 namespace DabTrial.Domain.Services
 {
-    public static class CreateEmailService
+    public class CreateEmailService
     {
-        public static void NotifyAdverseEvent(int adverseEventId)
+        #region Fields
+        IEmailService _emailService;
+        string _viewsPath;
+        #endregion
+        #region Constructors
+        public CreateEmailService()
+        {
+
+        }
+        public CreateEmailService(IEmailService emailService)
+        {
+            _emailService = emailService;
+        }
+        #endregion
+        #region Properties
+        public string ViewsPath
+        {
+            get
+            {
+                return _viewsPath ?? (_viewsPath = HostingEnvironment.MapPath("~/Views/Emails"));
+            }
+            set
+            {
+                _viewsPath = value;
+            }
+        }
+        IEmailService MailService
+        {
+            get
+            {
+                if (_emailService==null)
+                {
+                    // Prepare Postal classes to work outside of ASP.NET request
+                    //return HostingEnvironment.MapPath(@"~/Views/Emails");
+                    //AppDomain.CurrentDomain.BaseDirectory
+                    //Assembly.GetAssembly(typeof(CreateEmailService)).Location
+                    //Path.GetPath
+
+                    var engines = new ViewEngineCollection();
+                    engines.Add(new FileSystemRazorViewEngine(ViewsPath));
+                    _emailService = new EmailService(engines);
+                }
+                return _emailService;
+            }
+        }
+        #endregion
+        public void NotifyAdverseEvent(int adverseEventId)
         {
             using (var db = new DataContext())
             {
@@ -26,10 +74,10 @@ namespace DabTrial.Domain.Services
                 adEvt.EventType = "Adverse event";
                 adEvt.To = AllPIAndSIFromSiteEmails(adEvt.StudyCentreId, db);
 
-                GetEmailService().Send(adEvt);
+                Send(adEvt);
             }
         }
-        public static void NotifyParticipantWithdrawn(int withdrawalId)
+        public void NotifyParticipantWithdrawn(int withdrawalId)
         {
             using (var db = new DataContext())
             {
@@ -37,10 +85,10 @@ namespace DabTrial.Domain.Services
                 withdraw.EventType = "Participant withdrawal from trial";
                 withdraw.To = AllPIAndSIFromSiteEmails(withdraw.StudyCentreId, db);
 
-                GetEmailService().Send(withdraw);
+                Send(withdraw);
             }
         }
-        public static void NotifyParticipantDeath(int deathId)
+        public void NotifyParticipantDeath(int deathId)
         {
             using (var db = new DataContext())
             {
@@ -49,10 +97,10 @@ namespace DabTrial.Domain.Services
                 death.EventType = "Participant death";
                 death.To = AllPIAndSIFromSiteEmails(death.StudyCentreId, db);
 
-                GetEmailService().Send(death);
+                Send(death);
             }
         }
-        public static void NotifyProtocolViolation(int violationId)
+        public void NotifyProtocolViolation(int violationId)
         {
             using (var db = new DataContext())
             {
@@ -61,54 +109,46 @@ namespace DabTrial.Domain.Services
                 violation.EventType = "Protocol violation";
                 violation.To = AllPIAndSIFromSiteEmails(violation.StudyCentreId, db);
 
-                GetEmailService().Send(violation);
+                Send(violation);
             }
         }
-        public static void WelcomeNewUser(int newUserId)
+        public void ForwardWebMessage(string enquirerEmail, string recipientEmail,string subject, string message)
         {
-            using (var db = new DataContext())
+            
+            var model = new ForwardMailInvestigator
             {
-                var user = (from u in db.Users
-                            where u.UserId == newUserId
-                            select new UserPasswordEmailModel 
-                             {
-                                 To = u.Email, 
-                                 Password=u.Password, 
-                                 UserName =u.UserName
-                             }).First();
-                user.ViewName = "NewUserConfirmation";
-                GetEmailService().Send(user);
-            }
-        }
-        public static void NotifyResetUserPassword(int userId, string userEmailMakingChanges)
-        {
-            UserPasswordEmailModel userModel;
-            using (var db = new DataContext())
-            {
-                userModel = GetUserModel(userId, db);
-            }
-            userModel.From = userEmailMakingChanges;
-            userModel.ViewName = "PasswordChanged";
-            GetEmailService().Send(userModel);
-        }
-        public static void NotifyResetUserPassword(int userId, IDataContext db)
-        {
-            var userModel = GetUserModel(userId, db);
-            userModel.ViewName = "PasswordChanged";
-            GetEmailService().Send(userModel);
-        }
-        static UserPasswordEmailModel GetUserModel(int userId, IDataContext db)
-        {
-            var user = db.Users.Find(userId);
-            return new UserPasswordEmailModel
-            {
-                To = user.Email,
-                Password = user.Password,
-                UserName = user.UserName,
-                ViewName = "PasswordChanged"
+                To = recipientEmail,
+                From = enquirerEmail,
+                Subject = subject,
+                Message = message,
+                ViewName = "ForwardMail"
             };
+            Send(model);
         }
-        public static void NotifyNewParticipant(int participantId)
+        public void WelcomeNewUser(string userName, string plainTextPassword, PasswordPresentations passwordDisplay, string from = null)
+        {
+            var user = new UserPasswordEmailModel
+            {
+                ViewName = "NewUserConfirmation",
+                UserName = userName,
+                PlainTextPassword = plainTextPassword,
+                PasswordDisplay = passwordDisplay,
+                From = from
+            };
+            Send(user);
+        }
+        public void NotifyResetUserPassword(string userName, string plainTextPassword, PasswordPresentations passwordDisplay)
+        {
+            var user = new UserPasswordEmailModel
+            {
+                ViewName = "PasswordChanged",
+                UserName = userName,
+                PlainTextPassword = plainTextPassword,
+                PasswordDisplay = passwordDisplay
+            };
+            Send(user);
+        }
+        public void NotifyNewParticipant(int participantId)
         {
             using (var db = new DataContext())
             {
@@ -121,15 +161,15 @@ namespace DabTrial.Domain.Services
                                         DateTimeRandomised = u.LocalTimeRandomised, 
                                         UserName=ec.FirstName + " " + ec.LastName
                                     }).First();
+                participant.ParticipantId = participantId;
                 participant.To = PIAndSIFromSiteEmails(participant.StudyCentreId, db);
                 participant.ViewName = "NewParticipant";
-                GetEmailService().Send(participant);
+                Send(participant);
             }
         }
         public const int DaysBeforeNotifying = 7;
-        public static void EmailInvestigatorsReMissingData()
+        public void EmailInvestigatorsReMissingData()
         {
-            var emailService = GetEmailService();
             List<DataUpdateEmailModel> dataUpdateEmailModels = new List<DataUpdateEmailModel>();
             using (var db = new DataContext())
             {
@@ -147,6 +187,7 @@ namespace DabTrial.Domain.Services
                     {
                         DaysBeforeNotifying = DaysBeforeNotifying, 
                         To = PIAndSIFromSiteEmails(g.Key,db), 
+                        ViewName="EmailDataUpdate",
                         Participants4Update=g.Select(p=>new Participant4Update
                         { 
                             ParticipantId = p.ParticipantId, 
@@ -159,7 +200,7 @@ namespace DabTrial.Domain.Services
             //getting out of loop and then reiterating to minimise chance db gets clobbered by app pool recycle
             foreach (var d in dataUpdateEmailModels)
             {
-                emailService.Send(d);
+                Send(d);
             }
             
         }
@@ -198,15 +239,41 @@ namespace DabTrial.Domain.Services
             returnVar.ViewName = "SignificantEvent";
             return returnVar;
         }
-        static internal EmailService GetEmailService()
+        void Send(Email email)
         {
-            // Prepare Postal classes to work outside of ASP.NET request
-            var viewsPath = Path.GetFullPath(HostingEnvironment.MapPath(@"~/Views/Emails"));
-            var engines = new ViewEngineCollection();
-            engines.Add(new FileSystemRazorViewEngine(viewsPath));
-
-            return new EmailService(engines);
+            using (MailMessage mail = MailService.CreateMailMessage(email))
+            {
+                const int junkBytes = 3;
+                mail.IsBodyHtml = false;
+                FileInfo sig = new FileInfo(Path.Combine(ViewsPath, "_Signature.html"));
+                byte[] html = Encoding.UTF8.GetBytes(mail.Body);
+                using (MemoryStream stream = new MemoryStream(html.Length + (int)sig.Length - junkBytes))
+                {
+                    stream.Write(html, 0, html.Length);
+                    using (FileStream fileStream = sig.OpenRead()) 
+                    {
+                        fileStream.Position = junkBytes;
+                        fileStream.CopyTo(stream);
+                    }
+                    stream.Position = 0;
+                    HtmlDocument doc = new HtmlDocument();
+                    doc.Load(stream);
+                    using (StringWriter sw = new StringWriter())
+                    {
+                        HtmlToText.ConvertTo(doc.DocumentNode, sw);
+                        sw.Flush();
+                        mail.Body = sw.ToString();
+                    }
+                    stream.Position = 0;
+                    mail.AlternateViews.Add(new System.Net.Mail.AlternateView(stream, "text/html; charset=utf-8"));
+                    using (var smtp = new SmtpClient())
+                    {
+                        smtp.Send(mail);
+                    }
+                }
+            }
         }
+
         static string AllPIAndSIFromSiteEmails(int centreId, DabTrial.Domain.Providers.IDataContext context)
         {
             return String.Join(",", (from u in context.Users
