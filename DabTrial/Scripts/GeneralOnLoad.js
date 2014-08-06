@@ -428,6 +428,10 @@ function failedAjaxDelete(xhr, status, error) {
     alert(msgBase);
 };
 function displayAjaxResultDialog(data) {
+    if (isJsonError(data)) {
+        displayJsonError(data);
+        return false;
+    }
     var $dialogDiv = $("#ajaxResultDialog").html(data);
     setDialogHeader($dialogDiv);
     $("#ajaxFormDialog").dialog('close');

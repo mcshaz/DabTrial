@@ -81,8 +81,8 @@ namespace DabTrial.Domain.Services
             if (participant == null) { _validatonDictionary.AddError("ParticipantId", "Participant does not exist"); }
             if (String.IsNullOrWhiteSpace(details)) { _validatonDictionary.AddError("Details", "details of the adverse event must be provided"); }
             TimeSpan timeFromEnrollment = timeOfViolation - participant.LocalTimeRandomised;
-            if (timeFromEnrollment.Days > 365 || timeFromEnrollment.Days < 0) { _validatonDictionary.AddError("TimeOfViolation", "must be after the participant was randomised and before 12 months has elapsed"); }
-            if (participant.StudyCentre.LocalTime() < timeOfViolation) { _validatonDictionary.AddError("TimeOfViolation", "must be before current date and time"); }
+            if (timeFromEnrollment.Days > 365 || timeFromEnrollment.Days < 0) { _validatonDictionary.AddError("EventTime", "must be after the participant was randomised and before 12 months has elapsed"); }
+            if (participant.StudyCentre.LocalTime() < timeOfViolation) { _validatonDictionary.AddError("EventTime", "must be before current date and time"); }
         }
         public ProtocolViolation UpdateViolation(Int32 violationId, DateTime timeOfViolation, Boolean majorViolation, String details, string currentUser)
         {

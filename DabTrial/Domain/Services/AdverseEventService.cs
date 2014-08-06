@@ -83,7 +83,7 @@ namespace DabTrial.Domain.Services
             _db.AdverseEvents.Add(newEvent);
             if (fatalEvent && participant.Death==null) 
             {
-                var deathDetails = new ParticipantDeath() { Id=participantId, Details = "Fatal Adverse Event Logged: "+ details, EventTime = eventTime };
+                var deathDetails = new ParticipantDeath() { Id=participantId, ReportingUserId=usr.UserId, Details = "Fatal Adverse Event Logged: "+ details, EventTime = eventTime };
                 participant.Death = deathDetails;
             }
             _db.SaveChanges(currentUser);

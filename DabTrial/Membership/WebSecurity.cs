@@ -93,12 +93,11 @@ public sealed class WebSecurity
         return Membership.GetUser(Username);
     }
 
-    public static bool ChangePassword(string userName, string currentPassword, string newPassword)
+    public static bool ChangePassword(string userName, string currentPassword, string newPassword, out MembershipUser user)
     {
         bool success = false;
-        MembershipUser currentUser = Membership.GetUser(userName, true);
-        success = currentUser.ChangePassword(currentPassword, newPassword);
-
+        user = Membership.GetUser(userName, true);
+        success = user.ChangePassword(currentPassword, newPassword);
         return success;
     }
 

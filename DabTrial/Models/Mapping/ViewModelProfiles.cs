@@ -287,9 +287,10 @@ namespace DabTrial.Models
 
     internal class ParticipantToDataStageResolver : ValueResolver<TrialParticipant, DabTrial.Infrastructure.Utilities.DataStageUtilities.TrialStage>
     {
+        Func<TrialParticipant, DataStageUtilities.TrialStage> _getStage = DataStageUtilities.StageExpression().Compile();
         protected override DabTrial.Infrastructure.Utilities.DataStageUtilities.TrialStage ResolveCore(TrialParticipant participant)
         {
-            return DataStageUtilities.GetCompiledStageExpression()(participant);
+            return _getStage(participant);
         }
     }
     internal class ParticipantToDosingModelResolver : ValueResolver<TrialParticipant, DosingModel>

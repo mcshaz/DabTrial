@@ -28,7 +28,7 @@ namespace DabTrial.Infrastructure.Utilities
                              !p.FifthAdrenalineNebAt.HasValue ||
                              !p.NumberOfAdrenalineNebulisers.HasValue))
                     ? TrialStage.DetailsRqd
-                    : (p.Death==null && !(p.RespiratorySupportChanges.OrderByDescending(r=>r.ChangeTime).FirstOrDefault().RespiratorySupportType ?? p.RespiratorySupportAtRandomisation).IsWardCompatible)
+                    : (p.Death==null && !(p.RespiratorySupportChanges.Any()?p.RespiratorySupportChanges.OrderByDescending(r=>r.ChangeTime).FirstOrDefault().RespiratorySupportType:p.RespiratorySupportAtRandomisation).IsWardCompatible)
                         ? TrialStage.RespRqd
                         : (!p.HospitalDischarge.HasValue)
                             ? TrialStage.HospDischRqd
@@ -55,11 +55,6 @@ namespace DabTrial.Infrastructure.Utilities
                             ? TrialStage.HospDischRqd
                             : TrialStage.Complete;
              */
-        }
-        static Func<TrialParticipant, TrialStage> _compiledStageExpression;
-        public static Func<TrialParticipant, TrialStage> GetCompiledStageExpression()
-        {
-            return _compiledStageExpression ?? (_compiledStageExpression = StageExpression().Compile());
         }
     }
 }

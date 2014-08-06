@@ -125,7 +125,7 @@ namespace DabTrial.Domain.Services
             };
             Send(model);
         }
-        public void WelcomeNewUser(string userName, string plainTextPassword, PasswordPresentations passwordDisplay, string from = null)
+        public void WelcomeNewUser(string userName, string userEmail,string plainTextPassword, PasswordPresentations passwordDisplay, string from = null)
         {
             var user = new UserPasswordEmailModel
             {
@@ -133,18 +133,20 @@ namespace DabTrial.Domain.Services
                 UserName = userName,
                 PlainTextPassword = plainTextPassword,
                 PasswordDisplay = passwordDisplay,
-                From = from
+                From = from,
+                To = userEmail
             };
             Send(user);
         }
-        public void NotifyResetUserPassword(string userName, string plainTextPassword, PasswordPresentations passwordDisplay)
+        public void NotifyResetUserPassword(string userName, string userEmail,string plainTextPassword, PasswordPresentations passwordDisplay)
         {
             var user = new UserPasswordEmailModel
             {
                 ViewName = "PasswordChanged",
                 UserName = userName,
                 PlainTextPassword = plainTextPassword,
-                PasswordDisplay = passwordDisplay
+                PasswordDisplay = passwordDisplay,
+                To = userEmail
             };
             Send(user);
         }
@@ -204,23 +206,7 @@ namespace DabTrial.Domain.Services
             }
             
         }
-        static EventLoggedEmailModel GetEventLog(IQueryable<DiscrepancyReport> reports, int id)
-        {
-            return (from r in reports
-                    let ru= r.ReportingUser 
-                    where r.Id == id
-                    select new EventLoggedEmailModel
-                    {
-                        StudyCentreId = r.TrialParticipant.StudyCentreId,
-                        Details = r.Details,
-                        DateTimeLogged = r.ReportingTimeLocal,
-                        EventDateTime = r.EventTime,
-                        ParcipantId = r.ParticipantId,
-                        StudyCentreName = r.TrialParticipant.StudyCentre.Name,
-                        UserName = ru.FirstName + " " + ru.LastName
-                    }).First();
-        }
-        static EventLoggedEmailModel GetEventLog(IQueryable<OneTo1DiscrepancyReport> reports, int id)
+        static EventLoggedEmailModel GetEventLog(IQueryable<DiscrepancyReportBase> reports, int id)
         {
             var returnVar = (from r in reports
                             let p = r.TrialParticipant
@@ -233,7 +219,8 @@ namespace DabTrial.Domain.Services
                                 DateTimeLogged = r.ReportingTimeLocal,
                                 EventDateTime = r.EventTime,
                                 StudyCentreName = p.StudyCentre.Name,
-                                UserName = ru.FirstName + " " + ru.LastName
+                                UserName = ru.FirstName + " " + ru.LastName,
+                                To = ru.Email
                             }).First();
             returnVar.ParcipantId = id;
             returnVar.ViewName = "SignificantEvent";

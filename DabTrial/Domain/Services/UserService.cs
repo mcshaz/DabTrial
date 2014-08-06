@@ -95,7 +95,7 @@ namespace DabTrial.Domain.Services
             {
                 if (passwordDisplay != EmailUser.DoNotSendEmail)
                 {
-                    BackgroundJob.Enqueue<CreateEmailService>(c => c.WelcomeNewUser(userName, password, (PasswordPresentations)passwordDisplay, userMakingChanges == null ? null : userMakingChanges.Email));
+                    BackgroundJob.Enqueue<CreateEmailService>(c => c.WelcomeNewUser(userName, email, password,(PasswordPresentations)passwordDisplay, userMakingChanges == null ? null : userMakingChanges.Email));
                 }
                 User newUser = _db.Users.Where(u => u.UserName == userName).FirstOrDefault();
                 newUser.FirstName = firstName;
@@ -331,9 +331,10 @@ namespace DabTrial.Domain.Services
         }
         public void ChangePassword(string userName, string oldPassword, string newPassword, bool includePasswordInEmail)
         {
-            if (WebSecurity.ChangePassword(userName, oldPassword, newPassword))
+            MembershipUser user;
+            if (WebSecurity.ChangePassword(userName, oldPassword, newPassword, out user))
             {
-                BackgroundJob.Enqueue<CreateEmailService>(c => c.NotifyResetUserPassword(userName, newPassword,includePasswordInEmail?PasswordPresentations.Obfuscated:PasswordPresentations.None));
+                BackgroundJob.Enqueue<CreateEmailService>(c => c.NotifyResetUserPassword(userName, user.Email,newPassword,includePasswordInEmail?PasswordPresentations.Obfuscated:PasswordPresentations.None));
             }
             else
             {
@@ -350,7 +351,7 @@ namespace DabTrial.Domain.Services
             }
             string password = CodeFirstMembershipProvider.ResetPassword(usr);
             _db.SaveChanges();
-            (new CreateEmailService()).NotifyResetUserPassword(usr.UserName, password,PasswordPresentations.PlainText);
+            (new CreateEmailService()).NotifyResetUserPassword(usr.UserName, usr.UserName,password,PasswordPresentations.PlainText);
         }
         public void DeleteUser(string userMakingChanges, string userName)
         {

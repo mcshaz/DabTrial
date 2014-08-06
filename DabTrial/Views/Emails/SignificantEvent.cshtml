@@ -1,9 +1,8 @@
 ﻿@model DabTrial.Models.EventLoggedEmailModel
-@section Headers{
-    To: @Model.To
-    From: @Model.From
-    Subject: @Model.EventType logged
-}
+To: @Model.To
+From: @Model.From
+Subject: @Model.EventType logged
+
 <p>
     A@("aeiouAEIOU".IndexOf(Model.EventType[0]) >= 0?"n":"") @Model.EventType has been logged by @Model.UserName at @Model.DateTimeLogged.
 </p>
