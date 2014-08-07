@@ -70,10 +70,9 @@ namespace DabTrial.Infrastructure.Utilities
                         break;
 
                     // check the text is meaningful and not a bunch of whitespaces
-                    html = Regex.Replace(html,@"^\s{2,}|\s{2,}$"," ");
                     if (html.Trim().Length > 0)
                     {
-                        outText.Write(HtmlEntity.DeEntitize(html));
+                        outText.Write(HtmlEntity.DeEntitize(Regex.Replace(html, @"\s{2,}", " ")));
                     }
                     break;
 
@@ -83,7 +82,7 @@ namespace DabTrial.Infrastructure.Utilities
                         case "p":
                         case "div":
                             // treat paragraphs & divs as crlf
-                            outText.Write("\r\n");
+                            outText.Write("\r\n\r\n");
                             break;
                         case "a":
                             if (node.Attributes.Contains("href"))

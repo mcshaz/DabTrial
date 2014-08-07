@@ -611,7 +611,7 @@ function ajaxAddOrChangeRow(response) {
         $ajaxTable = $ajaxTBody.parent(),
         rowObject;
     emptyFormElements();
-    if ($.fn.dataTable.fnIsDataTable($ajaxTable)) {
+    if ($.fn.dataTable && $.fn.dataTable.fnIsDataTable($ajaxTable)) {
         rowObject = ($.type(response) == 'string')
             ?$.map($(response).find('td'), function (item) {
                 return $.trim(item.innerHTML);
