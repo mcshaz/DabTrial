@@ -138,7 +138,7 @@ namespace DabTrial.Controllers
         private void SetLists(InvestigatorCreateEdit model)
         {
             // create your menu with all roles : for multi select
-            var allRoles = UserService.GetAllRoles().Where(r=>r.RoleName!=RoleExtensions.DbAdminName);
+            var allRoles = UserService.GetAllRoles().Where(r=>r.RoleName!=RoleExtensions.DbAdministrator);
             var currentUser = UserService.GetUser(CurrentUserName);
             var pi = currentUser.IsPrincipleInvestigator();
             model.CanAssignDbAdmin = currentUser.IsDbAdmin();

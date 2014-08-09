@@ -10,7 +10,7 @@ using DabTrial.Infrastructure.Interfaces;
 
 namespace DabTrial.Controllers
 {
-    [Authorize(Roles = RoleExtensions.DbAdminName)]
+    [Authorize(Roles = RoleExtensions.DbAdministrator)]
     public class DbController : Controller
     {
         //

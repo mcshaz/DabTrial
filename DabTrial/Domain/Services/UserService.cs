@@ -231,7 +231,7 @@ namespace DabTrial.Domain.Services
         private string[] UpdateRoles(User usr, InvestigatorRole roleType, Boolean dbAdmin)
         {
 
-            string[] roleNames = dbAdmin ? new string[] { roleType.ToString(), RoleExtensions.DbAdminName } : new string[] { roleType.ToString() };
+            string[] roleNames = dbAdmin ? new string[] { roleType.ToString(), RoleExtensions.DbAdministrator } : new string[] { roleType.ToString() };
             List<Role> dbNewRoles = (from d in _db.Roles
                                      where roleNames.Contains(d.RoleName)
                                      select d).ToList();
@@ -441,7 +441,7 @@ namespace DabTrial.Domain.Services
             var highestCreatorRole = userMakingChanges.Roles.OrderBy(r => r.Rank).FirstOrDefault();
             int creatorRank = highestCreatorRole == null ? int.MaxValue : (highestCreatorRole.Rank ?? int.MaxValue);
             if (topRole.Rank > creatorRank) { _validatonDictionary.AddError("roleType", "Cannot assign permissions higher than your own"); }
-            if (dbAdmin && !userMakingChanges.Roles.Any(r => r.RoleName == RoleExtensions.DbAdminName))
+            if (dbAdmin && !userMakingChanges.Roles.Any(r => r.RoleName == RoleExtensions.DbAdministrator))
             {
                 _validatonDictionary.AddError("dbAdmin", "Can only assign database administrator priveleges if you are a database administrator");
             }

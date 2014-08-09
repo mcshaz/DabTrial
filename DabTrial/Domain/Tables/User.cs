@@ -108,7 +108,7 @@ namespace DabTrial.Domain.Tables
         }
         public static bool IsDbAdmin(this User usr)
         {
-            return usr.Roles.Any(r => r.RoleName == RoleExtensions.DbAdminName);
+            return usr.Roles.Any(r => r.RoleName == RoleExtensions.DbAdministrator);
         }
         public static bool IsPrincipleInvestigator(this User usr)
         {
@@ -125,7 +125,7 @@ namespace DabTrial.Domain.Tables
         }
         public static String InvestigatorRoleName(this User usr)
         {
-            return usr.Roles.FirstOrDefault(r => r.RoleName != RoleExtensions.DbAdminName).RoleName;
+            return usr.Roles.FirstOrDefault(r => r.RoleName != RoleExtensions.DbAdministrator).RoleName;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace DabTrial.Domain.Tables
         public const string PrincipleInvestigator = "PrincipleInvestigator";
         public const string EnrollingClinician = "EnrollingClinician";
         public const string SiteInvestigator = "SiteInvestigator";
-        public const string DbAdminName = "DatabaseAdmin";
+        public const string DbAdministrator = "DatabaseAdmin";
         public static string GetRoleDescription(this Role role)
         {
             if (String.IsNullOrEmpty(role.Description))

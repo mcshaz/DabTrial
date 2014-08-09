@@ -18,14 +18,14 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .Add(new RoleMenuItem("Violations", "Index", "ProtocolViolation", PIorSI))
                 .Add(new RoleMenuItem("Screening", "CreateEdit", "ScreeningLog", "Authenticated"))
                 .Add(new RoleMenuItem("Manage Users", "Index", "InvestigatorAccount", PIorSI))
-                .Add(new RoleMenuItem("View log", "Index", "AuditLog", RoleExtensions.PrincipleInvestigator + ',' +RoleExtensions.DbAdminName))
+                .Add(new RoleMenuItem("View log", "Index", "AuditLog", RoleExtensions.PrincipleInvestigator + ',' +RoleExtensions.DbAdministrator))
                 .Add(new RoleMenuItem("Sites", "Index", "StudyCentre", PIorSI))
                 .Add(new RoleMenuItem("Data Required", "AllCentreDataStage", "DataSummary", RoleExtensions.PrincipleInvestigator))
                 .Add(new RoleMenuItem("Missing Variables", "Index", "DataSummary", PIorSI))
                 .Add(new RoleMenuItem("No Consent Reasons", "Index", "NoConsentAttempt", RoleExtensions.PrincipleInvestigator))
                 .Add(new RoleMenuItem("Manage Files", "Index", "ManageFiles", RoleExtensions.PrincipleInvestigator))
                 .Add(new RoleMenuItem("My Account", "Details", "Account", "Authenticated"))
-                .Add(new RoleMenuItem("Backup", "Index", "Db", RoleExtensions.DbAdminName));
+                .Add(new RoleMenuItem("Backup", "Index", "Db", RoleExtensions.DbAdministrator));
         }
     }
 }

@@ -245,12 +245,7 @@ namespace DabTrial.Domain.Services
                     stream.Position = 0;
                     HtmlDocument doc = new HtmlDocument();
                     doc.Load(stream);
-                    using (StringWriter sw = new StringWriter())
-                    {
-                        HtmlToText.ConvertTo(doc.DocumentNode, sw);
-                        sw.Flush();
-                        mail.Body = sw.ToString();
-                    }
+                    mail.Body = HtmlToText.ConvertDoc(doc);
                     stream.Position = 0;
                     mail.AlternateViews.Add(new System.Net.Mail.AlternateView(stream, "text/html; charset=utf-8"));
                     using (var smtp = new SmtpClient())
