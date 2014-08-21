@@ -15,6 +15,7 @@ using System.Net.Mime;
 using System.Text;
 using HtmlAgilityPack;
 using System.Net.Mail;
+using Hangfire;
 
 namespace DabTrial.Domain.Services
 {
@@ -183,7 +184,7 @@ namespace DabTrial.Domain.Services
                                         p.ParticipantId,
                                         p.DaysSinceEnrolled,
                                         p.Stage
-                                    }).GroupBy(p => p.StudyCentreId))
+                                    }).ToLookup(p => p.StudyCentreId))
                 {
                     dataUpdateEmailModels.Add(new DataUpdateEmailModel
                     {

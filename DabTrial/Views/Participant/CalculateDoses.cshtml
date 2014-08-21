@@ -18,9 +18,13 @@
             <span class="freq">8 Hourly</span> for a total of 9 doses (i.e. <span class="lastDose">last 8 hourly dose given @Model.LastHighDoseSteroid</span>), followed by <span class="freq">daily</span> on days 4-6 (<span class="lastDose">last dose @Model.LastDoseSteroid</span>).
         </li>
         <li class="drugDose">
-            <span class="route">Nebulised</span> <span class="drugName">adrenaline*</span> <span class="dose">@Html.DisplayFor(model => model.AdrenalineMl) ml of @(Model.AdrenalineIs1pc?"1%":"1 in 1000") @(Model.AdrenalineMl<6?"made up to 6ml with 0.9% saline":"neat")</span>, <span class="freq">30 minutely</span> for a total of 5 doses, 
-            followed by <span class="freq">1-4 hourly</span> (but at least 4 hourly) for a total of 72 hours (<span class="lastDose">last dose @Model.LastDoseAdrenaline</span>).
-            <div class="note">*Providing the resting heart rate is &lt; 180 beats per minute</div>
+            <span class="route">Nebulised</span> <span class="drugName">adrenaline<sup>1</sup></span> <span class="dose">@Html.DisplayFor(model => model.AdrenalineMl) ml of @(Model.AdrenalineIs1pc?"1%":"1 in 1000") @(Model.AdrenalineMl<6?"made up to 6ml with 0.9% saline":"neat")</span>, <span class="freq">30 minutely</span> for a total of 5 doses, 
+            followed by <span class="freq">1-4 hourly</span> (but at least 4 hourly) for a total of 72 hours<sup>2</sup> (<span class="lastDose">last dose @Model.LastDoseAdrenaline</span>). 
+            <ol>
+                <li class="note">Providing the resting heart rate is &lt; 180 beats per minute</li>
+                <li class="note">Beyond 72 hours, nebulised adrenaline can be administered on a prn basis rather than a minimum of every 4 hours and may continue for a further 3 days while in intensive care</li>
+            </ol>
+            
         </li>
     </ul>
     

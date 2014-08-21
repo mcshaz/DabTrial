@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 using DabTrial.Infrastructure.Validation;
-using MvcHtmlHelpers;
 using Foolproof;
 using DabTrial.Infrastructure.Interfaces;
 using Mvc.JQuery.Datatables;
+using Mvc.JQuery.Datatables.Models;
 
 
 namespace DabTrial.Models
