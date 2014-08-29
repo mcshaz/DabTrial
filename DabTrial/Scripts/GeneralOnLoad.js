@@ -146,7 +146,7 @@
     }
     yepnope({
         test: Modernizr.input.placeholder,
-        nope: '/Scripts/jquery-placeholder.js',
+        nope: '/Scripts/Placeholders-3.0.2.min.js',
         complete: setElementListeners
     });
     /*
@@ -721,10 +721,6 @@ function setElementListeners() {
         .filter("[details='true']")
         .each(showDetail)
         .on("change", showDetail);
-    if (!Modernizr.input.placeholder) {
-        $("input,textarea", context)
-            .placeholder();
-    }
     //this class identifies a table (ideally tbody) with edit and update buttons
     $(".ajaxUpdatableTBody", context)
         .on("click", ".deleteAction", function (event) {

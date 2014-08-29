@@ -341,6 +341,9 @@
   <ItemGroup>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Content\DataRequiredCss.css" />
+    <Content Include="Scripts\GeneralOnLoad-1.1.1.min.js" />
+    <Content Include="Scripts\jquery-1.11.1.js" />
+    <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Views\DataSummary\AllCentreDataStage.cshtml" />
     <Content Include="Views\DataSummary\Index.cshtml" />
@@ -354,6 +357,7 @@
     <Content Include="Views\Emails\_Signature.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\jquery-1.11.1.min.map" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -481,8 +485,7 @@
     <Content Include="Content\PublicFiles\HealthProfessionals\PlaceHolder.txt" />
     <Content Include="Content\PublicFiles\Parents\PlaceHolder.txt" />
     <Content Include="Content\Site - Copy.css" />
-    <Content Include="Content\Site-1.0.4.min.css" />
-    <Content Include="Content\Site-1.0.5.min.css" />
+    <Content Include="Content\Site-1.0.6.min.css" />
     <Content Include="Content\Site_legacy.css" />
     <Content Include="Content\Site_legacy_old.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
@@ -588,7 +591,6 @@
     <Content Include="Scripts\DataTables-1.9.4\extras\FixedColumns\media\js\FixedColumns.min.js.gz" />
     <Content Include="Scripts\DataTables-1.9.4\extras\Scroller\media\js\dataTables.scroller.min.js.gz" />
     <Content Include="Scripts\DataTables-1.9.4\extras\TableTools\media\js\TableTools.min.js.gz" />
-    <Content Include="Scripts\GeneralOnLoad-1.1.0.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -761,7 +763,7 @@
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Scripts\jquery-migrate-1.2.1.js" />
-    <Content Include="Scripts\jquery-placeholder.js" />
+    <Content Include="Scripts\Placeholders-3.0.2.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.9.2.js" />
@@ -818,7 +820,7 @@
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\Modernizr-2.7.1.min.js" />
     <Content Include="Scripts\mvcfoolproof.unobtrusive.js" />
-    <Content Include="Scripts\mvcfoolproof.unobtrusive.min.js" />
+    <Content Include="Scripts\mvcfoolproof.unobtrusive-0.9.4.min.js" />
     <Content Include="Scripts\MvcFoolproofJQueryValidation.min.js" />
     <Content Include="Scripts\MvcFoolproofValidation.min.js" />
     <Content Include="Scripts\PIE.js" />

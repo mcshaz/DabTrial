@@ -104,7 +104,7 @@ foolproof.getName = function (element, dependentPropety) {
         if (dependentPropertyElement.length > 1) {
             for (var index = 0; index != dependentPropertyElement.length; index++)
                 if (dependentPropertyElement[index]["checked"]) {
-                    dependentValue = dependentPropertyElement[index].value;
+                    dependentValue = $(dependentPropertyElement[index]).val();
                     break;
                 }
 
@@ -112,7 +112,7 @@ foolproof.getName = function (element, dependentPropety) {
                 dependentValue = false
         }
         else
-            dependentValue = dependentPropertyElement[0].value;
+            dependentValue = $(dependentPropertyElement[0]).val();
 
         if (foolproof.is(dependentValue, operator, dependentTestValue)) {
             if (pattern == null) {
@@ -130,7 +130,7 @@ foolproof.getName = function (element, dependentPropety) {
 
     jQuery.validator.addMethod("requiredifempty", function (value, element, params) {
         var dependentProperty = foolproof.getId(element, params["dependentproperty"]);
-        var dependentValue = document.getElementById(dependentProperty).value;
+        var dependentValue = $(document.getElementById(dependentProperty)).val();
 
         if (dependentValue == null || dependentValue.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "") {
             if (value != null && value.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "")
@@ -144,9 +144,9 @@ foolproof.getName = function (element, dependentPropety) {
 
     jQuery.validator.addMethod("requiredifnotempty", function (value, element, params) {
         var dependentProperty = foolproof.getId(element, params["dependentproperty"]);
-        var dependentValue = document.getElementById(dependentProperty).value;
+        var dependentValue = $(document.getElementById(dependentProperty)).val();
 
-        if (dependentValue != null && dependentValue.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "") {
+        if (dependentValue != null && dependentValue.toString().replace(/^\s+/, '').replace(/\s+$/, '') != "") {
             if (value != null && value.toString().replace(/^\s\s*/, '').replace(/\s\s*$/, '') != "")
                 return true;
         }

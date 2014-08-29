@@ -449,7 +449,7 @@ input.linkButton {
   cursor: pointer;
   text-decoration:underline;
 }
-input.placeholder[type="text"]{color:#aaa;}
+input.placeholdersjs[type="text"]{color:#aaa;}
 input::-webkit-input-placeholder{color:#aaa;}
 input:-moz-placeholder{color:#aaa;}
 .upperCase{ text-transform: uppercase; }

@@ -17,7 +17,7 @@ namespace DabTrial.Domain.Services
         {
         }
         private const int BlockSize = 4;
-        protected void createAllocation(TrialParticipant participant)
+        protected void CreateAllocation(TrialParticipant participant)
         {
             var currentBlock = GetCurrentBlock(participant);
             int noInBlock = currentBlock.Count();
@@ -131,7 +131,7 @@ namespace DabTrial.Domain.Services
                     EnrollingClinicianId = clinician.UserId,
                     StudyCentreId = clinician.StudyCentreId.Value
                 };
-                createAllocation(participant);
+                CreateAllocation(participant);
                 participant.LocalTimeRandomised = clinician.StudyCentre.LocalTime();
 
                 _db.TrialParticipants.Add(participant);
