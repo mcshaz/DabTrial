@@ -73,7 +73,6 @@ namespace DabTrial.Domain.Services
                              x = g.Count(i=>i.IsInterventionArm),
                              n = g.Count()
                          }).FirstOrDefault();
-            if (dbSum==null){return 0.5;}
             return 1.0-MathNet.Numerics.Distributions.Binomial.CDF(0.5, dbSum.n+1, dbSum.x);
         }
 
