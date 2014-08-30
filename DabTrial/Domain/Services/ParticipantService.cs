@@ -5,7 +5,6 @@ using DabTrial.Utilities;
 using DabTrial.Domain.Tables;
 using DabTrial.Domain.Providers;
 using DabTrial.Infrastructure.Interfaces;
-using DabTrial.Infrastructure.Validation;
 using Hangfire;
 
 namespace DabTrial.Domain.Services
@@ -39,7 +38,7 @@ namespace DabTrial.Domain.Services
                 participant.BlockNumber = currentBlock.Select(p=>p.BlockNumber).First();
 
             }
-            participant.IsInterventionArm = BlockRandomisation.IsNextAllocationInterventionWithCentralTendancy(currentBlock.Select(p=>p.IsInterventionArm),BlockSize,WholeTrialInterventionProportion);
+            participant.IsInterventionArm = BlockRandomisation.IsNextAllocationInterventionWithCentralTendancy(currentBlock.Select(p=>p.IsInterventionArm),BlockSize,new RandomAdaptor(),NewBlockProbIntervention);
         }
         public TrialParticipant GetParticipant(int participantId)
         {
@@ -65,11 +64,19 @@ namespace DabTrial.Domain.Services
                                       where u.UserName==userName 
                                       select u.StudyCentre.TrialParticipants).FirstOrDefault()).Cast<TrialParticipant>();
         }
-        protected double WholeTrialInterventionProportion()
+        public double NewBlockProbIntervention()
         {
-            return (from p in _db.TrialParticipants
-                    select p.IsInterventionArm?1:0).Average();
+            var dbSum = (from p in _db.TrialParticipants
+                         group p by 0 into g
+                         select new 
+                         { 
+                             x = g.Count(i=>i.IsInterventionArm),
+                             n = g.Count()
+                         }).FirstOrDefault();
+            if (dbSum==null){return 0.5;}
+            return 1.0-MathNet.Numerics.Distributions.Binomial.CDF(0.5, dbSum.n+1, dbSum.x);
         }
+
         protected IQueryable<TrialParticipant> GetCurrentBlock(TrialParticipant newParticipant)
         {
             if (newParticipant.RespiratorySupportAtRandomisation == null)

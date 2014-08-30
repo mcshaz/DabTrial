@@ -1,13 +1,12 @@
-﻿using System;
+﻿using DabTrial.Infrastructure.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace DabTrial.Utilities
 {
     public static class BlockRandomisation
     {
-        public static bool IsNextAllocationInterventionWithCentralTendancy(IEnumerable<bool> interventionArmWithinBlock, int blockSize,Func<double> wholeTrialProportionIntervention)
+        public static bool IsNextAllocationInterventionWithCentralTendancy(IEnumerable<bool> interventionArmWithinBlock, int blockSize,IRandom randomGenerator,Func<double> newBlockProbIntervention=null)
         {
             double remainingAllocations = blockSize;
             double remainingInterventions = blockSize / 2;
@@ -20,17 +19,24 @@ namespace DabTrial.Utilities
                 }
             }
             if (remainingAllocations <= 0) { throw new ArgumentException("No remaining allocations"); }
-            if (remainingAllocations == blockSize && wholeTrialProportionIntervention!=null)
+            double pIntervention;
+            if (remainingAllocations == blockSize)
             {
-                return wholeTrialProportionIntervention() < 0.5;
+                if (newBlockProbIntervention == null)
+                {
+                    pIntervention = 0.5;
+                }
+                else
+                {
+                    pIntervention = newBlockProbIntervention();
+                }
             }
-            double Pintervention = remainingInterventions / remainingAllocations;
-            double rdm = new Random().NextDouble();
-            return (rdm <= Pintervention);
-        }
-        public static bool IsNextAllocationIntervention(IEnumerable<bool> interventionArmWithinBlock, int blockSize)
-        {
-            return IsNextAllocationInterventionWithCentralTendancy(interventionArmWithinBlock, blockSize, null);
+            else
+            {
+                pIntervention = remainingInterventions / remainingAllocations;
+            }
+            
+            return (randomGenerator.NextDouble() <= pIntervention);
         }
         /*
         public static bool nextAllocation<T>(int blockSize, IEnumerable<T> patientDataCollection, Func<T,bool> predicate)
