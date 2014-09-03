@@ -17,15 +17,15 @@ namespace DabTrial.Infrastructure.RazorUtilities
  //               .AddScript("~/Scripts/jquery-migrate-1.2.1.js"); //generate console warnings - must remember to look
             assets.Libraries["jQueryUI"].Requires("jQuery")
                 .AddScript("~/Scripts/jquery-ui-1.9.2.js",BrowserType.Ie6)
-                .AddScript("~/Scripts/jquery-ui-1.10.4.js", ~BrowserType.Ie6)
+                .AddScript("~/Scripts/jquery-ui-1.11.1.js", ~BrowserType.Ie6)
                 .AddStyle("//code.jquery.com/ui/1.9.2/themes/eggplant/jquery-ui.css", BrowserType.Ie6)
                 .AddStyle("//code.jquery.com/ui/1.10.4/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
             assets.Libraries["TimePicker"].Requires("jQueryUI","MyUtilityScripts")
                 .AddScript("~/Scripts/jquery-ui-sliderAccess.js")
-                .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.4.js")
+                .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.4.6.js")
                 .AddStyle("~/Content/jQueryUI/jquery-ui-timepicker-addon.css");
             assets.Libraries["Validation"].Requires("jQuery")
-                .AddScript("~/Scripts/jquery.validate-1.11.1.js")
+                .AddScript("~/Scripts/jquery.validate-1.13.0.js")
                 .AddScript("~/Scripts/jquery.validate.unobtrusive.js")
                 .AddScript("~/Scripts/mvcfoolproof.unobtrusive.js")
                 .AddScript("~/Scripts/CustomClientValidation.js");
@@ -53,24 +53,25 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddScript("//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",BrowserType.W3cCompliant)
                 .AddScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js", BrowserType.IeLegacy);
             assets.Libraries["jQueryUI"].Requires("jQuery")
-                .AddScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js",BrowserType.Ie6)
-                .AddScript("//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js", ~BrowserType.Ie6)
+                .AddScript("//code.jquery.com/ui/1.9.2/jquery-ui.min.js", BrowserType.Ie6)
+                .AddScript("//code.jquery.com/ui/1.11.1/jquery-ui.min.js", ~BrowserType.Ie6)//curently 1.11.1 but does not close timepicker on exit
                 .AddStyle("//code.jquery.com/ui/1.9.2/themes/eggplant/jquery-ui.css", BrowserType.Ie6)
-                .AddStyle("//code.jquery.com/ui/1.10.3/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
+                .AddStyle("//code.jquery.com/ui/1.11.1/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
             assets.Libraries["TimePicker"].Requires("jQueryUI", "MyUtilityScripts")
                 .AddScript("~/Scripts/jquery-ui-sliderAccess.min.js")
-                .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.4.min.js")
+                .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.4.6.min.js")
                 .AddStyle("~/Content/jQueryUI/jquery-ui-timepicker-addon.css");
             assets.Libraries["Validation"].Requires("jQuery")
-                .AddScript("//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js")
-                .AddScript("~/Scripts/jquery.validate.unobtrusive.min.js")
-                .AddScript("~/Scripts/mvcfoolproof.unobtrusive-0.9.4.min.js")
+                .AddScript("//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js")
+                .AddScript("//ajax.aspnetcdn.com/ajax/mvc/5.1/jquery.validate.unobtrusive.min.js")
+                .AddScript("~/Scripts/mvcfoolproof.unobtrusive.min.js")
                 .AddScript("~/Scripts/CustomClientValidation-1.1.1.min.js");
             assets.Libraries["MyUtilityScripts"].Requires("jQuery")
-                .AddScript("~/Scripts/GeneralOnLoad-1.1.1.min.js").IsImplementingLibrary = true;
+                .AddScript("~/Scripts/GeneralOnLoad-1.1.2.min.js").IsImplementingLibrary = true;
             assets.Libraries["FormTools"].Requires("Validation", "MyUtilityScripts");
             assets.Libraries["AjaxFormTools"].Requires("FormTools", "jQueryUI")
                 .AddScript("~/Scripts/jquery.unobtrusive-ajax.min.js");
+                //.AddScript("//ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.unobtrusive-ajax.min.js"); -old version no support modern jquery
             assets.Libraries["DataTables"].Requires("jQuery", "MyUtilityScripts")
                 .AddScript("//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js")
                 .AddStyle("//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css");

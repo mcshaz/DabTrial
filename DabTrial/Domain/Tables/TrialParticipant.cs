@@ -82,6 +82,7 @@ namespace DabTrial.Domain.Tables
     }
     public class ParticipantWithdrawal : OneTo1DiscrepancyReport
     {
+        public bool OngoingDataOk { get; set; }
     }
     public class ParticipantDeath : OneTo1DiscrepancyReport
     {

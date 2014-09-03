@@ -132,7 +132,13 @@
             dateFormat: "d/m/yy"
         };
         if (!Modernizr.input.placeholder) {
-            dpDefaults.onClose = function () { $(this).blur(); }
+            if ($.timepicker) { //this is before setting onClose default, however in future versions of timepicker, hopefully this is allowed to be set in the default
+                dpDefaults.timeFormat = "HH:mm";
+                $.timepicker.setDefaults(dpDefaults)
+            }
+            dpDefaults.onClose = function () {
+                $(this).blur();
+            }
         }
         $.datepicker.setDefaults(dpDefaults);
     }
@@ -146,7 +152,7 @@
     }
     yepnope({
         test: Modernizr.input.placeholder,
-        nope: '/Scripts/Placeholders-3.0.2.min.js',
+        nope: '/Scripts/jquery.placeholder.js',
         complete: setElementListeners
     });
     /*
@@ -688,7 +694,8 @@ function setElementListeners() {
             }
             return { defaultDate: new Date() };
         },
-        context = (this==window)?document:this;
+        context = (this==window)?document:this,
+        options;
         
     //date & time pickers
     if ($.datepicker) {
@@ -700,13 +707,16 @@ function setElementListeners() {
             .datepicker({ beforeShow: show });
         //.on("mousedown", toggleDatePicker);
         if ($.timepicker) {
+            options = {
+                //seperator: " ",
+                hour: (new Date()).getHours(),
+                beforeShow: show,
+            }
+            if (!Modernizr.input.placeholder) {
+                options.onClose = $.datepicker._defaults.onClose;
+            }
             $(".dateTime", context).not("[type=hidden]")
-                .datetimepicker({
-                    timeFormat: "HH:mm",
-                    //seperator: " ",
-                    hour: (new Date()).getHours(),
-                    beforeShow: show
-                });
+                .datetimepicker(options);
             //.on("mousedown", toggleDatePicker);
         }
     }
@@ -731,6 +741,10 @@ function setElementListeners() {
             $(".rowInEditor").removeClass("rowInEditor");
             $(this).closest("tr").addClass("rowInEditor");
         });
+    //attach placeholders if required
+    if (!Modernizr.input.placeholder) {
+        $('input,textarea', context).placeholder();
+    }
 };
 //
 function removeProperty(obj/*, argList*/) {

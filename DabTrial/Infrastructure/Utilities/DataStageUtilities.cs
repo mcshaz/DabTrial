@@ -14,25 +14,27 @@ namespace DabTrial.Infrastructure.Utilities
         public static System.Linq.Expressions.Expression<Func<TrialParticipant, TrialStage>> StageExpression()
         {
             return p =>
-            !p.ActualIcuDischarge.HasValue
-                ? TrialStage.Active
-                : (!p.ReadyForIcuDischarge.HasValue ||
-                        !p.AdrenalineForPostExtubationStridor.HasValue ||
-                        !p.IsHmpvPositive.HasValue ||
-                        !p.IsRsvPositive.HasValue ||
-                        !p.SteroidsForPostExtubationStridor.HasValue ||
-                        p.IsInterventionArm &&
-                            (!p.InitialSteroidRouteId.HasValue ||
-                             !p.NumberOfSteroidDoses.HasValue ||
-                             !p.FirstAdrenalineNebAt.HasValue ||
-                             !p.FifthAdrenalineNebAt.HasValue ||
-                             !p.NumberOfAdrenalineNebulisers.HasValue))
-                    ? TrialStage.DetailsRqd
-                    : (p.Death==null && !(p.RespiratorySupportChanges.Any()?p.RespiratorySupportChanges.OrderByDescending(r=>r.ChangeTime).FirstOrDefault().RespiratorySupportType:p.RespiratorySupportAtRandomisation).IsWardCompatible)
-                        ? TrialStage.RespRqd
-                        : (!p.HospitalDischarge.HasValue)
-                            ? TrialStage.HospDischRqd
-                            : TrialStage.Complete;
+                (p.Withdrawal !=null && !p.Withdrawal.OngoingDataOk)
+                    ? TrialStage.Complete
+                    :!p.ActualIcuDischarge.HasValue
+                        ? TrialStage.Active
+                        : (!p.ReadyForIcuDischarge.HasValue ||
+                                !p.AdrenalineForPostExtubationStridor.HasValue ||
+                                !p.IsHmpvPositive.HasValue ||
+                                !p.IsRsvPositive.HasValue ||
+                                !p.SteroidsForPostExtubationStridor.HasValue ||
+                                p.IsInterventionArm &&
+                                    (!p.InitialSteroidRouteId.HasValue ||
+                                        !p.NumberOfSteroidDoses.HasValue ||
+                                        !p.FirstAdrenalineNebAt.HasValue ||
+                                        !p.FifthAdrenalineNebAt.HasValue ||
+                                        !p.NumberOfAdrenalineNebulisers.HasValue))
+                            ? TrialStage.DetailsRqd
+                            : (p.Death==null && !(p.RespiratorySupportChanges.Any()?p.RespiratorySupportChanges.OrderByDescending(r=>r.ChangeTime).FirstOrDefault().RespiratorySupportType:p.RespiratorySupportAtRandomisation).IsWardCompatible)
+                                ? TrialStage.RespRqd
+                                : (!p.HospitalDischarge.HasValue)
+                                    ? TrialStage.HospDischRqd
+                                    : TrialStage.Complete;
             /*
              return p =>
             p.ActualIcuDischarge == null

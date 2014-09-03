@@ -146,7 +146,18 @@
                     </td>
                     <td></td>
                 </tr>
-                
+   
+                <tr class="editor-row  withdrawDetails">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.WithdrawalOngoingDataOk)
+                    </td>
+                    <td class="editor-field">
+                        @Html.EditorFor(model => model.WithdrawalOngoingDataOk)
+
+                        @Html.ValidationMessageFor(model => model.WithdrawalOngoingDataOk)
+                    </td>
+                </tr>
+                             
                 <tr class="editor-row  withdrawDetails">
                     <td class="editor-label">
                         @Html.LabelDetailsFor(model => model.WithdrawalEventTime)

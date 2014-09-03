@@ -265,8 +265,8 @@ input[type="email"] {
     border: 1px solid #ccc;
     padding: 2px;
     font-size: 1.2em;
-    color: #4F012A;
     width: 200px;
+    z-index:-1;
 }
 
 select {
@@ -449,9 +449,6 @@ input.linkButton {
   cursor: pointer;
   text-decoration:underline;
 }
-input.placeholdersjs[type="text"]{color:#aaa;}
-input::-webkit-input-placeholder{color:#aaa;}
-input:-moz-placeholder{color:#aaa;}
 .upperCase{ text-transform: uppercase; }
 #criteria {
   background-color: #ffff00;
@@ -545,3 +542,6 @@ input:-moz-placeholder{color:#aaa;}
     opacity:0.6;
     filter: Alpha(opacity=50);
 }
+.placeholder { color: #d0d0d0; }
+::-webkit-input-placeholder { color: #d0d0d0; }
+input:-moz-placeholder, textarea:-moz-placeholder { color: #d0d0d0; }

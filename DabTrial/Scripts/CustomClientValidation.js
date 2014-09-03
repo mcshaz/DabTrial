@@ -84,7 +84,7 @@
     //------------------------
     //dateHandling
 //    if (isNaN(Date.parse("23/2/2012 13:12"))) {
-        //taken from http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js
+        //taken from http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.js
         //modified to allow time
         jQuery.validator.addMethod("dateITA", function (value, element) {
             var check = false,
@@ -105,7 +105,7 @@
                 ss = parseInt(match[8] || 0, 10);
                 SS = parseInt(match[10] || 0, 10);
                 xdata = new Date(yyyy, MM-1, dd,hh,mm,ss,SS);
-                check = ((xdata.getFullYear() === yyyy) && (xdata.getMonth() === MM - 1) && (xdata.getDate() === dd)
+                check = (( xdata.getFullYear() === yyyy ) && (xdata.getMonth () ===MM - 1 ) && ( xdata.getDate() === dd )
                     && (xdata.getHours() === hh) && (xdata.getMinutes() === mm) && (xdata.getSeconds() === ss) && (xdata.getMilliseconds() === SS));
             }
             return this.optional(element) || check;

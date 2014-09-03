@@ -156,6 +156,11 @@ namespace DabTrial.Models
         public String DeathDetails { get; set; }
 
         public bool WithdrawnFromStudy { get; set; }
+
+        [RequiredIfTrue("WithdrawnFromStudy")]
+        [Display(Name = "Consent for further data", Description = "Consent given for ongoing data collection")]
+        public bool? WithdrawalOngoingDataOk { get; set; }
+
         [RequiredIfTrue("WithdrawnFromStudy")]
         [ComesBeforeNowAtClient]
         [ComesAfter("MostRecentLoggedEvent", AnnotationArgumentType.PropertyName)]

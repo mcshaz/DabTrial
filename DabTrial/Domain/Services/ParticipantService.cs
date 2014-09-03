@@ -62,17 +62,20 @@ namespace DabTrial.Domain.Services
                                           .Include("StudyCentre.TrialParticipants.RespiratorySupportChanges")
                                           .Include("StudyCentre.TrialParticipants.RespiratorySupportChanges.RespiratorySupportType")
                                       where u.UserName==userName 
-                                      select u.StudyCentre.TrialParticipants).FirstOrDefault()).Cast<TrialParticipant>();
+                                      select u.StudyCentre.TrialParticipants).FirstOrDefault())
+                    .Cast<TrialParticipant>();
         }
         public double NewBlockProbIntervention()
         {
-            var dbSum = (from p in _db.TrialParticipants
-                         group p by 0 into g
-                         select new 
-                         { 
-                             x = g.Count(i=>i.IsInterventionArm),
-                             n = g.Count()
-                         }).FirstOrDefault();
+            var dbSum = (from unfilled in 
+		                    (from p in _db.TrialParticipants
+		                    group p by new { p.BlockNumber, p.StudyCentreId, p.HasChronicLungDisease, p.HasCyanoticHeartDisease, p.RespiratorySupportAtRandomisation.RandomisationCategory } into block
+		                    let ct = block.Count()
+		                    where ct < BlockSize
+		                    select new { ct, interventions= block.Count(pr=>pr.IsInterventionArm)})
+	                    group unfilled by 0 into allUnfilled
+	                    select new { n = allUnfilled.Sum(gr=>gr.ct), x=allUnfilled.Sum(gr=>gr.interventions)}
+	                    ).FirstOrDefault();
             return 1.0-MathNet.Numerics.Distributions.Binomial.CDF(0.5, dbSum.n+1, dbSum.x);
         }
 
