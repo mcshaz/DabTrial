@@ -92,7 +92,16 @@
                         @Html.ValidationMessageFor(model => model.ValidDomainList)
                     </td>
                 </tr>
+                <tr class="editor-row">
+                    <td class="editor-label">
+                        @Html.LabelDetailsFor(model => model.MaxWardSupportId)
+                    </td>
+                    <td class="editor-field">
+                        @Html.DropDownListFor(model => model.MaxWardSupportId, Model.RespSupports)
 
+                        @Html.ValidationMessageFor(model => model.MaxWardSupportId)
+                    </td>
+                </tr>
                 <tr class="editor-row">
 
                     <td class="editor-label">

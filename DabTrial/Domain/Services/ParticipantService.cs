@@ -269,18 +269,7 @@ namespace DabTrial.Domain.Services
                 var localTime = (from u in _db.Users
                                  where u.UserName == userName
                                  select u.StudyCentre).First().LocalTime();
-                var respSupports = participant.AllPriorRespSupports().ToArray();
-                DateTime IcuTherapyStopped;
-                if (deathTime != null || !respSupports.First().RespiratorySupportType.IsWardCompatible)
-                {
-                    IcuTherapyStopped = respSupports.First().ChangeTime;
-                }
-                else
-                {
-                    int i = 0;
-                    while (++i < respSupports.Length && respSupports[i].RespiratorySupportType.IsWardCompatible){}
-                    IcuTherapyStopped = respSupports[i - 1].ChangeTime;
-                }
+                var respSupports = participant.AllPriorRespSupports().ToList();
                 DateTime mostRecentLogged = respSupports.First().ChangeTime;
                 if (readyForIcuDischarge.HasValue)
                 {
@@ -293,6 +282,17 @@ namespace DabTrial.Domain.Services
                             _validatonDictionary.AddError("DaysOfSteroids",
                                                            String.Format("the patient should only have received {0} steroid doses, but has {1} doses of steroids recorded", theoreticalDoses, numberOfSteroidDoses.Value));
                         }
+                    }
+                    DateTime IcuTherapyStopped;
+                    if (deathTime != null || respSupports.First().RespiratorySupportTypeId > participant.StudyCentre.MaxWardSupportId)
+                    {
+                        IcuTherapyStopped = respSupports.First().ChangeTime;
+                    }
+                    else
+                    {
+                        int i = 0;
+                        while (++i < respSupports.Count && respSupports[i].RespiratorySupportTypeId <= participant.StudyCentre.MaxWardSupportId) { }
+                        IcuTherapyStopped = respSupports[i - 1].ChangeTime;
                     }
                     if (readyForIcuDischarge.Value < IcuTherapyStopped)
                     {

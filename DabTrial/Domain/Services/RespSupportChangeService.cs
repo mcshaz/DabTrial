@@ -93,7 +93,7 @@ namespace DabTrial.Domain.Services
             {
                 _validatonDictionary.AddError("ChangeTime", "The time conflicts with an existing entry");
             }
-            if (participant.ReadyForIcuDischarge != null && participant.ReadyForIcuDischarge.Value < changeTime && !respSupportType.IsWardCompatible)
+            if (participant.ReadyForIcuDischarge != null && participant.ReadyForIcuDischarge.Value < changeTime && respSupportType.RespSupportTypeId > participant.StudyCentre.MaxWardSupportId)
             {
                 _validatonDictionary.AddError("ChangeTime",
                     string.Format("Invasive forms of support cannot be after the time ready for ICU Discharge ({0})", participant.ReadyForIcuDischarge));

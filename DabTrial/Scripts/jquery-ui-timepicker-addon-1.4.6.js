@@ -201,7 +201,7 @@
 			};
 			for (i in overrides) {
 				if (overrides.hasOwnProperty(i)) {
-					fns[i] = opts[i] || null;
+				    fns[i] = opts[i] || this._defaults[i] || null; //line to make setDefaults work with onClose etc
 				}
 			}
 

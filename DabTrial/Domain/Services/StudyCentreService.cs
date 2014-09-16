@@ -54,6 +54,7 @@ namespace DabTrial.Domain.Services
                                  String publicPhoneNumber,
                                  Boolean isUsing1pcAdrenaline,
                                  DateTime commencedEnrollingOn,
+                                 Int32 maxWardRespSupportId,
                                  String currentUserName)
         {
 
@@ -70,6 +71,7 @@ namespace DabTrial.Domain.Services
                 record.ValidEmailDomains = domainCSL;
                 record.IsUsing1pcAdrenaline = isUsing1pcAdrenaline;
                 record.CommencedEnrollingOn = commencedEnrollingOn;
+                record.MaxWardSupportId = maxWardRespSupportId;
                 _db.SaveChanges(currentUserName);
             }
         }
@@ -84,9 +86,9 @@ namespace DabTrial.Domain.Services
                                  String publicPhoneNumber,
                                  Boolean isUsing1pcAdrenaline,
                                  DateTime commencedEnrollingOn,
+                                 Int32 maxWardRespSupportId,
                                  String currentUserName)
         {
-
             validateCentre(name, abbreviation, siteRegistrationPwd, timeZoneId);
             string domainCSL = domainsToString(Domains);
             if (_validatonDictionary.IsValid)
@@ -102,7 +104,8 @@ namespace DabTrial.Domain.Services
                     RecordSystem = _db.LocalRecordProviders.Find(recordProviderId),
                     PublicPhoneNumber = publicPhoneNumber,
                     IsUsing1pcAdrenaline = isUsing1pcAdrenaline,
-                    CommencedEnrollingOn = commencedEnrollingOn
+                    CommencedEnrollingOn = commencedEnrollingOn,
+                    MaxWardSupportId = maxWardRespSupportId
                 };
                 _db.StudyCentres.Add(centre);
                 _db.SaveChanges(currentUserName);

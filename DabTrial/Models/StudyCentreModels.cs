@@ -42,6 +42,9 @@ namespace DabTrial.Models
         [DisplayFormat(DataFormatString = "{0:d/M/yyyy}", ApplyFormatInEditMode = true)]
         [ComesAfter("2013-7-1T00:00:00", AnnotationArgumentType.DateTime, ErrorMessage = "Must be a date after commencement of the study (1/7/2013)")]
         public DateTime CommencedEnrollingOn { get; set; }
+        [Display(Name = "Maximum Ward Support", Description = "Maximum respiratory support used on the ward")]
+        public int MaxWardSupportId { get; set; }
+        public IEnumerable<SelectListItem> RespSupports { get; set; }
         public IEnumerable<SelectListItem> TimeZones { get; set; }
     }
     public class PhoneNumber
@@ -110,6 +113,9 @@ namespace DabTrial.Models
         [DisplayFormat(DataFormatString = "{0:d/M/yyyy}", ApplyFormatInEditMode = true)]
         [ComesAfter("2013-7-1T00:00:00", AnnotationArgumentType.DateTime, ErrorMessage = "Must be a date after commencement of the study (1/7/2013)")]
         public DateTime CommencedEnrollingOn { get; set; }
+        [Display(Name = "Maximum Ward Support", Description = "Maximum respiratory support used on the ward")]
+        public int MaxWardSupportId { get; set; }
+        public IEnumerable<SelectListItem> RespSupports { get; set; }
         public IEnumerable<SelectListItem> TimeZones { get; set; }
     }
     public class StudyCentreDetails

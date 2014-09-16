@@ -11,6 +11,7 @@ namespace DabTrial.Infrastructure.Utilities
     public static class DataStageUtilities
     {
         public enum TrialStage { Active, Complete, HospDischRqd, RespRqd, DetailsRqd }
+        const int RespSupportDataFinishedMinId = 2;
         public static System.Linq.Expressions.Expression<Func<TrialParticipant, TrialStage>> StageExpression()
         {
             return p =>
@@ -30,7 +31,7 @@ namespace DabTrial.Infrastructure.Utilities
                                         !p.FifthAdrenalineNebAt.HasValue ||
                                         !p.NumberOfAdrenalineNebulisers.HasValue))
                             ? TrialStage.DetailsRqd
-                            : (p.Death==null && !(p.RespiratorySupportChanges.Any()?p.RespiratorySupportChanges.OrderByDescending(r=>r.ChangeTime).FirstOrDefault().RespiratorySupportType:p.RespiratorySupportAtRandomisation).IsWardCompatible)
+                            : (p.Death==null && (p.RespiratorySupportChanges.Any()?p.RespiratorySupportChanges.OrderByDescending(r=>r.ChangeTime).FirstOrDefault().RespiratorySupportType:p.RespiratorySupportAtRandomisation).RespSupportTypeId > RespSupportDataFinishedMinId)
                                 ? TrialStage.RespRqd
                                 : (!p.HospitalDischarge.HasValue)
                                     ? TrialStage.HospDischRqd

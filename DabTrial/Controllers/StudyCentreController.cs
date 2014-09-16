@@ -6,6 +6,7 @@ using DabTrial.Models;
 using AutoMapper;
 using DabTrial.Domain.Tables;
 using DabTrial.Domain.Services;
+using MvcHtmlHelpers;
 
 
 namespace DabTrial.Controllers
@@ -17,7 +18,8 @@ namespace DabTrial.Controllers
         private StudyCentreService CentreService { get { return _centreService ?? (_centreService = new StudyCentreService(ValidationDictionary, dbContext)); } }
         private RecordProviderService _recordService;
         private RecordProviderService RecordService { get { return _recordService ?? (_recordService = new RecordProviderService(ValidationDictionary, dbContext)); } }
-
+        private RespSupportTypesService _respSupportService;
+        private RespSupportTypesService RespSupportService { get { return _respSupportService ?? (_respSupportService = new RespSupportTypesService(ValidationDictionary, dbContext)); } }
         //
         // GET: /StudyCentre/
         [AutoMapModel(typeof(IEnumerable<StudyCentre>),typeof(IEnumerable<StudyCentreListItem>))]
@@ -72,6 +74,7 @@ namespace DabTrial.Controllers
                     model.PublicPhoneNumber.Formatted,
                     model.IsUsing1pcAdrenaline,
                     model.CommencedEnrollingOn,
+                    model.MaxWardSupportId,
                     CurrentUserName);
                 if (ModelState.IsValid) { return RedirectToAction("Index"); }
             }
@@ -110,6 +113,7 @@ namespace DabTrial.Controllers
                     model.PublicPhoneNumber.Formatted,
                     model.IsUsing1pcAdrenaline,
                     model.CommencedEnrollingOn,
+                    model.MaxWardSupportId,
                     CurrentUserName);
                 if (ModelState.IsValid) { return RedirectToAction("Index"); }
             }
@@ -140,6 +144,7 @@ namespace DabTrial.Controllers
         private void SetLists(StudyCentreEdit model)
         {
             model.TimeZones = new SelectList(TimeZoneInfo.GetSystemTimeZones(), "Id", "DisplayName", model.TimeZoneId);
+            model.RespSupports = GetRespSupports(model.MaxWardSupportId);
         }
         private void SetLists(StudyCentreCreate model)
         {
@@ -149,6 +154,18 @@ namespace DabTrial.Controllers
                 Value = p.Id.ToString(),
                 Text = p.Name,
                 Selected = model.RecordSystemId == p.Id
+            });
+            model.RespSupports = GetRespSupports();
+        }
+        private IEnumerable<SelectListItem> GetRespSupports(int? selected = null)
+        {
+            return RespSupportService.GetAllRespSupportTypes().Select(rst => new DetailSelectListItem()
+            {
+                Value = rst.RespSupportTypeId.ToString(),
+                Detail = rst.Explanation,
+                Text = rst.Description,
+                Selected = selected.HasValue ? selected.Value == rst.RespSupportTypeId
+                                                           : false
             });
         }
         protected override void Dispose(bool disposing)

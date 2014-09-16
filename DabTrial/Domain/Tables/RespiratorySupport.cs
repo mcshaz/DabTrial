@@ -18,7 +18,6 @@ namespace DabTrial.Domain.Tables
         [Range(1,8)]
         [Display(Description="Blank equates to not applicable")]
         public int? RandomisationCategory { get; set; }
-        public bool IsWardCompatible { get; set; }
         [StringLength(12)]
         public string Abbrev { get; set; }
 

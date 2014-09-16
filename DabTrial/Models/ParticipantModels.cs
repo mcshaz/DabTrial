@@ -115,7 +115,6 @@ namespace DabTrial.Models
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:d/M/yyyy HH:mm}", ApplyFormatInEditMode = true)]
-        [ComesAfter("MostRecentLoggedEvent", AnnotationArgumentType.PropertyName)]
         [Display(Name="Actually left ICU", Description="Date and 24 hour time")]
         [ComesBeforeNowAtClient]
         [RequiredIfNotEmpty("HospitalDischarge")]
@@ -163,7 +162,7 @@ namespace DabTrial.Models
 
         [RequiredIfTrue("WithdrawnFromStudy")]
         [ComesBeforeNowAtClient]
-        [ComesAfter("MostRecentLoggedEvent", AnnotationArgumentType.PropertyName)]
+        //[ComesAfter("MostRecentLoggedEvent", AnnotationArgumentType.PropertyName)]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:d/M/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? WithdrawalEventTime { get; set; }

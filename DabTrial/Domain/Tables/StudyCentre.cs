@@ -34,7 +34,10 @@ namespace DabTrial.Domain.Tables
         public string TimeZoneId { get; set; }
         public bool IsUsing1pcAdrenaline { get; set; }
         public DateTime CommencedEnrollingOn { get; set; }
+        [ForeignKey("MaxWardSupport")]
+        public int MaxWardSupportId { get; set; }
 
+        public virtual RespiratorySupportType MaxWardSupport { get; set; }
         public virtual LocalRecordProvider RecordSystem {get; set;}
         public virtual ICollection<TrialParticipant> TrialParticipants {get; set;}
         public virtual ICollection<ScreenedPatient> ScreenedPatients { get; set; }
