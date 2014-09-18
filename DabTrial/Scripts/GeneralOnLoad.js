@@ -123,7 +123,7 @@
 }(jQuery));
 //begin $(document).ready - not used as content loaded by script execution
 (function ($) {
-    var $ajaxResultDialog, minWidth, dpDefaults,dataTableEls;
+    var $ajaxResultDialog, minWidth, dpDefaults,dataTableEls,$t;
     $.ajaxSetup({
         cache: false
     });
@@ -131,14 +131,16 @@
         dpDefaults = {
             dateFormat: "d/m/yy"
         };
-        if (!Modernizr.input.placeholder) {
-            if ($.timepicker) { //this is before setting onClose default, however in future versions of timepicker, hopefully this is allowed to be set in the default
-                dpDefaults.timeFormat = "HH:mm";
-                $.timepicker.setDefaults(dpDefaults)
+        dpDefaults.onClose = function () {
+            $t = $(this);
+            $t.valid();
+            if (!Modernizr.input.placeholder) {
+                $t.blur();
             }
-            dpDefaults.onClose = function () {
-                $(this).blur();
-            }
+        }
+        if ($.timepicker) { //this is before setting onClose default, however in future versions of timepicker, hopefully this is allowed to be set in the default
+            dpDefaults.timeFormat = "HH:mm";
+            $.timepicker.setDefaults(dpDefaults)
         }
         $.datepicker.setDefaults(dpDefaults);
     }

@@ -161,7 +161,8 @@ namespace DabTrial.Models
             Mapper.CreateMap<StudyCentre, StudyCentreEdit>()
                 .ForMember(dest => dest.TimeZones, opt => opt.Ignore())
                 .ForMember(dest => dest.ValidDomainList, opt => opt.MapFrom(src => src.ValidEmailDomains.Replace(",",", ")))
-                .ForMember(dest => dest.PublicPhoneNumber, opt=>opt.MapFrom(src=> new PhoneNumber{Formatted = src.PublicPhoneNumber}));
+                .ForMember(dest => dest.PublicPhoneNumber, opt=>opt.MapFrom(src=> new PhoneNumber{Formatted = src.PublicPhoneNumber}))
+                .ForMember(dest=>dest.RespSupports, opt=>opt.Ignore());
 
             Mapper.CreateMap<StudyCentre, StudyCentreDetails>()
                 .ForMember(dest => dest.ValidDomainList, opt => opt.MapFrom(src => src.ValidEmailDomains.Replace(",", ", "))); ;

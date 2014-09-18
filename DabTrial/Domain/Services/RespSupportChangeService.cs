@@ -93,15 +93,15 @@ namespace DabTrial.Domain.Services
             {
                 _validatonDictionary.AddError("ChangeTime", "The time conflicts with an existing entry");
             }
-            if (participant.ReadyForIcuDischarge != null && participant.ReadyForIcuDischarge.Value < changeTime && respSupportType.RespSupportTypeId > participant.StudyCentre.MaxWardSupportId)
+            if (participant.ReadyForIcuDischarge.HasValue && participant.ReadyForIcuDischarge.Value < changeTime && respSupportType.RespSupportTypeId > participant.StudyCentre.MaxWardSupportId)
             {
                 _validatonDictionary.AddError("ChangeTime",
-                    string.Format("Invasive forms of support cannot be after the time ready for ICU Discharge ({0})", participant.ReadyForIcuDischarge));
+                    string.Format("Invasive forms of support cannot be after the time ready for ICU discharge ({0})", participant.ReadyForIcuDischarge));
             }
-            if (participant.ActualIcuDischarge != null && participant.ActualIcuDischarge.Value < changeTime)
+            if (participant.HospitalDischarge.HasValue && participant.HospitalDischarge.Value < changeTime)
             {
                 _validatonDictionary.AddError("ChangeTime",
-                    string.Format("Respiratory support changes cannot be after the time of ICU Discharge ({0})", participant.ActualIcuDischarge));
+                    string.Format("Respiratory support changes cannot be after the time of hospital discharge ({0})", participant.ActualIcuDischarge));
             }
         }
     }

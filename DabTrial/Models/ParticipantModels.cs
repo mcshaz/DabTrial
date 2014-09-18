@@ -195,7 +195,7 @@ namespace DabTrial.Models
         [DataType(DataType.DateTime), DisplayFormat(DataFormatString = "{0:d/M/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? FirstAdrenalineNebAt { get; set; }
 
-        [ComesAfter("LocalTimeRandomised", AnnotationArgumentType.PropertyName)]
+        [ComesAfter("FirstAdrenalineNebAt", AnnotationArgumentType.PropertyName)]
         [ComesBefore("ActualIcuDischarge")]
         [Display(Name = "5th Adrenaline Neb", Description = "Time 5th adrenaline nebuliser administered")]
         [RequiredIfNotEmpty("HospitalDischarge")]

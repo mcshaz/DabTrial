@@ -7,6 +7,7 @@ using AutoMapper;
 using DabTrial.Domain.Tables;
 using DabTrial.Domain.Services;
 using MvcHtmlHelpers;
+using DabTrial.Infrastructure.Utilities;
 
 
 namespace DabTrial.Controllers
@@ -157,15 +158,14 @@ namespace DabTrial.Controllers
             });
             model.RespSupports = GetRespSupports();
         }
-        private IEnumerable<SelectListItem> GetRespSupports(int? selected = null)
+        private IEnumerable<SelectListItem> GetRespSupports(int selected = DataStageUtilities.RespSupportDataFinishedMinId)
         {
             return RespSupportService.GetAllRespSupportTypes().Select(rst => new DetailSelectListItem()
             {
                 Value = rst.RespSupportTypeId.ToString(),
                 Detail = rst.Explanation,
                 Text = rst.Description,
-                Selected = selected.HasValue ? selected.Value == rst.RespSupportTypeId
-                                                           : false
+                Selected = selected == rst.RespSupportTypeId
             });
         }
         protected override void Dispose(bool disposing)

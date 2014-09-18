@@ -11,7 +11,7 @@ namespace DabTrial.Infrastructure.Utilities
     public static class DataStageUtilities
     {
         public enum TrialStage { Active, Complete, HospDischRqd, RespRqd, DetailsRqd }
-        const int RespSupportDataFinishedMinId = 2;
+        public const int RespSupportDataFinishedMinId = 2;
         public static System.Linq.Expressions.Expression<Func<TrialParticipant, TrialStage>> StageExpression()
         {
             return p =>
