@@ -17,12 +17,13 @@ namespace DabTrial.Infrastructure.RazorUtilities
  //               .AddScript("~/Scripts/jquery-migrate-1.2.1.js"); //generate console warnings - must remember to look
             assets.Libraries["jQueryUI"].Requires("jQuery")
                 .AddScript("~/Scripts/jquery-ui-1.9.2.js",BrowserType.Ie6)
-                .AddScript("~/Scripts/jquery-ui-1.11.1.js", ~BrowserType.Ie6)
+                .AddScript("~/Scripts/jquery-ui-1.10.4.js", ~(BrowserType.Ie6 | BrowserType.NonIe))
+                .AddScript("~/Scripts/jquery-ui-1.11.1.js", BrowserType.NonIe)
                 .AddStyle("//code.jquery.com/ui/1.9.2/themes/eggplant/jquery-ui.css", BrowserType.Ie6)
                 .AddStyle("//code.jquery.com/ui/1.10.4/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
             assets.Libraries["TimePicker"].Requires("jQueryUI","MyUtilityScripts")
                 .AddScript("~/Scripts/jquery-ui-sliderAccess.js")
-                .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.4.6.js")
+                .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.5.0.js")
                 .AddStyle("~/Content/jQueryUI/jquery-ui-timepicker-addon.css");
             assets.Libraries["Validation"].Requires("jQuery")
                 .AddScript("~/Scripts/jquery.validate-1.13.0.js")
@@ -54,12 +55,13 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js", BrowserType.IeLegacy);
             assets.Libraries["jQueryUI"].Requires("jQuery")
                 .AddScript("//code.jquery.com/ui/1.9.2/jquery-ui.min.js", BrowserType.Ie6)
-                .AddScript("//code.jquery.com/ui/1.11.1/jquery-ui.min.js", ~BrowserType.Ie6)//curently 1.11.1 but does not close timepicker on exit
+                .AddScript("//code.jquery.com/ui/1.10.4/jquery-ui.min.js", ~(BrowserType.Ie6 | BrowserType.NonIe))//curently 1.11.1 but does not close timepicker on exit
+                .AddScript("//code.jquery.com/ui/1.11.1/jquery-ui.min.js", BrowserType.NonIe)
                 .AddStyle("//code.jquery.com/ui/1.9.2/themes/eggplant/jquery-ui.css", BrowserType.Ie6)
                 .AddStyle("//code.jquery.com/ui/1.11.1/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
             assets.Libraries["TimePicker"].Requires("jQueryUI", "MyUtilityScripts")
                 .AddScript("~/Scripts/jquery-ui-sliderAccess.min.js")
-                .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.4.6.min.js")
+                .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.5.0.min.js")
                 .AddStyle("~/Content/jQueryUI/jquery-ui-timepicker-addon.css");
             assets.Libraries["Validation"].Requires("jQuery")
                 .AddScript("//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js")

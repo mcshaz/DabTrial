@@ -16,7 +16,7 @@ namespace MvcHtmlHelpers
         }
     }
     [Flags]
-    public enum BrowserType { Ie6=0x1,Ie7=0x2,Ie8=0x4,IeLegacy=0x7,W3cCompliant=0x8,All=0x17 }
+    public enum BrowserType { NonIe=1,Ie6=2,Ie7=4,Ie8=8,IeLegacy=Ie6 | Ie7 | Ie8,Ie9=16,Ie10=32,Ie11=64,W3cCompliant=~IeLegacy,All=127}
     public class AssetsHelper
     {
         public static AssetsHelper GetInstance(HtmlHelper htmlHelper)
@@ -235,31 +235,24 @@ namespace MvcHtmlHelpers
                 if (_requestingBrowser == 0)
                 {
                     var browser = HttpContext.Current.Request.Browser.Type;
-                    if (browser.Length > 2 && browser.Substring(0, 2) == "IE")
+                    if (browser.StartsWith("IE") || browser.StartsWith("InternetExplorer"))
                     {
-                        switch (browser[2])
-                        {
-                            case '6':
-                                _requestingBrowser = BrowserType.Ie6;
-                                break;
-                            case '7':
-                                _requestingBrowser = BrowserType.Ie7;
-                                break;
-                            case '8':
-                                _requestingBrowser = BrowserType.Ie8;
-                                break;
-                            default:
-                                _requestingBrowser = BrowserType.W3cCompliant;
-                                break;
-                        }
+                        _requestingBrowser = (BrowserType)(1 << (TrailingDigits(browser)-5));
                     }
                     else
                     {
-                        _requestingBrowser = BrowserType.W3cCompliant;
+                        _requestingBrowser = BrowserType.NonIe;
                     }
                 }
                 return _requestingBrowser;
             }
+        }
+        private int? TrailingDigits(string inStr)
+        {
+            int lastchar = inStr.Length;
+            while (--lastchar >=0 && char.IsDigit(inStr[lastchar])){}
+            if (++lastchar == inStr.Length) { return null; }
+            return int.Parse(inStr.Substring(lastchar));
         }
         private bool IncludesCurrentBrowser(BrowserType browserType)
         {

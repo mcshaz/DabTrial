@@ -355,10 +355,11 @@
     <Content Include="Scripts\jquery-1.8.0.min.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.11.0.js" />
     <Content Include="Scripts\jquery-ui-1.11.1.js" />
     <Content Include="Scripts\jquery-ui-1.11.1.min.js" />
-    <Content Include="Scripts\jquery-ui-timepicker-addon-1.4.6.js" />
-    <Content Include="Scripts\jquery-ui-timepicker-addon-1.4.6.min.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon-1.5.0.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon-1.5.0.min.js" />
     <Content Include="Scripts\jquery.placeholder.js" />
     <Content Include="Scripts\jquery.placeholder.min.js" />
     <Content Include="Scripts\jquery.validate-1.13.0.js" />
@@ -784,7 +785,6 @@
     <Content Include="Scripts\jquery-ui-1.9.2.min.js" />
     <Content Include="Scripts\jquery-ui-sliderAccess.js" />
     <Content Include="Scripts\jquery-ui-sliderAccess.min.js" />
-    <Content Include="Scripts\jquery-ui-timepicker-addon-1.4.min.js" />
     <Content Include="Scripts\jquery.dataTables-1.9.4.js" />
     <Content Include="Scripts\jquery.dataTables.columnFilter-1.5.6.min.js" />
     <Content Include="Scripts\jquery.dataTables.columnFilter.js" />

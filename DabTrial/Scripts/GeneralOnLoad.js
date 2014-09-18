@@ -129,15 +129,11 @@
     });
     if ($.datepicker) {
         dpDefaults = {
-            dateFormat: "d/m/yy"
-        };
-        dpDefaults.onClose = function () {
-            $t = $(this);
-            $t.valid();
-            if (!Modernizr.input.placeholder) {
-                $t.blur();
+            dateFormat: "d/m/yy",
+            onClose: function () {
+                $(this).trigger('blur');
             }
-        }
+        };
         if ($.timepicker) { //this is before setting onClose default, however in future versions of timepicker, hopefully this is allowed to be set in the default
             dpDefaults.timeFormat = "HH:mm";
             $.timepicker.setDefaults(dpDefaults)
@@ -714,9 +710,8 @@ function setElementListeners() {
                 hour: (new Date()).getHours(),
                 beforeShow: show,
             }
-            if (!Modernizr.input.placeholder) {
-                options.onClose = $.datepicker._defaults.onClose;
-            }
+            options.onClose = $.datepicker._defaults.onClose;
+
             $(".dateTime", context).not("[type=hidden]")
                 .datetimepicker(options);
             //.on("mousedown", toggleDatePicker);
