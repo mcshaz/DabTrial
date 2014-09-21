@@ -28,7 +28,7 @@ namespace DabTrial.Models
         [Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name="Your Email")]
-        [Email]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
         [StringLength(60)]

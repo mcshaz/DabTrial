@@ -351,7 +351,9 @@ namespace DabTrial.Domain.Services
             }
             string password = CodeFirstMembershipProvider.ResetPassword(usr);
             _db.SaveChanges();
-            (new CreateEmailService()).NotifyResetUserPassword(usr.UserName, usr.UserName,password,PasswordPresentations.PlainText);
+            //making the page cycle wait to send this makes logical sense in this instance (i.e. avoid hangfire), however, due to the procompilation of the site
+            //everything in the email folder nees to be enqued (well, at least use the razor rendering engine library)
+            (new CreateEmailService()).NotifyResetUserPassword(usr.UserName, usr.Email,password,PasswordPresentations.PlainText);
         }
         public void DeleteUser(string userMakingChanges, string userName)
         {

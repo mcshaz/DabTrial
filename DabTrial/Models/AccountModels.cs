@@ -48,7 +48,7 @@ namespace DabTrial.Models
     public class EmailPasswordModel
     {
         [Required]
-        [Email]
+        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }

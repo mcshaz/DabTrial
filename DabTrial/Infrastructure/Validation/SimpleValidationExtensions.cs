@@ -13,6 +13,8 @@ using DabTrial.Models;
 
 namespace DabTrial.Infrastructure.Validation
 {
+    /*
+     * legacy - available in .net 4.5
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
     public class EmailAttribute : RegularExpressionAttribute
     {
@@ -30,7 +32,7 @@ namespace DabTrial.Infrastructure.Validation
             ErrorMessage = "Must be a valid email address";
         }
     }
-
+    */
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class IsValidRegExAttribute : ValidationAttribute, IClientValidatable
     {

@@ -16,7 +16,7 @@ namespace MvcHtmlHelpers
         }
     }
     [Flags]
-    public enum BrowserType { NonIe=1,Ie6=2,Ie7=4,Ie8=8,IeLegacy=Ie6 | Ie7 | Ie8,Ie9=16,Ie10=32,Ie11=64,W3cCompliant=~IeLegacy,All=127}
+    public enum BrowserType { NonIe=1,Ie6=2,Ie7=4,Ie8=8,IeLegacy=Ie6 | Ie7 | Ie8,Ie9=16,Ie10=32,Ie11=64,W3cCompliant=~IeLegacy,All=-1}
     public class AssetsHelper
     {
         public static AssetsHelper GetInstance(HtmlHelper htmlHelper)
