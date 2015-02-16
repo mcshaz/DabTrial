@@ -6,14 +6,20 @@
 <div id="doseContainer" class="hidableDiv">
     <ul class="drugDose">
         <li class="drugDose">
-	        <span class="drugName">Dexamethasone</span> <span class="dose">@Html.DisplayFor(model => model.DexamethasoneMg) mg</span> <span class="route">IV or IM</span>, <span class="freq">single dose</span> <span class="lastDose">now</span>.
-        </li>
+            <span class="eitherOr">Give either</span>
+                <div class="inlineBlock">
+                    <span class="drugName">Dexamethasone</span> <span class="dose">@Html.DisplayFor(model => model.DexamethasoneMg) mg</span> <span class="route">IV or IM</span>
+                    <div class="eitherOr">or</div>
+                    <span class="drugName">prednisolone</span> <span class="dose">@Html.DisplayFor(model => model.PredLoadMg) mg</span> <span class="route">Orally/NG</span>
+                </div>
+            <span class="freq">single dose</span> <span class="lastDose">now</span>.
+</li>
         <li class="drugDose">
             Then <span class="eitherOr">either</span>
             <div class="inlineBlock">
 		        <span class="drugName">methylprednisolone</span> <span class="dose">@Html.DisplayFor(model => model.MethyPredMg) mg</span> <span class="route">IV</span>
                 <div class="eitherOr">or</div>
-                <span class="drugName">prednisolone</span> <span class="dose">@Html.DisplayFor(model => model.PredMg) mg</span> <span class="route">Orally/NG</span>
+                <span class="drugName">prednisolone</span> <span class="dose">@Html.DisplayFor(model => model.PredDailyMg) mg</span> <span class="route">Orally/NG</span>
             </div>
             <span class="freq">8 Hourly</span> for a total of 9 doses (i.e. <span class="lastDose">last 8 hourly dose given @Model.LastHighDoseSteroid</span>), followed by <span class="freq">daily</span> on days 4-6 (<span class="lastDose">last dose @Model.LastDoseSteroid</span>).
         </li>

@@ -306,7 +306,8 @@ namespace DabTrial.Models
             DateTime doseGiven = FirstDoseApproximation(enrollmentTime);
             var returnVar = new DosingModel
             {
-                PredMg = weightInKg,
+                PredDailyMg = weightInKg,
+                PredLoadMg = weightInKg * 4,
                 MethyPredMg = weightInKg,
                 DexamethasoneMg = 0.6 * weightInKg,
                 AdrenalineMl = (adrenalineIs1pc ? 0.05 : 0.5) * weightInKg,

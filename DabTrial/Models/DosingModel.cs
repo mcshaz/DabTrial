@@ -9,8 +9,10 @@ namespace DabTrial.Models
         [DisplayFormat(DataFormatString = "{0:N1}")]
         public double MethyPredMg { get; set; }
         [DisplayFormat(DataFormatString = "{0:N1}")]
-        public double PredMg { get; set; }
-        [DisplayFormat(DataFormatString = "{0:N1}")]
+        public double PredDailyMg { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N0}")]
+        public double PredLoadMg { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N0}")]
         public double AdrenalineMl { get; set; }
         public bool AdrenalineIs1pc { get; set; }
         public string LastDoseAdrenaline { get; set; }

@@ -221,9 +221,9 @@ namespace DabTrial.Domain.Services
                                 EventDateTime = r.EventTime,
                                 StudyCentreName = p.StudyCentre.Name,
                                 UserName = ru.FirstName + " " + ru.LastName,
-                                To = ru.Email
+                                To = ru.Email,
+                                ParcipantId = p.ParticipantId
                             }).First();
-            returnVar.ParcipantId = id;
             returnVar.ViewName = "SignificantEvent";
             return returnVar;
         }

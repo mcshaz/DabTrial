@@ -11,22 +11,24 @@ namespace DabTrial.Domain.Services
         public ServiceLayer(IValidationDictionary valDictionary = null, IDataContext DBcontext = null)
         {
             //_validatonDictionary = validationDictionary;
+            _isContextOwned = DBcontext == null;
             _db = DBcontext ?? new DataContext();
             _validatonDictionary = valDictionary ?? new EmptyValidationShell();
         }
 
         //disposing
-        private bool disposedValue = false;
+        bool _disposedValue;
+        bool _isContextOwned;
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this._disposedValue)
             {
-                if (disposing)
+                if (disposing && _isContextOwned)
                 {
                     _db.Dispose();
                 }
             }
-            this.disposedValue = true;
+            this._disposedValue = true;
         }
         public void Dispose()
         {

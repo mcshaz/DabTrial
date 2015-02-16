@@ -16,7 +16,7 @@ namespace DabTrial.Domain.Services
         {
         }
         private const int BlockSize = 4;
-        protected void CreateAllocation(TrialParticipant participant)
+        public void CreateAllocation(TrialParticipant participant, IRandom rdmEngine=null)
         {
             var currentBlock = GetCurrentBlock(participant);
             int noInBlock = currentBlock.Count();
@@ -38,7 +38,7 @@ namespace DabTrial.Domain.Services
                 participant.BlockNumber = currentBlock.Select(p=>p.BlockNumber).First();
 
             }
-            participant.IsInterventionArm = BlockRandomisation.IsNextAllocationInterventionWithCentralTendancy(currentBlock.Select(p=>p.IsInterventionArm),BlockSize,new RandomAdaptor(),NewBlockProbIntervention);
+            participant.IsInterventionArm = BlockRandomisation.IsNextAllocationInterventionWithCentralTendancy(currentBlock.Select(p=>p.IsInterventionArm),BlockSize,rdmEngine ?? new RandomAdaptor(),NewBlockProbIntervention);
         }
         public TrialParticipant GetParticipant(int participantId)
         {
