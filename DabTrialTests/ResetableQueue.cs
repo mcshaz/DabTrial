@@ -11,8 +11,7 @@ namespace DabTrialTests
     {
         T[] _queue;
         int _currentIndex;
-        int _resetIndex;
-        int _count;
+        int _totalCount;
         const int _defaultCapacity=0;
         const int _defaultFirstResize = 4;
         public ResetableQueue() : this(_defaultCapacity)
@@ -31,7 +30,7 @@ namespace DabTrialTests
 
         public int Count
         {
-            get { return _count - _currentIndex; }
+            get { return _totalCount - _currentIndex; }
         }
 
         public int Capacity
@@ -41,7 +40,7 @@ namespace DabTrialTests
 
         public void Enqueue(T item)
         {
-            if (_count >= _queue.Length)
+            if (_totalCount >= _queue.Length)
             {
 
                 if (_queue.Length == 0) 
@@ -53,7 +52,7 @@ namespace DabTrialTests
                     Array.Resize(ref _queue, _queue.Length * 2);
                 }
             }
-            _queue[_count++] = item;
+            _queue[_totalCount++] = item;
         }
 
         public void Enqueue(IEnumerable<T> items)
@@ -65,14 +64,19 @@ namespace DabTrialTests
             }
             else
             {
-                int index = _count;
-                _count += c.Count;
-                if (_count > _queue.Length)
+                int index = _totalCount;
+                _totalCount += c.Count;
+                if (_totalCount > _queue.Length)
                 {
-                    Array.Resize(ref _queue, (int)Math.Pow(2, Math.Ceiling(Math.Log(_count,2))));
+                    Array.Resize(ref _queue, NearestPower2(_totalCount));
                 }
                 c.CopyTo(_queue, index);
             }
+        }
+
+        static int NearestPower2(int count)
+        {
+            return (int)Math.Pow(2, Math.Ceiling(Math.Log(count, 2)));
         }
 
         public void CopyTo(T[] array, int arrayIndex)
@@ -87,12 +91,16 @@ namespace DabTrialTests
 
         public void ResetPoint()
         {
-            _resetIndex = _currentIndex;
+            _totalCount = Count;
+            var newQueue = new T[NearestPower2(_totalCount)];
+            Array.Copy(_queue, _currentIndex, newQueue, 0, _totalCount);
+            _queue = newQueue;
+            _currentIndex = 0;
         }
 
         public void Reset()
         {
-            _currentIndex = _resetIndex;
+            _currentIndex = 0;
         }
 
         public T Dequeue()
@@ -115,7 +123,7 @@ namespace DabTrialTests
 
         IEnumerable<T> CreateEnumerator()
         {
-            for (int i=_currentIndex;i<_count;i++)
+            for (int i=_currentIndex;i<_totalCount;i++)
             {
                 yield return _queue[i];
             }
@@ -161,11 +169,8 @@ namespace DabTrialTests
         {
             if (Count < 0.9*_queue.Length)
             {
-                _count -= _resetIndex;
-                var newArray = new T[_count];
-                Array.Copy(_queue, _resetIndex, newArray,0,newArray.Length);
-                _currentIndex = _currentIndex - _resetIndex;
-                _resetIndex = 0;
+                var newArray = new T[_totalCount];
+                Array.Copy(_queue, 0, newArray,0,newArray.Length);
                 _queue = newArray;
             }
         }
@@ -189,9 +194,9 @@ namespace DabTrialTests
             if (index < 0) { return false; }
             var tmpqueue = new T[_queue.Length];
             Array.Copy(_queue, 0, tmpqueue, 0,index);
-            Array.Copy(_queue, index + 1, tmpqueue, index, _count - index - 1);
+            Array.Copy(_queue, index + 1, tmpqueue, index, _totalCount - index - 1);
             _queue = tmpqueue;
-            --_count;
+            --_totalCount;
             if (index <= _currentIndex) { --_currentIndex; }
             return true;
         }
