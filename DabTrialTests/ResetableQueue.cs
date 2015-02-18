@@ -77,12 +77,12 @@ namespace DabTrialTests
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            _queue.CopyTo(array, arrayIndex);
+            CopyTo((Array)array, arrayIndex);
         }
 
         public void CopyTo(Array array, int arrayIndex)
         {
-            _queue.CopyTo(array, arrayIndex);
+            Array.Copy(_queue, _currentIndex, array, arrayIndex, Count);
         }
 
         public void ResetPoint()
@@ -152,6 +152,31 @@ namespace DabTrialTests
             return Array.IndexOf(_queue, item) >= 0;
         }
 
+
+        //
+        // Summary:
+        //     Sets the capacity to the actual number of elements in the System.Collections.Generic.Queue<T>,
+        //     if that number is less than 90 percent of current capacity.
+        public void TrimExcess()
+        {
+            if (Count < 0.9*_queue.Length)
+            {
+                _count -= _resetIndex;
+                var newArray = new T[_count];
+                Array.Copy(_queue, _resetIndex, newArray,0,newArray.Length);
+                _currentIndex = _currentIndex - _resetIndex;
+                _resetIndex = 0;
+                _queue = newArray;
+            }
+        }
+
+        public T[] ToArray()
+        {
+            var returnVar = new T[Count];
+            CopyTo(returnVar, 0);
+            return returnVar;
+            
+        }
         /// <summary>
         /// purely to implement ICollection<T>
         /// not performance tested
@@ -164,7 +189,7 @@ namespace DabTrialTests
             if (index < 0) { return false; }
             var tmpqueue = new T[_queue.Length];
             Array.Copy(_queue, 0, tmpqueue, 0,index);
-            Array.Copy(_queue, index + 1, tmpqueue, index, _queue.Length - index-1);
+            Array.Copy(_queue, index + 1, tmpqueue, index, _count - index - 1);
             _queue = tmpqueue;
             --_count;
             if (index <= _currentIndex) { --_currentIndex; }

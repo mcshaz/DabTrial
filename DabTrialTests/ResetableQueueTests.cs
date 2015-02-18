@@ -31,11 +31,18 @@ namespace DabTrialTests
             ((ICollection<int>)e).Remove(2);
             ((ICollection<int>)e).Remove(7);
 
-            e.Enqueue(Enumerable.Range(5, 13));
+            CollectionAssert.AreEquivalent((new int[] {4,5,6}).Concat(Enumerable.Range(8,10)).ToList(), e);
+
+            e.Enqueue(Enumerable.Range(18, 13));
             Assert.AreEqual(4, e.Dequeue());
 
             ((ICollection<int>)e).Remove(9);
             Assert.AreEqual(5, e.Dequeue());
+
+            e.TrimExcess();
+
+            Assert.AreEqual(25,e.Capacity);
+            Assert.AreEqual(6, e.Dequeue());
         }
     }
 }
