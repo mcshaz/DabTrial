@@ -131,7 +131,7 @@ namespace DabTrialTests
             return CreateEnumerator().GetEnumerator();
         }
 
-        public bool IsSynchronized { get { return _queue.IsSynchronized; } }
+        public bool IsSynchronized { get { return false; } }
 
         public bool IsReadOnly { get { return false; } }
 
