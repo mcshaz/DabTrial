@@ -68,18 +68,14 @@ namespace DabTrial.Infrastructure.Utilities.Randomisation
             return (1-(t*g.Intervention/(g.Intervention+g.Control)))/(2 - t);
         }
         //would suggest 5/6
-        public static double GetPInterventionUsingMinG(Database db, string participantTable, double biasedProbability, Factors factors)
+        public static bool? BiasToInterventionMinG(Database db, string participantTable, Factors factors)
         {
-            if (biasedProbability > 0.5 || biasedProbability <= 0)
-            {
-                throw new ArgumentOutOfRangeException("biasedProbability must be >0 and <=0.5");
-            }
             var g = GetGPocock(db, participantTable, factors);
             if (g.Intervention==g.Control)
             {
-                return 0.5;
+                return null;
             }
-            return (g.Intervention < g.Control) ? biasedProbability : (1 - biasedProbability);
+            return g.Intervention < g.Control;
         }
         //public enum MinimisationMethod {  PocockAndSimon, BeggAndIglewicz }
         static ArmData GetGPocock(Database db, string participantTable,Factors factors)
