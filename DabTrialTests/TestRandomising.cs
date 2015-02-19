@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using DabTrial.Infrastructure.Utilities.Randomisation;
 
 namespace DabTrialTests
 {
@@ -78,6 +79,38 @@ namespace DabTrialTests
                             v.Reset();
                         }
                     });
+            }
+        }
+        [TestMethod]
+        public void TestNormalisation()
+        {
+            var p = NextParticipant(new RandomAdaptor());
+            using(var db = new DataContext())
+            {
+                var g = Normalisation.GetPInterventionUsingGScale(db.Database, Normalisation.GetTableName(typeof(TrialParticipant), db), 0.5,
+                    Normalisation.SetArguments<TrialParticipant>(p, pa => pa.IsInterventionArm,
+                    true,
+                    new WeightArg<TrialParticipant> { Property = t => t.HasChronicLungDisease, Weight = 2 },
+                    new WeightArg<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease, Weight = 4 },
+                    new WeightArg<TrialParticipant> { Property = t => t.RespSupportTypeId, Weight = 1 },
+                    new WeightArg<TrialParticipant> { Property = t => t.StudyCentreId, Weight = 2 }));
+                Console.WriteLine(g);
+            }
+        }
+        [TestMethod]
+        public void TestNormalisationBegg()
+        {
+            var p = NextParticipant(new RandomAdaptor());
+            using (var db = new DataContext())
+            {
+                var g = Normalisation.BiasToInterventionBegg(db.Database, Normalisation.GetTableName(typeof(TrialParticipant), db),
+                    Normalisation.SetArguments<TrialParticipant>(p, pa => pa.IsInterventionArm,
+                    true,
+                    new WeightArg<TrialParticipant> { Property = t => t.HasChronicLungDisease, Weight = 2 },
+                    new WeightArg<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease, Weight = 4 },
+                    new WeightArg<TrialParticipant> { Property = t => t.RespSupportTypeId, Weight = 1 },
+                    new WeightArg<TrialParticipant> { Property = t => t.StudyCentreId, Weight = 2 }));
+                Console.WriteLine(g);
             }
         }
         [TestMethod]

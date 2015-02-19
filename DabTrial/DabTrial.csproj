@@ -297,10 +297,11 @@
     <Compile Include="Infrastructure\ModelBinders\UpdateParticipantBinder.cs" />
     <Compile Include="Infrastructure\RazorUtilities\CurrentResources.cs" />
     <Compile Include="Infrastructure\RazorUtilities\NavigationItems.cs" />
-    <Compile Include="Infrastructure\Utilities\BlockRandomisation.cs" />
+    <Compile Include="Infrastructure\Utilities\Randomisation\BlockRandomisation.cs" />
     <Compile Include="Infrastructure\Utilities\DataStageUtilities.cs" />
     <Compile Include="Infrastructure\Utilities\HtmlToText.cs" />
     <Compile Include="Infrastructure\Utilities\LogFailureAttribute.cs" />
+    <Compile Include="Infrastructure\Utilities\Randomisation\Normalisation.cs" />
     <Compile Include="Models\EmailModels.cs" />
     <Compile Include="Infrastructure\Utilities\EnumUtils.cs" />
     <Compile Include="Infrastructure\Utilities\ModelStateExtensions.cs" />
