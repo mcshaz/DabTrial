@@ -22,7 +22,7 @@ namespace DabTrialTests
         public void TestNewBlockProbIntervention()
         {
             var partService = new TrialParticipantService(new EmptyValidationShell());
-            Console.WriteLine("probability of intervention:{0}",partService.NewBlockProbIntervention());
+            Console.WriteLine("probability of intervention:{0}",partService.NewBlockProbIntervention(4));
         }
         [TestMethod]
         public void TestRallocFromCurrentDb()
@@ -88,12 +88,12 @@ namespace DabTrialTests
             using(var db = new DataContext())
             {
                 var g = Normalisation.GetPInterventionUsingGScale(db.Database, Normalisation.GetTableName(typeof(TrialParticipant), db), 0.5,
-                    Normalisation.SetArguments<TrialParticipant>(p, pa => pa.IsInterventionArm,
+                    Normalisation.SetArguments(p, pa => pa.IsInterventionArm,
                     true,
-                    new WeightArg<TrialParticipant> { Property = t => t.HasChronicLungDisease, Weight = 2 },
-                    new WeightArg<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease, Weight = 4 },
-                    new WeightArg<TrialParticipant> { Property = t => t.RespSupportTypeId, Weight = 1 },
-                    new WeightArg<TrialParticipant> { Property = t => t.StudyCentreId, Weight = 2 }));
+                    new CovariableArgument<TrialParticipant> { Property = t => t.HasChronicLungDisease, Weight = 2 },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease, Weight = 4 },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.RespSupportTypeId, Weight = 1 },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.StudyCentreId, Weight = 2 }));
                 Console.WriteLine(g);
             }
         }
@@ -104,15 +104,33 @@ namespace DabTrialTests
             using (var db = new DataContext())
             {
                 var g = Normalisation.BiasToInterventionBegg(db.Database, Normalisation.GetTableName(typeof(TrialParticipant), db),
-                    Normalisation.SetArguments<TrialParticipant>(p, pa => pa.IsInterventionArm,
+                    Normalisation.SetArguments(p, pa => pa.IsInterventionArm,
                     true,
-                    new WeightArg<TrialParticipant> { Property = t => t.HasChronicLungDisease, Weight = 2 },
-                    new WeightArg<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease, Weight = 4 },
-                    new WeightArg<TrialParticipant> { Property = t => t.RespSupportTypeId, Weight = 1 },
-                    new WeightArg<TrialParticipant> { Property = t => t.StudyCentreId, Weight = 2 }));
+                    new CovariableArgument<TrialParticipant> { Property = t => t.HasChronicLungDisease },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease},
+                    new CovariableArgument<TrialParticipant> { Property = t => t.RespSupportTypeId},
+                    new CovariableArgument<TrialParticipant> { Property = t => t.StudyCentreId}));
                 Console.WriteLine(g);
             }
         }
+
+        [TestMethod]
+        public void TestNormalisationFaraggi()
+        {
+            var p = NextParticipant(new RandomAdaptor());
+            using (var db = new DataContext())
+            {
+                var g = Normalisation.BiasToInterventionFaraggi(db,
+                    Normalisation.SetArguments(p, pa => pa.IsInterventionArm,
+                    true,
+                    new CovariableArgument<TrialParticipant> { Property = t => t.HasChronicLungDisease, LevelsOf=new bool[] {true,false} },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease, LevelsOf = new bool[] { true, false } },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.RespSupportTypeId, LevelsOf = db.RespiratorySupportTypes.Select(r=>r.RespSupportTypeId).AsEnumerable() },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.StudyCentreId, LevelsOf=db.StudyCentres.Select(s=>s.StudyCentreId).AsEnumerable() }));
+                Console.WriteLine(g);
+            }
+        }
+
         [TestMethod]
         public void TestMovementFromCurrentDb()
         {

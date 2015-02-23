@@ -15,18 +15,20 @@ namespace DabTrial.Domain.Services
             : base(valDictionary, DBcontext)
         {
         }
-        private const int BlockSize = 4;
+        private const int StdBlockSize = 4;
+        private const int RareBlockSize = 2;
         public void CreateAllocation(TrialParticipant participant, IRandom rdmEngine=null)
         {
             var currentBlock = GetCurrentBlock(participant);
             int noInBlock = currentBlock.Count();
+            int blockSize = (participant.HasCyanoticHeartDisease || participant.HasChronicLungDisease)?RareBlockSize:StdBlockSize;
             if (noInBlock == 0)
             {
                 //for random block size add:
                 // newAllocation.BlockSize = BlockRandomisation.BlockSize();
                 participant.BlockNumber = 1;
             }
-            else if (noInBlock == BlockSize)
+            else if (noInBlock == blockSize)
             {
                 participant.BlockNumber = currentBlock.First().BlockNumber + 1;
                 currentBlock = (new TrialParticipant[0]).AsQueryable();
@@ -38,7 +40,7 @@ namespace DabTrial.Domain.Services
                 participant.BlockNumber = currentBlock.Select(p=>p.BlockNumber).First();
 
             }
-            participant.IsInterventionArm = BlockRandomisation.IsNextAllocationInterventionWithCentralTendancy(currentBlock.Select(p=>p.IsInterventionArm),BlockSize,rdmEngine ?? new RandomAdaptor(),NewBlockProbIntervention);
+            participant.IsInterventionArm = BlockRandomisation.IsNextAllocationInterventionWithCentralTendancy(currentBlock.Select(p=>p.IsInterventionArm),blockSize,rdmEngine ?? new RandomAdaptor(),()=>NewBlockProbIntervention(blockSize));
         }
         public TrialParticipant GetParticipant(int participantId)
         {
@@ -65,13 +67,13 @@ namespace DabTrial.Domain.Services
                                       select u.StudyCentre.TrialParticipants).FirstOrDefault())
                     .Cast<TrialParticipant>();
         }
-        public double NewBlockProbIntervention()
+        public double NewBlockProbIntervention(int blockSize)
         {
             var dbSum = (from unfilled in 
 		                    (from p in _db.TrialParticipants
 		                    group p by new { p.BlockNumber, p.StudyCentreId, p.HasChronicLungDisease, p.HasCyanoticHeartDisease, p.RespiratorySupportAtRandomisation.RandomisationCategory } into block
 		                    let ct = block.Count()
-		                    where ct < BlockSize
+		                    where ct < blockSize
 		                    select new { ct, interventions= block.Count(pr=>pr.IsInterventionArm)})
 	                    group unfilled by 0 into allUnfilled
 	                    select new { n = allUnfilled.Sum(gr=>gr.ct), x=allUnfilled.Sum(gr=>gr.interventions)}

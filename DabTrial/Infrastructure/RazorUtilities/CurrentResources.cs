@@ -12,13 +12,13 @@ namespace DabTrial.Infrastructure.RazorUtilities
         {
 #if DEBUG
             assets.Libraries["jQuery"]
-                .AddScript("~/Scripts/jquery-2.1.1.js", BrowserType.W3cCompliant)
-                .AddScript("~/Scripts/jquery-1.11.1.js", BrowserType.IeLegacy);
+                .AddScript("~/Scripts/jquery-2.1.3.js", BrowserType.W3cCompliant)
+                .AddScript("~/Scripts/jquery-1.11.2.js", BrowserType.IeLegacy);
  //               .AddScript("~/Scripts/jquery-migrate-1.2.1.js"); //generate console warnings - must remember to look
             assets.Libraries["jQueryUI"].Requires("jQuery")
                 .AddScript("~/Scripts/jquery-ui-1.9.2.js",BrowserType.Ie6)
                 .AddScript("~/Scripts/jquery-ui-1.10.4.js", ~(BrowserType.Ie6 | BrowserType.NonIe))
-                .AddScript("~/Scripts/jquery-ui-1.11.1.js", BrowserType.NonIe)
+                .AddScript("~/Scripts/jquery-ui-1.11.3.js", BrowserType.NonIe)
                 .AddStyle("//code.jquery.com/ui/1.9.2/themes/eggplant/jquery-ui.css", BrowserType.Ie6)
                 .AddStyle("//code.jquery.com/ui/1.10.4/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
             assets.Libraries["TimePicker"].Requires("jQueryUI","MyUtilityScripts")
@@ -37,8 +37,8 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddScript("~/Scripts/jquery.unobtrusive-ajax.js");
                 //.AddScript("//ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.unobtrusive-ajax.js"); //not compliant with modern jQuery syntax
             assets.Libraries["DataTables"].Requires("jQuery", "MyUtilityScripts")
-                .AddScript("~/Scripts/DataTables-1.9.4/media/js/jquery.dataTables.js")
-                .AddStyle("~/Content/DataTables-1.9.4/media/css/jquery.dataTables.css")
+                .AddScript("~/Scripts/jquery.dataTables-1.10.5.min.js")
+                .AddStyle("~/Content/DataTables-1.9.4/media/css/jquery.dataTables-1.10.5.min.css")
                 .AddStyle("~/Content/DataTables-1.9.4/media/css/jquery.dataTables_themeroller.css");
             assets.Libraries["MvcDataTables"].Requires("DataTables")
                 .AddScript("~/Scripts/jquery.dataTables.columnFilter.js");
@@ -51,14 +51,14 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddStyle("~/Content/DrugDosing-1.0.css");
 #else
             assets.Libraries["jQuery"]
-                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",BrowserType.W3cCompliant)
-                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js", BrowserType.IeLegacy);
+                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js",BrowserType.W3cCompliant)
+                .AddScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js", BrowserType.IeLegacy);
             assets.Libraries["jQueryUI"].Requires("jQuery")
                 .AddScript("//code.jquery.com/ui/1.9.2/jquery-ui.min.js", BrowserType.Ie6)
-                .AddScript("//code.jquery.com/ui/1.10.4/jquery-ui.min.js", ~(BrowserType.Ie6 | BrowserType.NonIe))//curently 1.11.1 but does not close timepicker on exit
-                .AddScript("//code.jquery.com/ui/1.11.1/jquery-ui.min.js", BrowserType.NonIe)
+          //      .AddScript("//code.jquery.com/ui/1.10.4/jquery-ui.min.js", ~(BrowserType.Ie6 | BrowserType.NonIe))//curently 1.11.1 but does not close timepicker on exit
+                .AddScript("//code.jquery.com/ui/1.11.3/jquery-ui.min.js", ~BrowserType.Ie6) //.nonIe
                 .AddStyle("//code.jquery.com/ui/1.9.2/themes/eggplant/jquery-ui.css", BrowserType.Ie6)
-                .AddStyle("//code.jquery.com/ui/1.11.1/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
+                .AddStyle("//code.jquery.com/ui/1.11.3/themes/eggplant/jquery-ui.css", ~BrowserType.Ie6);
             assets.Libraries["TimePicker"].Requires("jQueryUI", "MyUtilityScripts")
                 .AddScript("~/Scripts/jquery-ui-sliderAccess.min.js")
                 .AddScript("~/Scripts/jquery-ui-timepicker-addon-1.5.0.min.js")
@@ -75,8 +75,8 @@ namespace DabTrial.Infrastructure.RazorUtilities
                 .AddScript("~/Scripts/jquery.unobtrusive-ajax.min.js");
                 //.AddScript("//ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.unobtrusive-ajax.min.js"); -old version no support modern jquery
             assets.Libraries["DataTables"].Requires("jQuery", "MyUtilityScripts")
-                .AddScript("//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js")
-                .AddStyle("//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css");
+                .AddScript("//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js")
+                .AddStyle("//cdn.datatables.net/1.10.5/css/jquery.dataTables.min.css");
                 //.AddStyle("//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables_themeroller.css");
             assets.Libraries["MvcDataTables"].Requires("DataTables")
                 .AddScript("~/Scripts/jquery.dataTables.columnFilter-1.5.6.min.js");
