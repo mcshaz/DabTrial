@@ -87,8 +87,8 @@ namespace DabTrialTests
             var p = NextParticipant(new RandomAdaptor());
             using(var db = new DataContext())
             {
-                var g = Normalisation.GetPInterventionUsingGScale(db.Database, Normalisation.GetTableName(typeof(TrialParticipant), db), 0.5,
-                    Normalisation.SetArguments(p, pa => pa.IsInterventionArm,
+                var g = Minimisation.GetPInterventionUsingGScale(db.Database, Minimisation.GetTableName(typeof(TrialParticipant), db), 0.5,
+                    Minimisation.SetArguments(p, pa => pa.IsInterventionArm,
                     true,
                     new CovariableArgument<TrialParticipant> { Property = t => t.HasChronicLungDisease, Weight = 2 },
                     new CovariableArgument<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease, Weight = 4 },
@@ -103,8 +103,8 @@ namespace DabTrialTests
             var p = NextParticipant(new RandomAdaptor());
             using (var db = new DataContext())
             {
-                var g = Normalisation.BiasToInterventionBegg(db.Database, Normalisation.GetTableName(typeof(TrialParticipant), db),
-                    Normalisation.SetArguments(p, pa => pa.IsInterventionArm,
+                var g = Minimisation.BiasToInterventionBegg(db.Database, Minimisation.GetTableName(typeof(TrialParticipant), db),
+                    Minimisation.SetArguments(p, pa => pa.IsInterventionArm,
                     true,
                     new CovariableArgument<TrialParticipant> { Property = t => t.HasChronicLungDisease },
                     new CovariableArgument<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease},
@@ -120,13 +120,13 @@ namespace DabTrialTests
             var p = NextParticipant(new RandomAdaptor());
             using (var db = new DataContext())
             {
-                var g = Normalisation.BiasToInterventionFaraggi(db,
-                    Normalisation.SetArguments(p, pa => pa.IsInterventionArm,
+                var g = Minimisation.BiasToInterventionFaraggi(db,
+                    Minimisation.SetArguments(p, pa => pa.IsInterventionArm,
                     true,
-                    new CovariableArgument<TrialParticipant> { Property = t => t.HasChronicLungDisease, LevelsOf=new bool[] {true,false} },
-                    new CovariableArgument<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease, LevelsOf = new bool[] { true, false } },
-                    new CovariableArgument<TrialParticipant> { Property = t => t.RespSupportTypeId, LevelsOf = db.RespiratorySupportTypes.Select(r=>r.RespSupportTypeId).AsEnumerable() },
-                    new CovariableArgument<TrialParticipant> { Property = t => t.StudyCentreId, LevelsOf=db.StudyCentres.Select(s=>s.StudyCentreId).AsEnumerable() }));
+                    new CovariableArgument<TrialParticipant> { Property = t => t.HasChronicLungDisease },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.HasCyanoticHeartDisease },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.RespSupportTypeId },
+                    new CovariableArgument<TrialParticipant> { Property = t => t.StudyCentreId }));
                 Console.WriteLine(g);
             }
         }

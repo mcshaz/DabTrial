@@ -301,7 +301,7 @@
     <Compile Include="Infrastructure\Utilities\DataStageUtilities.cs" />
     <Compile Include="Infrastructure\Utilities\HtmlToText.cs" />
     <Compile Include="Infrastructure\Utilities\LogFailureAttribute.cs" />
-    <Compile Include="Infrastructure\Utilities\Randomisation\Normalisation.cs" />
+    <Compile Include="Infrastructure\Utilities\Randomisation\Minimisation.cs" />
     <Compile Include="Models\EmailModels.cs" />
     <Compile Include="Infrastructure\Utilities\EnumUtils.cs" />
     <Compile Include="Infrastructure\Utilities\ModelStateExtensions.cs" />

@@ -25,14 +25,12 @@ namespace DabTrial.Infrastructure.Utilities.Randomisation
         }
         public string Name { get; set; }
         public object CurrentValue { get; set; }
-        public IEnumerable LevelsOf { get; set; }
         public double Weight { get; set; }
     }
     public class CovariableArgument<T>
     {
         public Expression<Func<T, object>> Property {get; set;}
         public double Weight {get; set;} //only required for Pocock
-        public IEnumerable LevelsOf { get; set; } //only required for Faraggi
     }
 
     public class Factors
@@ -47,7 +45,7 @@ namespace DabTrial.Infrastructure.Utilities.Randomisation
         public double Intervention { get; set; }
         public double Control { get; set; } 
     }
-    public static class Normalisation
+    public static class Minimisation
     {
         public static Factors SetArguments<T>(T obj, Expression<Func<T, object>> intervention, object isInterventionValue, params CovariableArgument<T>[] covariables) where T : class
         {
@@ -56,8 +54,7 @@ namespace DabTrial.Infrastructure.Utilities.Randomisation
                 Covariables = covariables.Select(w=>new Covariable {
                     Name = GetCorrectPropertyName<T>(w.Property).Member.Name,
                     Weight = w.Weight,
-                    CurrentValue = w.Property.Compile()(obj),
-                    LevelsOf = w.LevelsOf
+                    CurrentValue = w.Property.Compile()(obj)
                 }).ToList(),
                 InterventionFieldName = GetCorrectPropertyName<T>(intervention).Member.Name,
                 IsInterventionValue = isInterventionValue,
@@ -125,28 +122,29 @@ namespace DabTrial.Infrastructure.Utilities.Randomisation
         {
             return BiasToInterventionFaraggi((SqlConnection)db.Database.Connection, GetTableName(factors.MappedClass, db), factors);
         }
-        public static bool? BiasToInterventionFaraggi(SqlConnection con, string participantTable,Factors factors)
+
+
+        public static bool? BiasToInterventionFaraggi(SqlConnection con, string participantTable, Factors factors)
         {
-            StringBuilder selectSql = new StringBuilder("SELECT");
+            StringBuilder selectSql = new StringBuilder("SELECT ");
             Queue<object> args = new Queue<object>();
-            Queue<float> newParticipantVals = new Queue<float>();
+            float p=0;
             foreach (var w in factors.Covariables)
             {
-                foreach (var i in w.LevelsOf)
-                {
-                    selectSql.AppendFormat(" CASE WHEN t.[{0}] = @p{1} THEN 1 ELSE -1 END,", w.Name, args.Count);
-                    args.Enqueue(w.CurrentValue);
-                    newParticipantVals.Enqueue(i.Equals(w.CurrentValue)?1:-1);
-                }
+                selectSql.AppendFormat("CASE WHEN t.[{0}] = @p{1} THEN 1 ELSE -1 END,", w.Name, args.Count);
+                args.Enqueue(w.CurrentValue);
+                p++;
             }
-            selectSql.Length-=1;
+            selectSql.Length -= 1;
             selectSql.AppendFormat(" FROM {0} AS t", participantTable);
-            var covariates = con.SelectMatrix<float>(selectSql.ToString(),args.ToArray());
-            var newPatientCoariates = Matrix<float>.Build.Dense(1, newParticipantVals.Count, newParticipantVals.ToArray());
-            var diag = Matrix<float>.Build.DiagonalOfDiagonalVector(((newParticipantVals.Count + (covariates.TransposeAndMultiply(newPatientCoariates) - 1)) / (2 * newParticipantVals.Count)).Column(0));
-
+            var covariates = con.SelectMatrix<float>(selectSql.ToString(), args.ToArray());
+            float p2 = 2 * p;
+            var diag = Matrix<float>.Build.DiagonalOfDiagonalVector(covariates.RowSums().Map(x => (p + (x - 1)) / p2));
+            
             var allocations = con.SelectMatrix<float>(string.Format("SELECT CASE WHEN t.[{0}] = @intervention THEN 1 ELSE -1 END FROM {1} AS t", factors.InterventionFieldName, participantTable), new SqlParameter("@intervention", factors.IsInterventionValue));
-            var zn = ((allocations.TransposeThisAndMultiply(diag)*covariates).TransposeAndMultiply(newPatientCoariates))[0,0];
+
+
+            var zn = (allocations.TransposeThisAndMultiply(diag) * covariates).RowSums()[0];
             Console.WriteLine(zn);
             if (zn == 0) { return null; }
             return zn < 0;
@@ -199,7 +197,7 @@ namespace DabTrial.Infrastructure.Utilities.Randomisation
                         {
                             for (int i = 0; i < returnCols.Length; i++)
                             {
-                                returnCols[i].Enqueue((T)System.Convert.ChangeType(reader[0], typeofT));
+                                returnCols[i].Enqueue((T)System.Convert.ChangeType(reader[i], typeofT));
                             }
                         } while (reader.Read());
                     }
