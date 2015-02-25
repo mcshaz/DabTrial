@@ -126,30 +126,33 @@ namespace DabTrial.Infrastructure.Utilities.Randomisation
 
         public static bool? BiasToInterventionFaraggi(SqlConnection con, string participantTable, Factors factors)
         {
-            StringBuilder selectSql = new StringBuilder("SELECT ");
-            Queue<object> args = new Queue<object>();
-            float p=0;
-            foreach (var w in factors.Covariables)
-            {
-                selectSql.AppendFormat("CASE WHEN t.[{0}] = @p{1} THEN 1 ELSE -1 END,", w.Name, args.Count);
-                args.Enqueue(w.CurrentValue);
-                p++;
-            }
-            selectSql.Length -= 1;
-            selectSql.AppendFormat(" FROM {0} AS t", participantTable);
-            var covariates = con.SelectMatrix<float>(selectSql.ToString(), args.ToArray());
-            float p2 = 2 * p;
-            var diag = Matrix<float>.Build.DiagonalOfDiagonalVector(covariates.RowSums().Map(x => (p + (x - 1)) / p2));
-            
-            var allocations = con.SelectMatrix<float>(string.Format("SELECT CASE WHEN t.[{0}] = @intervention THEN 1 ELSE -1 END FROM {1} AS t", factors.InterventionFieldName, participantTable), new SqlParameter("@intervention", factors.IsInterventionValue));
-
-
-            var zn = (allocations.TransposeThisAndMultiply(diag) * covariates).RowSums()[0];
-            Console.WriteLine(zn);
+            var variables = GetVariables(con, participantTable, factors);
+            float p2 = 2 * variables.Covariables.ColumnCount;
+            var diag = Matrix<float>.Build.DiagonalOfDiagonalVector(variables.Covariables.RowSums().Map(x => (variables.Covariables.ColumnCount + (x - 1)) / p2));;
+            var zn = (variables.Arms.TransposeThisAndMultiply(diag) * variables.Covariables).RowSums()[0];
             if (zn == 0) { return null; }
             return zn < 0;
         }
 
+        static VariableMatrices<float> GetVariables(SqlConnection con, string participantTable, Factors factors)
+        {
+            StringBuilder selectSql = new StringBuilder("SELECT ");
+            Queue<object> args = new Queue<object>();
+            foreach (var w in factors.Covariables)
+            {
+                selectSql.AppendFormat("CASE WHEN t.[{0}] = @p{1} THEN 1 ELSE -1 END,", w.Name, args.Count);
+                args.Enqueue(w.CurrentValue);
+            }
+            selectSql.AppendFormat("CASE WHEN t.[{0}] = @p{1} THEN 1 ELSE -1 END FROM {2} AS t", factors.InterventionFieldName, args.Count,participantTable);
+            args.Enqueue(factors.IsInterventionValue);
+            var variables = con.SelectMatrix<float>(selectSql.ToString(), args.ToArray());
+            int lastCol = variables.ColumnCount-1;
+            return new VariableMatrices<float>
+            {
+                Covariables = variables.SubMatrix(0, variables.RowCount, 0, lastCol),
+                Arms = variables.SubMatrix(0, variables.RowCount, lastCol, 1)
+            };
+        }
         static object[] ObjectToParameter(object[] sqlParams)
         {
             object[] returnVar = null;
@@ -286,6 +289,11 @@ namespace DabTrial.Infrastructure.Utilities.Randomisation
         }
     }
 
+    public class VariableMatrices<T> where T : struct, global::System.IEquatable<T>, global::System.IFormattable
+    {
+        public Matrix<T> Covariables {get; set;}
+        public Matrix<T> Arms {get;set;}
+    }
     public class ColumnMajor<T>
     {
         public ColumnMajor(int rows, int cols)

@@ -1,0 +1,34 @@
+﻿#missingVariableTable th{
+    border-style:none;
+    padding:0;
+    text-align:center;
+}
+#missingVariableTable tr.headers th {
+  /* Something you can count on */
+  height: 140px;
+  white-space: nowrap;
+}
+
+#missingVariableTable tr.headers th > div {
+  transform: 
+    /* Magic Numbers */
+    translate(8px, 51px)
+    /* 45 is really 360 - 45 */
+    rotate(300deg);
+  width: 30px;
+}
+
+.total{
+    font-weight:bold;
+}
+#allCentresStage tr.total{
+    background-color:aqua;
+}
+
+#allCentresStage td.total, #allCentresStage th.total{
+    background-color:lightblue;
+}
+
+#allCentresStage tr.total td.total{
+    background-color:lightgray;
+}
