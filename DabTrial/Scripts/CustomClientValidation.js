@@ -372,7 +372,7 @@
         d: 86400000,
         w: 604800000
     };
-    function parseDate(dateArg) {
+    window.parseDate = function(dateArg) {
         var dateVal, dateStr, hasDatePicker = /\bhasDatepicker\b/;
         if (dateArg instanceof Date) { return dateArg; }
         if (dateArg.tagName) {
@@ -391,25 +391,34 @@
         if (!dateStr) { return null; }
         dateVal = parseIsoDate(dateStr);
         if (!dateVal) {
-            var d = /([0-3]\d)\/([0-1]\d)\/([1-2]\d{3})\s([0-1]\d):([0-5]\d):([0-5]\d)\s([apAP]).[mM]./.exec(dateStr);
-            if (d==null || !d.length) { return null; }
-            if (d[7].toLowerCase() == "p") {
-                d[4] = parseInt(d[4]);
-                if (d[4] < 12) { d[4] += 12; }
+            var d = /^([0-3]?\d)\/([0-1]?\d)\/([1-2]\d{3})/.exec(dateStr),t,p;
+            if (d == null || !d.length) { return null; }
+            dateVal = new Date(d[3], d[2] - 1, d[1]);
+            t = dateStr.substr(d[0].length + 1).split(':');
+            if (t.length > 1) {
+                p = /([ap])\.?m?\.?$/i.exec(t[t.length - 1]);
+                if (p && p.length) {
+                    if (p[1].toLowerCase() === 'p' && t[0] < 12) {
+                        t[0] += 12;
+                    } else if (p[1].toLowerCase() === 'a' && t[0] == 12) {
+                        t[0] = 0;
+                    }
+                    t[t.length - 1] = t[t.length - 1].substr(0, t[t.length - 1].length - p[0].length);
+                }
+                dateVal.setHours(t[0],t[1] || 0,t[2] || 0,t[3] || 0);
             }
-            dateVal = new Date(d[3], parseInt(d[2]) - 1, d[1], d[4], d[5], d[6]);
         }
         return dateVal;
-    }
+    };
     function parseIsoDate(input) {
         var d = /(\d{4})-([01]\d)-([0-3]\d)T([0-2]\d):([0-5]\d):([0-5]\d)/.exec(input);
-        if (d===null) { return null; }
+        if (d === null) { return null; }
         var parsed = new Date(input);
         if (isNaN(parsed)) { //ie < 9 FF <4
-            parsed = new Date(d[1], parseInt(d[2])-1, d[3], d[4], d[5], d[6]);
+            parsed = new Date(d[1], parseInt(d[2]) - 1, d[3], d[4], d[5], d[6]);
         }
         return parsed;
-    }
+    };
     function dateDifference(thisDate, otherDate, TimeUnitChar) {
         //if otherDate > thisDate, returns +ve, otherwise -ve
         if (TimeUnitChar === "M" || TimeUnitChar === "Y") {
@@ -431,8 +440,7 @@
         // note this does not refer to 0 based months
         return new Date(year, month, 0).getDate();
     };
-    function correctedAgeInWeeks(Dob, weeksGestationAtBirth) //, double correctFromLessThan=40, double correctToLessThan=43
-    {
+    function correctedAgeInWeeks(Dob, weeksGestationAtBirth) {//, double correctFromLessThan=40, double correctToLessThan=43
         weeksGestationAtBirth = parseInt(weeksGestationAtBirth, 10);
         if (isNaN(weeksGestationAtBirth)) { throw new TypeError("weeksGestationAtBirth Must be a valid integer"); }
         if (weeksGestationAtBirth >= 43 || weeksGestationAtBirth < 23) { throw new RangeError("weeksGestationAtBirth Must be between 23 and 42"); }

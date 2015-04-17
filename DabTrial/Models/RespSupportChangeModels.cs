@@ -43,7 +43,13 @@ namespace DabTrial.Models
         public Int32 RespSupportChangeId { get; set; }
         [DisplayFormat(DataFormatString="{0:d/M/yyyy HH:mm}", ApplyFormatInEditMode=true)]
         [DataType(DataType.DateTime)]
+        [Display(Name = "Time therapy was instituted")]
         public DateTime ChangeTime {get; set;}
+        [Display(Name = "Type of support")]
         public string RespiratorySupportTypeDescription { get; set; }
+    }
+    public class RespSupportChangeDetails : RespSupportChangeItem
+    {
+        public int ParticipantId { get; set; }
     }
 }

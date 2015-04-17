@@ -74,7 +74,7 @@ namespace DabTrial.Controllers
             return View(respChange);
         }
         // GET: /RespSupportChange/Delete/5
-
+        [AutoMapModel(typeof(RespiratorySupportChange), typeof(RespSupportChangeDetails))]
         public ActionResult Delete(int id)
         {
             return View(RespiratorySupportChangeService.GetRespChange(id));//  .GetScreenedPatient(id));
@@ -85,7 +85,7 @@ namespace DabTrial.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, int participantId = 0)
         {
             int response = Response.StatusCode = (int)RespiratorySupportChangeService.Delete(id, CurrentUserName);
             if (Request.IsAjaxRequest())
@@ -95,7 +95,7 @@ namespace DabTrial.Controllers
             }
             else
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Participant", new { id = participantId });
             }
         }
         private void setLists(CreateEditRespSupportChange model)

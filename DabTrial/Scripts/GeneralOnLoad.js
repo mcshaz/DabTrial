@@ -129,10 +129,10 @@
     });
     if ($.datepicker) {
         dpDefaults = {
-            dateFormat: "d/m/yy",
+            dateFormat: "d/m/yy" /*,
             onClose: function () {
                 $(this).trigger('blur');
-            }
+            }*/
         };
         if ($.timepicker) { //this is before setting onClose default, however in future versions of timepicker, hopefully this is allowed to be set in the default
             dpDefaults.timeFormat = "HH:mm";
@@ -145,8 +145,23 @@
     if (($.fn.dataTable)) {
         dataTableEls = $.fn.dataTable.fnTables();
         $(".dataTable").filter(function () {
-            return $.inArray(this,dataTableEls)===-1 //all elements not initialised
-        }).dataTable();
+            return $.inArray(this, dataTableEls) === -1 //all elements not initialised
+        }).each(function () {
+            var sortOptions = [], dtOptions;
+            $('thead tr',this).children().each(function(index){
+                var $t=$(this);
+                if ($t.hasClass('sort-asc')){
+                    sortOptions.push([index,'asc']);
+                } else if ($t.hasClass('sort-desc')) {
+                    sortOptions.push([index,'desc']);
+                }
+            });
+            if (sortOptions.length) {
+                $(this).dataTable({ aaSorting: sortOptions });
+            } else {
+                $(this).dataTable();
+            }
+        });
     }
     yepnope({
         test: Modernizr.input.placeholder,
@@ -612,8 +627,8 @@ function ajaxAddOrChangeRow(response) {
     }
     var $editRow = $(".rowInEditor"),
         $ajaxTBody = $(".ajaxUpdatableTBody").filter(":visible").last(),
-        $ajaxTable = $ajaxTBody.parent(),
-        rowObject;
+        $ajaxTable = $ajaxTBody.parent(), $newRow, firstColVal, testingVal, testingMethod,
+        rowObject, $trs;
     emptyFormElements();
     if ($.fn.dataTable && $.fn.dataTable.fnIsDataTable($ajaxTable)) {
         rowObject = ($.type(response) == 'string')
@@ -630,7 +645,31 @@ function ajaxAddOrChangeRow(response) {
         if ($editRow.length > 0) {
             $editRow.replaceWith(response);
         } else {
-            $ajaxTBody.prepend(response);
+            $newRow = $(response);
+            firstColVal = $newRow.children().first().text();
+
+            testingVal = parseDate(firstColVal);
+            if (testingVal instanceof Date) {
+                testingMethod = parseDate;
+            } else {
+                testingVal = parseFloat(firstColVal);
+                if (isNaN(testingVal)) {
+                    testingMethod = function (st) { return $.trim(st); }
+                    testingVal = testingMethod(firstColVal);
+                } else {
+                    testingMethod = parseFloat;
+                }
+            }
+            $trs = $ajaxTBody.children();
+            $trs.each(function (index) {
+                var $tr = $(this);
+                if (testingMethod($tr.children(':first').text()) > testingVal) {
+                    $tr.before($newRow);
+                    return false;
+                } else if (index === ($trs.length-1)) {
+                    $tr.after($newRow);
+                }
+            });
         }
     }
     //now set up for new entry

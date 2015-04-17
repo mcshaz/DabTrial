@@ -72,6 +72,8 @@ namespace DabTrial.Models
         {
             Mapper.CreateMap<RespiratorySupportChange, RespSupportChangeItem>();
 
+            Mapper.CreateMap<RespiratorySupportChange, RespSupportChangeDetails>();
+
             Mapper.CreateMap<RespiratorySupportChange, CreateEditRespSupportChange>()
                 .ForMember(dest => dest.RespSupportTypes, opt => opt.Ignore())
                 .ForMember(dest => dest.TimeRandomised, opt => opt.Ignore());
