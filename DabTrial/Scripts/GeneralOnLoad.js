@@ -648,13 +648,13 @@ function ajaxAddOrChangeRow(response) {
             $newRow = $(response);
             firstColVal = $newRow.children().first().text();
 
-            testingVal = parseDate(firstColVal);
+            testingVal = parseDMY(firstColVal);
             if (testingVal instanceof Date) {
-                testingMethod = parseDate;
+                testingMethod = parseDMY;
             } else {
                 testingVal = parseFloat(firstColVal);
                 if (isNaN(testingVal)) {
-                    testingMethod = function (st) { return $.trim(st); }
+                    testingMethod = $.trim;
                     testingVal = testingMethod(firstColVal);
                 } else {
                     testingMethod = parseFloat;

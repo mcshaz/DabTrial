@@ -87,28 +87,7 @@
         //taken from http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.js
         //modified to allow time
         jQuery.validator.addMethod("dateITA", function (value, element) {
-            var check = false,
-                match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})( ?(\d{1,2}):(\d{1,2})(:(\d{1,2}))?(:(\d{1,}))?)?( ?([aApP])\.?[mM]\.?)?$/.exec(value),
-                dd, MM, yyyy, aaaa, hh, mm, ss, SS, xdata, suf;
-            if (match && match.length > 4) {
-                dd = parseInt(match[1], 10);
-                MM = parseInt(match[2], 10);
-                yyyy = parseInt(match[3], 10);
-                hh = parseInt(match[5] || 0, 10);
-                suf = (match[12] || '').toLowerCase();
-                if (hh === 12 && suf === 'a') {
-                    hh -= 12;
-                } else if (hh!==12 && suf === 'p') {
-                    hh+=12
-                };
-                mm = parseInt(match[6] || 0, 10);
-                ss = parseInt(match[8] || 0, 10);
-                SS = parseInt(match[10] || 0, 10);
-                xdata = new Date(yyyy, MM-1, dd,hh,mm,ss,SS);
-                check = (( xdata.getFullYear() === yyyy ) && (xdata.getMonth () ===MM - 1 ) && ( xdata.getDate() === dd )
-                    && (xdata.getHours() === hh) && (xdata.getMinutes() === mm) && (xdata.getSeconds() === ss) && (xdata.getMilliseconds() === SS));
-            }
-            return this.optional(element) || check;
+            return this.optional(element) || parseDMY(value) instanceof Date;
         }, "Please enter a correct date");
         $.validator.methods.date = $.validator.methods.dateITA;
 //    };
@@ -372,7 +351,47 @@
         d: 86400000,
         w: 604800000
     };
-    window.parseDate = function(dateArg) {
+    window.parseDMY = function (dateStr) {
+        var match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})([t ]([\d:]+) ?([ap])?\.?m?\.?)?$/.exec(dateStr),
+            dateVal, yyyy, MM, hh, mm, ss, ms, timeComp;
+        if (!match) { return null; }
+        yyyy = parseInt(match[3],10);
+        MM = parseInt(match[2],10)-1;
+        dd = parseInt(match[1], 10);
+
+        dateVal = new Date(yyyy,MM,dd);
+
+       if ((dateVal.getFullYear() !== yyyy) || (dateVal.getMonth() !== MM) || (dateVal.getDate() !== dd)) {
+            return null;
+        }
+
+        if (match[4]) {
+            timeComp = match[5].split(':');
+            hh = parseInt(timeComp[0], 10);
+            mm = parseInt(timeComp[1] || 0, 10);
+            ss = parseInt(timeComp[2] || 0, 10);
+            ms = parseInt(timeComp[3] || 0, 10);
+
+            if (hh > 23 || mm>59 ||ss>59 || ms>999) {
+                return null;
+            }
+
+            if (match[6]) {
+                if (match[6].toLowerCase() === 'a'){
+                    if (hh===12) {
+                        hh=0;
+                    } else if (hh>12) {
+                        return null;
+                    }
+                } else if (hh<12) {
+                    hh += 12;
+                }
+            }
+            dateVal.setHours(hh, mm, ss, ms);
+        }
+        return dateVal;
+    };
+    function parseDate(dateArg) {
         var dateVal, dateStr, hasDatePicker = /\bhasDatepicker\b/;
         if (dateArg instanceof Date) { return dateArg; }
         if (dateArg.tagName) {
@@ -389,35 +408,15 @@
         else if (typeof (dateArg) === "string") { dateStr = dateArg; }
         else { throw new TypeError("invalid dateArg - must be a DOM element, jQuery element, date or string representation of a date"); }
         if (!dateStr) { return null; }
-        dateVal = parseIsoDate(dateStr);
         if (!dateVal) {
-            var d = /^([0-3]?\d)\/([0-1]?\d)\/([1-2]\d{3})/.exec(dateStr),t,p;
-            if (d == null || !d.length) { return null; }
-            dateVal = new Date(d[3], d[2] - 1, d[1]);
-            t = dateStr.substr(d[0].length + 1).split(':');
-            if (t.length > 1) {
-                p = /([ap])\.?m?\.?$/i.exec(t[t.length - 1]);
-                if (p && p.length) {
-                    if (p[1].toLowerCase() === 'p' && t[0] < 12) {
-                        t[0] += 12;
-                    } else if (p[1].toLowerCase() === 'a' && t[0] == 12) {
-                        t[0] = 0;
-                    }
-                    t[t.length - 1] = t[t.length - 1].substr(0, t[t.length - 1].length - p[0].length);
-                }
-                dateVal.setHours(t[0],t[1] || 0,t[2] || 0,t[3] || 0);
-            }
+            dateVal = parseIsoDate(dateStr) || parseDMY(dateStr);
         }
         return dateVal;
     };
-    function parseIsoDate(input) {
+    function parseIsoDate(input) { //note the ECMA 6 draft will parse all date strings as local, but currently UTC format are parsed as Grenwich
         var d = /(\d{4})-([01]\d)-([0-3]\d)T([0-2]\d):([0-5]\d):([0-5]\d)/.exec(input);
         if (d === null) { return null; }
-        var parsed = new Date(input);
-        if (isNaN(parsed)) { //ie < 9 FF <4
-            parsed = new Date(d[1], parseInt(d[2]) - 1, d[3], d[4], d[5], d[6]);
-        }
-        return parsed;
+        return new Date(d[1], parseInt(d[2]) - 1, d[3], d[4], d[5], d[6]);
     };
     function dateDifference(thisDate, otherDate, TimeUnitChar) {
         //if otherDate > thisDate, returns +ve, otherwise -ve

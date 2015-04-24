@@ -612,7 +612,7 @@
 
                 for (method in rules) {
                     rule = { method: method, parameters: rules[method] };
-                    try {
+                    //try {
 
                         result = $.validator.methods[method].call(this, val, element, rule.parameters);
 
@@ -633,12 +633,12 @@
                             this.formatAndAdd(element, rule);
                             return false;
                         }
-                    } catch (e) {
+                    /*} catch (e) {
                         if (this.settings.debug && window.console) {
                             console.log("Exception occurred when checking element " + element.id + ", check the '" + rule.method + "' method.", e);
                         }
                         throw e;
-                    }
+                    }*/
                 }
                 if (dependencyMismatch) {
                     return;
