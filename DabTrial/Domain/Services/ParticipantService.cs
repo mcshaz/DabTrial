@@ -278,7 +278,7 @@ namespace DabTrial.Domain.Services
                     if (readyForIcuDischarge.Value > localTime) { _validatonDictionary.AddError("ReadyForIcuDischarge", "ready for ICU discharge must be before current date and time"); }
                     if (numberOfSteroidDoses.HasValue) 
                     {
-                        int theoreticalDoses = theoreticalSteroidDoses(readyForIcuDischarge.Value - participant.IcuAdmission);
+                        int theoreticalDoses = theoreticalSteroidDoses(readyForIcuDischarge.Value - participant.LocalTimeRandomised);
                         if (theoreticalDoses > numberOfSteroidDoses.Value)
                         {
                             _validatonDictionary.AddError("DaysOfSteroids",

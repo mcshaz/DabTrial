@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -301,7 +302,6 @@
     <Compile Include="Infrastructure\Utilities\Randomisation\BlockRandomisation.cs" />
     <Compile Include="Infrastructure\Utilities\DataStageUtilities.cs" />
     <Compile Include="Infrastructure\Utilities\HtmlToText.cs" />
-    <Compile Include="Infrastructure\Utilities\LogFailureAttribute.cs" />
     <Compile Include="Infrastructure\Utilities\Randomisation\Minimisation.cs" />
     <Compile Include="Models\EmailModels.cs" />
     <Compile Include="Infrastructure\Utilities\EnumUtils.cs" />
