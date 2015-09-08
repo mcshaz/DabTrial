@@ -11,14 +11,13 @@ namespace DabTrial.Domain.Tables
     {
         [Key]
         public abstract int Id { get; set; }
-        [ForeignKey("ReportingUser")]
+        [ForeignKey("ReportingUser"),Required]
         public int ReportingUserId { get; set; }
         public DateTime ReportingTimeLocal { get; set; }
         public DateTime EventTime { get; set; }
         public string Details { get; set; }
         [Required]
         public virtual TrialParticipant TrialParticipant { get; set; }
-        [Required]
         public virtual User ReportingUser { get; set; }
         public abstract string Describe();
     }

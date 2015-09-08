@@ -605,7 +605,6 @@
     <None Include="App_Data\DbBackups\DAB Trial Database 2013-06-14 1608 %28dif%29.bak" />
     <Content Include="App_Data\PrivateStatic\Dab Trial Enrol Patient Walkthrough.docx" />
     <Content Include="App_Data\PrivateStatic\Dab Trial research coordinators tutorial.docx" />
-    <Content Include="App_Data\PrivateStatic\FAQ.pdf" />
     <Content Include="App_Data\PrivateStatic\Trial Overview.pdf" />
     <Content Include="Content\DataTables-1.9.4\extras\ColReorder\media\docs\media\images\Thumbs.db" />
     <Content Include="Content\DataTables-1.9.4\extras\ColVis\media\docs\media\images\Thumbs.db" />

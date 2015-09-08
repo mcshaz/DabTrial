@@ -40,7 +40,7 @@
                         @Html.DisplayFor(model => model[i].LastModified)
                     </td>
                     <td>
-                        @Ajax.ActionLink("Delete", "Delete", "ManageFiles", new { id = (Model[i].FileName + '.' + Model[i].FileType), directory = (int)Model[i].SaveDirectory }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "rowDeleted", OnFailure="failedAjaxDelete" , LoadingElementId="ajaxRequest_processing", Confirm = String.Format("Are you sure you want to delete File {0}.{1} ?", Model[i].FileName, Model[i].FileType) }, new { @class = "deleteAction" })
+                        @Ajax.ActionLink("Delete", "Delete", "ManageFiles", new { fileName = (Model[i].FileName + '.' + Model[i].FileType), directory = (int)Model[i].SaveDirectory }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "rowDeleted", OnFailure="failedAjaxDelete" , LoadingElementId="ajaxRequest_processing", Confirm = String.Format("Are you sure you want to delete File {0}.{1} ?", Model[i].FileName, Model[i].FileType) }, new { @class = "deleteAction" })
                     </td>
                 </tr>
                 }

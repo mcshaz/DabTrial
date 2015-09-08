@@ -88,12 +88,12 @@ namespace DabTrial.Controllers
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(string id, DirectoryType directory)
+        public ActionResult DeleteConfirmed(string fileName, DirectoryType directory)
         {
-            int response = Response.StatusCode =(int)FileManagementService.DeleteFile(directory, id);
+            int response = Response.StatusCode =(int)FileManagementService.DeleteFile(directory, fileName);
             if (Request.IsAjaxRequest()) 
             {
-                if (response == (int)HttpStatusCode.OK) { return Json(id); }
+                if (response == (int)HttpStatusCode.OK) { return Json(fileName); }
                 return new EmptyResult();
             }
             return RedirectToAction("Index");
