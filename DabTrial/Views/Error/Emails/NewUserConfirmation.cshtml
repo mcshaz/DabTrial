@@ -1,0 +1,53 @@
+﻿@model DabTrial.Models.UserPasswordEmailModel
+
+To: @Model.To
+From: @Model.From
+Subject: DAB trial new user loggin details
+
+<p>
+    Hello,
+</p>
+<p>
+    You have been given access to the DAB trial website.
+</p>
+<p>
+    To log in to the site, please go to the 
+    @if (Model.PasswordDisplay == DabTrial.Models.PasswordPresentations.PlainText)
+    {
+        <a href="http://www.dabtrial.com/Account/ChangePassword">change password</a><text> page</text>
+    }
+    else
+    {
+        <a href="http://www.dabtrial.com/Account/LogOn">login page</a>
+    }
+    of the site, and login with the following details:
+</p>
+<dl>
+    <dt>User name:</dt>
+        <dd>@Model.UserName</dd>
+    <dt>Password:</dt>
+    @switch(Model.PasswordDisplay)
+    {
+        case DabTrial.Models.PasswordPresentations.PlainText:
+            <dd>@Model.PlainTextPassword</dd>
+            break;
+        case DabTrial.Models.PasswordPresentations.Obfuscated:
+            <dd title="@Model.PlainTextPassword">@(new string('●', @Model.PlainTextPassword.Length)) <em>(hover mouse to see your password</em>
+            <span style="font-size:80%;color:brown">if viewing in outlook, you will need to right click in the MailTips (header) and select 'View in Browser'</span>)</dd> // (_email layout utf8) '●'
+            break;
+        case DabTrial.Models.PasswordPresentations.None:
+            break;
+     }
+</dl>
+@if (Model.PasswordDisplay == DabTrial.Models.PasswordPresentations.PlainText ){
+    <p>
+        As soon as you have logged in, you will be asked to change your password.
+    </p>
+}
+else
+{
+    <p>
+        If you use the same password for other sites/purposes, please delete this email after successfully logging in.
+    </p>
+}
+

@@ -1,0 +1,35 @@
+﻿@model DabTrial.Models.EventLoggedEmailModel
+To: @Model.To
+From: @Model.From
+Subject: @Model.EventType logged
+
+<p>
+    A@("aeiouAEIOU".IndexOf(Model.EventType[0]) >= 0?"n":"") @Model.EventType has been logged by @Model.UserName at @Model.DateTimeLogged.
+</p>
+<h3>Details:</h3>
+<dl>
+    <dt>
+        <strong>Study Centre</strong>
+    </dt>
+    <dd>
+        <strong>@Model.StudyCentreName</strong>
+    </dd>
+    <dt>
+        <strong>Parcipant Id</strong>
+    </dt>
+    <dd>
+        <strong>@Model.ParcipantId</strong>
+    </dd>
+    <dt>
+        <strong>Time of Event</strong>
+    </dt>
+    <dd>
+        <strong>@Model.EventDateTime</strong>
+    </dd>
+    <dt>
+        <strong>Details</strong>
+    </dt>
+    <dd>
+        <strong>@Model.Details</strong>
+    </dd>
+</dl>

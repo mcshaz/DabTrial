@@ -20,7 +20,7 @@ namespace DabTrial.Controllers
         public ActionResult Index()
         {
             var model = FileManagementService.GetAllFiles();
-            setLists(model);
+            SetLists(model);
             return View(model);
         }
         [HttpGet]
@@ -49,7 +49,7 @@ namespace DabTrial.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            setLists(model, true);
+            SetLists(model, true);
             return View(model);
         }
 
@@ -76,7 +76,7 @@ namespace DabTrial.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            setLists(model);
+            SetLists(model);
             return View(model);
         }
         [HttpGet]
@@ -98,7 +98,7 @@ namespace DabTrial.Controllers
             }
             return RedirectToAction("Index");
         }
-        private void setLists(IEnumerable<IFileModel> model, bool includeNull = false)
+        private void SetLists(IEnumerable<IFileModel> model, bool includeNull = false)
         {
             var directories = GetDirectoryList(includeNull);
             foreach (var item in model)

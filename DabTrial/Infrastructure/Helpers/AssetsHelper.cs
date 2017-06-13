@@ -184,8 +184,7 @@ namespace MvcHtmlHelpers
         private void WalkLibraryTree(string libraryName, ref List<string> libBuild, ref int counter)
         {
             if (counter++ > 1000) { throw new System.Exception("Dependancy library appears to be in infinate loop - please check for circular reference"); }
-            Component library;
-            if (!_allLibraries.TryGetValue(libraryName, out library))
+            if (!_allLibraries.TryGetValue(libraryName, out Component library))
                 { throw new KeyNotFoundException("Cannot find a definition for the required style/script library named: " + libraryName); }
             foreach (var childLibraryName in library.PreceedingLibraries)
             {

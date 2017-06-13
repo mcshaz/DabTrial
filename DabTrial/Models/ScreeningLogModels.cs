@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using DabTrial.Infrastructure.Validation;
 using Foolproof;
 using DabTrial.Infrastructure.Interfaces;
-using Mvc.JQuery.Datatables;
-using Mvc.JQuery.Datatables.Models;
+using Mvc.JQuery.DataTables;
+using Mvc.JQuery.DataTables.Models;
 
 
 namespace DabTrial.Models

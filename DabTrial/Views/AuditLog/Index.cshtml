@@ -1,4 +1,4 @@
-﻿@using Mvc.JQuery.Datatables
+﻿@using Mvc.JQuery.DataTables
 @using DabTrial.Controllers
 
 @{
@@ -6,7 +6,7 @@
     Html.Assets().Libraries.Uses("MvcDataTables", "jQueryUI");
     //Html.DataTableIncludes(jqueryUi: true);
     var vm = Html.DataTableVm("AuditLog", (AuditLogController ac) => ac.GetAuditLogEntries(null));
-    vm.ColumnFilter = true;
+    vm.UseColumnFilterPlugin = true;
     vm.FilterOn("EventType").Select("C", "D", "M");
 }
 <h2>Audited Changes To Database</h2>

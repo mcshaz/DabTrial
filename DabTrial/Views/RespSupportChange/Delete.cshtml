@@ -1,0 +1,41 @@
+﻿@model DabTrial.Models.RespSupportChangeDetails
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Resp Support Change Details</legend>
+    <table>
+        <tbody>
+            <tr class="display-row">
+                <td class="display-label">@Html.DisplayNameFor(model => model.ParticipantId)</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ParticipantId)
+                </td>
+            </tr>
+            <tr class="display-row">
+                <td class="display-label">@Html.DisplayNameFor(model => model.ChangeTime)</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.ChangeTime)
+                </td>
+            </tr>
+            <tr class="display-row">
+                <td class="display-label">@Html.DisplayNameFor(model => model.RespiratorySupportTypeDescription)</td>
+                <td class="display-field">
+                    @Html.DisplayFor(model => model.RespiratorySupportTypeDescription)
+                </td>
+            </tr>
+            <tr class="display-row">
+                <td></td>
+                <td>
+                    @using (Html.BeginForm(new { participantId = Model.ParticipantId }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete">
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+<p>
+    @Html.ActionLink("Back to List", "Details", "Participant", new { id = Model.ParticipantId }, null)
+</p>

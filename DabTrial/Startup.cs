@@ -19,23 +19,23 @@ namespace DabTrial
                 .UseSqlServerStorage("DataContext");
             app.UseHangfireDashboard("/hangfire", new DashboardOptions
             {
-                AuthorizationFilters = new[] { new MyRestrictiveAuthorizationFilter() }
+                Authorization = new[] { new MyRestrictiveAuthorizationFilter() }
             });
-            RecurringJob.AddOrUpdate<DabTrial.Domain.Services.CreateEmailService>("EmailDataStatusUpdate", c=>c.EmailInvestigatorsReMissingData(), Cron.Monthly(15));
+            RecurringJob.AddOrUpdate<Domain.Services.CreateEmailService>("EmailDataStatusUpdate", c=>c.EmailInvestigatorsReMissingData(), Cron.Monthly(15));
             //GlobalJobFilters.Filters.Add(new LogFailureAttribute());
             app.UseHangfireServer();
         }
 
-        public class MyRestrictiveAuthorizationFilter : IAuthorizationFilter
+        public class MyRestrictiveAuthorizationFilter : IDashboardAuthorizationFilter
         {
-            public bool Authorize(IDictionary<string, object> owinEnvironment)
+            public bool Authorize(DashboardContext context)
             {
                 // In case you need an OWIN context, use the next line,
                 // `OwinContext` class is the part of the `Microsoft.Owin` package.
-                var context = new OwinContext(owinEnvironment);
+                var owinContext = new OwinContext(context.GetOwinEnvironment());
 
                 // Allow all authenticated users to see the Dashboard (potentially dangerous).
-                return context.Authentication.User.IsInRole(RoleExtensions.DbAdministrator);
+                return owinContext.Authentication.User.IsInRole(RoleExtensions.DbAdministrator);
             }
         }
     }

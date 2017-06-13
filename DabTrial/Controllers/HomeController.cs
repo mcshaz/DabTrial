@@ -1,5 +1,7 @@
 ﻿using DabTrial.Infrastructure.FilesysServices;
 using DabTrial.Models;
+using System;
+using System.Net.Mail;
 using System.Web.Mvc;
 
 namespace DabTrial.Controllers
@@ -35,6 +37,34 @@ namespace DabTrial.Controllers
             }
             //http://www.softwire.com/blog/2011/08/23/content-disposition-headers-in-net/
             return File(documentName, mime, fileName);
+        }
+        public ActionResult TestEmail()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult TestEmailResult()
+        {
+            using (var m = new MailMessage())
+            {
+                m.To.Add("brent@focused-light.net");
+                m.Subject = "Test";
+                m.Body = "Test message from dabtrial sent " + DateTime.Now;
+                try
+                {
+                    using (var c = new SmtpClient())
+                    {
+                        c.Send(m);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = ex.ToString();
+                }
+            }
+            
+            ViewBag.Message = ViewBag.Message ?? "Success";
+            return View();
         }
     }
 }

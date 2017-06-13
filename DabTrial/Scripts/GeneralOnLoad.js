@@ -1,14 +1,13 @@
 ﻿/// <reference path="date-en-AU.js" />
-/// <reference path="date-en-AU.js" />
 //set jQuery extensions & javascript extensions
-; Array.prototype.remove = Array.prototype.remove || function (/*argumentList*/) {
+Array.prototype.remove = Array.prototype.remove || function (/*argumentList*/) {
     //http://stackoverflow.com/questions/3954438/remove-item-from-array-by-value#3955096
     var remainingArgLength = arguments.length,
         index,
         what;
     while (remainingArgLength && this.length) {
         what = arguments[--remainingArgLength];
-        while ((index = $.inArray(what, this)) != -1) {
+        while ((index = $.inArray(what, this)) !== -1) {
             this.splice(index, 1);
         }
     }
@@ -18,12 +17,12 @@
     function elementText(el, separator) {
         var textContents = [];
         for (var chld = el.firstChild; chld; chld = chld.nextSibling) {
-            if (chld.nodeType == 3) {
+            if (chld.nodeType === 3) {
                 textContents.push(chld.nodeValue);
             }
         }
         return textContents.join(separator);
-    };
+    }
     $.fn.textNotChild = function (elementSeparator, nodeSeparator) {
         if (arguments.length < 2) { nodeSeparator = ""; }
         if (arguments.length < 1) { elementSeparator = ""; }
@@ -32,13 +31,13 @@
         }).join(elementSeparator);
     };
     $.fn.getAttributes = function (/*nameOnly = true*/) {
-        var nameOnly = (arguments.length && arguments[0] !== false && arguments[0].nameOnly !== false),
-            el = this[0], attributes, i;
+        var nameOnly = arguments.length && arguments[0] !== false && arguments[0].nameOnly !== false,
+            el = this[0], attributes, i, attr;
         if (!el) { return this; }
         if (nameOnly) {
             attributes = [];
             for (i = 0; i < el.attributes.length; i++) {
-                var attr = el.attributes[i];
+                attr = el.attributes[i];
                 if (attr.specified) {
                     attributes.push(attr.name);
                 }
@@ -46,7 +45,7 @@
         } else {
             attributes = {};
             for (i = 0; i < el.attributes.length; i++) {
-                var attr = el.attributes[i];
+                attr = el.attributes[i];
                 if (attr.specified) {
                     attributes[attr.name] = attr.value;
                 }
@@ -70,9 +69,9 @@
             }
         });
         return this;
-    }
+    };
     $.fn.hasAncestor = function (selector) {
-        var $el = (selector.jQuery) ? selector : $(selector);
+        var $el = selector.jQuery ? selector : $(selector);
         return this.filter(function () {
             return !!$(this).closest(selector).length;
         });
@@ -80,9 +79,9 @@
     $.fn.isCheckable = function () {
         if (!this.length) { return; }
         var tag = this[0].tagName.toLowerCase();
-        if (tag == "input") {
+        if (tag === "input") {
             var type = this[0].type.toLowerCase();
-            return (type === "checkbox" || type === "radio");
+            return type === "checkbox" || type === "radio";
         }
         return false;
     };
@@ -119,6 +118,7 @@
             //jqXHR.setRequestHeader(token.name, token.value);
         }
     });
+    $.antiforgeryBound = true;
     $.formCtrlTagNames = 'input,button,select,textarea';
 }(jQuery));
 //begin $(document).ready - not used as content loaded by script execution
@@ -136,16 +136,16 @@
         };
         if ($.timepicker) { //this is before setting onClose default, however in future versions of timepicker, hopefully this is allowed to be set in the default
             dpDefaults.timeFormat = "HH:mm";
-            $.timepicker.setDefaults(dpDefaults)
+            $.timepicker.setDefaults(dpDefaults);
         }
         $.datepicker.setDefaults(dpDefaults);
     }
     //sortable data grids
     
-    if (($.fn.dataTable)) {
+    if ($.fn.dataTable) {
         dataTableEls = $.fn.dataTable.fnTables();
         $(".dataTable").filter(function () {
-            return $.inArray(this, dataTableEls) === -1 //all elements not initialised
+            return $.inArray(this, dataTableEls) === -1; //all elements not initialised
         }).each(function () {
             var sortOptions = [], dtOptions;
             $('thead tr',this).children().each(function(index){
@@ -179,7 +179,7 @@
         emptyFormElements();
         $(".rowInEditor").removeClass("rowInEditor");
     });
-    $ajaxResultDialog = $("#ajaxResultDialog")
+    $ajaxResultDialog = $("#ajaxResultDialog");
     if ($ajaxResultDialog.length) {
         minWidth = parseInt($("fieldset").css("min-width")) || 680;
         $ajaxResultDialog.dialog({
@@ -213,7 +213,7 @@
                         if (el.value.toLowerCase() === 'true') { boolVal = true; }
                         else if (el.value.toLowerCase() === 'false') { boolVal = false; }
                         if (el.checked) {
-                            return (boolVal==='undefined')?el.value:boolVal;
+                            return boolVal==='undefined'?el.value:boolVal;
                         }
                         if (boolVal !== 'undefined') {
                             return !boolVal;
@@ -248,14 +248,14 @@
             },
             testMatch = function ($elGroup, value) {
                 var match = false, i, j,
-                    arr = ($.isArray(value) ? value : [value]);
+                    arr = $.isArray(value) ? value : [value];
                 for (i = 0; i < arr.length; i++) {
                     for (j = 0; j < $elGroup.length; j++) {
                         var elVal = getVal($elGroup[j]);
                         if ($.isArray(elVal)) {
-                            match = ($.inArray(arr[i], elVal) !== -1);
+                            match = $.inArray(arr[i], elVal) !== -1;
                         } else {
-                            match = (elVal == arr[i]);
+                            match = elVal === arr[i];
                         }
                         if (match) { return match; }
                     }
@@ -266,7 +266,7 @@
             watchedElMatches = $.map(data.propertyPairs, function (pair) {
                 var $els, isEqual;
                 if (!(pair.name || pair.name.length)) {return;}
-                if (pair.name[0] == '#') {
+                if (pair.name[0] === '#') {
                     $els = $(pair.name);
                 } else {
                     $els = $(document.getElementsByName(pair.name))
@@ -283,18 +283,18 @@
                 });
                 return function () { return isEqual; };
             }),
-            isLogicalAnd = data.logicalOperator == 'And',
+            isLogicalAnd = data.logicalOperator === 'And',
             $thatFormCtrls = $that.find($.formCtrlTagNames).addBack($.formCtrlTagNames);
         setDisabled = function () {
             var i = 0, conditionsMet = isLogicalAnd, wasDisabled;
             for (; i < watchedElMatches.length; i++) {
                 if (isLogicalAnd) {
-                    if (watchedElMatches[i]() == false) {
+                    if (watchedElMatches[i]() === false) {
                         conditionsMet = false;
                         break;
                     }
                 } else {
-                    if (watchedElMatches[i]() == true) {
+                    if (watchedElMatches[i]() === true) {
                         conditionsMet = true;
                         break;
                     }
@@ -328,7 +328,7 @@
             $otherEl = $(document.getElementsByName(otherPropName.replace(/_/g, '.')));
             if (!$otherEl.length) { console.log(otherPropName + " not found"); return; }
         }
-        evt = (($otherEl[0].type || "").toLowerCase() == 'file') ? "change" : "keyup"
+        evt = ($otherEl[0].type || "").toLowerCase() === 'file' ? "change" : "keyup";
         if ($t.data("partialmirror-always")) {
             $otherEl.on(evt, map);
         } else {
@@ -336,7 +336,7 @@
                 var val = $t.val(),
                     match = rgx.exec(this.value),
                     that=this;
-                if (!val || (match && match[1] == val)) {
+                if (!val || match && match[1] === val) {
                     $otherEl.on(evt, map);
                     $otherEl.on("blur", function () {
                         map.call(that);
@@ -385,7 +385,7 @@ function onShowAutoWidthDialog(jqDialog) {
     // fix for scrollbars in IE
     jQuery('body').css('overflow', 'hidden');
     jQuery('.ui-widget-overlay').css('width', '100%');
-};
+}
 function onHideAutoWidthDialog(jqDialog) {
     // fix for auto width in IE
     var parent = jqDialog.parent();
@@ -397,14 +397,14 @@ function onHideAutoWidthDialog(jqDialog) {
 
     // fix for scrollbars in IE
     jQuery('body').css('overflow', 'auto');
-};
+}
 function showDetail() {
     var $this = $(this),
         detail = $this.children()
                     .filter("option[value='" + this.value + "']:first")
                     .data("detail");
     $("#" + $this.attr("detaildisplayid")).html(detail || "");
-};
+}
 //ajax dialog form functions
 function displayAjaxFormDialog(data) {
     var $ajaxForm = $(document.forms).filter("#ajaxForm").html(""), //$("#ajaxForm") (+document.getElementById) does not find any elements in IE!
@@ -424,28 +424,28 @@ function displayAjaxFormDialog(data) {
     $.validator.unobtrusive.parse($ajaxForm);
     $dialogDiv.dialog('open');
     return false;
-};
+}
 function failedAjaxDelete(xhr, status, error) {
     var $dialogDiv = $(".rowInEditor")
                     .addClass("field-validation-error")
                     .closest("#ajaxResultDialog,#ajaxFormDialog"),
         statusCat = parseInt(status.toString().substring(1)),
         msgBase = "Failed to delete the selected row"+
-                    (statusCat == 4
+                    (statusCat === 4
                     ?", usually because the information has changed since the page was downloaded."
                     :" because of a server error (which has been logged).");
     if ($dialogDiv.length) {
-        if (statusCat == 4) {
+        if (statusCat === 4) {
             alert(msgBase + " After clicking OK the window will be closed. Please reopen to see updated information");
             $dialogDiv.dialog('close');
             return;
         }
-    } else if (statusCat == 4) {
+    } else if (statusCat === 4) {
         alert(" After clicking OK the page will be reloaded.");
         location.reload();
     }
     alert(msgBase);
-};
+}
 function displayAjaxResultDialog(data) {
     if (isJsonError(data)) {
         displayJsonError(data);
@@ -457,7 +457,7 @@ function displayAjaxResultDialog(data) {
     setElementListeners.call($dialogDiv);
     $dialogDiv.dialog('open');
     return false;
-};
+}
 function setDialogHeader($contentDiv) {
     var $header = $contentDiv.find("h1,h2,h3").first(),
         $titleBar = $("#ui-dialog-title-" + $contentDiv[0].id),
@@ -465,7 +465,7 @@ function setDialogHeader($contentDiv) {
     if ($headerContents.length) { $titleBar.html("").append($headerContents); }
     else { $titleBar.html("&nbsp;"); }
     $header.remove();
-};
+}
 function emptyFormElements() {
     var maintainState = /\bmaintainState\b/,
         $formEls = $("input"),
@@ -474,25 +474,25 @@ function emptyFormElements() {
             if (el.type==="checkbox" && el.name && $.inArray(el.name, checkboxNames) === -1) { checkboxNames.push(el.name); }
         });
     $formEls = $formEls.filter(function () {
-        return this.type != "hidden" || this.getAttribute("data-datatype") == "primarykey" || !$.inArray(this.Name, checkboxNames);
+        return this.type !== "hidden" || this.getAttribute("data-datatype") === "primarykey" || !$.inArray(this.Name, checkboxNames);
     });
     clearFormErrors();
     $formEls = $formEls.add($("select,textarea"));
     $formEls.each(function () {
         if (!this.form || this.type === "submit") return;
-        if (this.getAttribute("data-datatype") == "primarykey") { this.value = "-1"; }
+        if (this.getAttribute("data-datatype") === "primarykey") { this.value = "-1"; }
         else if (!maintainState.test(this.className)) {
             if (this.isEncrypted) { this.isEncrpted = this.disabled = false;}
             $(this).emptyValues();
         }
         if (this.getAttribute("details")) { showDetail.call(this); }
     });
-};
+}
 function clearFormErrors() {
     $(".validation-summary-errors").find("li").remove();
     $(".field-validation-error").removeClass("field-validation-error").addClass("field-validation-valid");
     $(".input-validation-error").removeClass("input-validation-error");
-};
+}
 function rowDeleted() {
     var $rowToDelete = $(".deleteRow"),
         $table = $rowToDelete.closest("table");
@@ -503,19 +503,19 @@ function rowDeleted() {
     } else {
         $rowToDelete.remove();
     }
-};
+}
 function populateFormElements(data) {
     var isDateInput = /\bhasDatepicker\b/,
         isDateData=/^\/Date\((\d+)\)\/$/,
         $that = $($.formCtrlTagNames);
     clearFormErrors();
     $that.each(function () {
-        var newVal, type, isChanged, $t,
-            type = (this.tagName.toLowerCase() == "input") ? (this.type || "").toLowerCase()
+        var newVal, isChanged, $t,
+            type = this.tagName.toLowerCase() === "input" ? (this.type || "").toLowerCase()
                 : "";
-        if (!this.form || !this.name || type == "submit") { return; }
+        if (!this.form || !this.name || type === "submit") { return; }
         newVal = data[this.name];
-        if (typeof (newVal) === 'undefined') { return; }
+        if (typeof newVal === 'undefined') { return; }
         if (type === "hidden" && (newVal === true || newVal === false) && $that.is("input[type=checkbox][name='"+this.name+"'],input[type=radio][name='"+this.name+"']")) {
             return;
         }
@@ -524,28 +524,28 @@ function populateFormElements(data) {
             newVal = new Date(parseInt(isDateData.exec(newVal)[1]));
             if (isDateInput.test(this.className)) {
                 $t = $(this);
-                isChanged = $(this).datepicker("getDate") != newVal;
+                isChanged = $(this).datepicker("getDate") !== newVal;
                 $(this).datepicker("setDate", newVal);
             } else {
-                isChanged = this.value != newVal.toLocaleDateString();
+                isChanged = this.value !== newVal.toLocaleDateString();
                 this.value = newVal.toLocaleDateString();
             }
             if (isChanged) { ($t || $(this)).change(); }
-        } else if (type == "checkbox" || type == "radio") {
-            if (type == "checkbox") { 
-                isChanged = this.checked != newVal;
+        } else if (type === "checkbox" || type === "radio") {
+            if (type === "checkbox") { 
+                isChanged = this.checked !== newVal;
                 this.checked = newVal;
-            } else if (type == "radio") {
-                isChanged = this.checked != (this.value == newVal);
-                this.checked = this.value == newVal;
+            } else if (type === "radio") {
+                isChanged = this.checked !== (this.value === newVal);
+                this.checked = this.value === newVal;
             }
             if (isChanged) { $(this).change(); }
             if (this.disabled) { this.checked = false; }
             return;
         } else {
-            isChanged = this.value != newVal;
+            isChanged = this.value !== newVal;
             this.value = newVal;
-            if (newVal == 'Encrypted')
+            if (newVal === 'Encrypted')
             {
                 this.disabled = this.isEncrypted = true;
             }
@@ -557,7 +557,7 @@ function populateFormElements(data) {
         }
         if (isChanged) { ($t || $(this)).change(); }
     });
-};
+}
 function appendSelect(data) {
     if (isJsonError(response)) {
         displayJsonError(response);
@@ -566,22 +566,22 @@ function appendSelect(data) {
     $("#" + data.target).append("<option selected='selected' value='" + data.selectItem.value + "'>" + data.selectItem.text + "</option>");
     $("#ajaxFormDialog").dialog('close');
     return true;
-};
+}
 //http://stackoverflow.com/questions/2808327/how-to-read-modelstate-errors-when-returned-by-json#2808925
 function getValidationSummary() {
     var $el = $(".validation-summary-errors > ul");
-    if ($el.length == 0) {
+    if ($el.length === 0) {
         $el = $("<div class='validation-summary-errors'><ul></ul></div>")
                 .insertBefore($('fieldset').has('input')[0])
                 .find('ul');
     }
     return $el;
-};
+}
 function handleErrorResponse(response) {
     alert("Appologies - the server has returned an unexpected error. The window will be reloaded. If the error persists after reloading and data is resubmitted, please contact a website administrator.");
     location.reload();
-};
-function isJsonError(json) { return (json && json.Tag == "ValidationError"); }
+}
+function isJsonError(json) { return json && json.Tag === "ValidationError"; }
 function displayJsonError(response, form, summaryElement) {
     var $list;
     if (!isJsonError(response)) { return false; }
@@ -608,7 +608,7 @@ function displayJsonError(response, form, summaryElement) {
         $list.append(errorList);
     });
     return true;
-};
+}
 function ajaxRedraw(response) {
     if (isJsonError(response)) {
         displayJsonError(response);
@@ -631,7 +631,7 @@ function ajaxAddOrChangeRow(response) {
         rowObject, $trs;
     emptyFormElements();
     if ($.fn.dataTable && $.fn.dataTable.fnIsDataTable($ajaxTable)) {
-        rowObject = ($.type(response) == 'string')
+        rowObject = $.type(response) === 'string'
             ?$.map($(response).find('td'), function (item) {
                 return $.trim(item.innerHTML);
             })
@@ -666,7 +666,7 @@ function ajaxAddOrChangeRow(response) {
                 if (testingMethod($tr.children(':first').text()) > testingVal) {
                     $tr.before($newRow);
                     return false;
-                } else if (index === ($trs.length-1)) {
+                } else if (index === $trs.length-1) {
                     $tr.after($newRow);
                 }
             });
@@ -675,12 +675,12 @@ function ajaxAddOrChangeRow(response) {
     //now set up for new entry
     $editRow.removeClass("rowInEditor");
     return true;
-};
+}
 function closeAndAddOrChangeRow(response) {
     if (ajaxAddOrChangeRow(response)) {
         closeAjaxFormDialog(response);
     }
-};
+}
 function closeAjaxFormDialog(response) {
     if (isJsonError(response)) {
         displayJsonError(response);
@@ -692,22 +692,22 @@ function closeAjaxFormDialog(response) {
         $("#ajaxFormDialog").dialog('close');
     }
     return true;
-};
+}
 function GetAntiForgeryToken() {
     var tokenField = $("input[type='hidden'][name$='RequestVerificationToken']");
-    if (tokenField.length == 0) { return null; }
+    if (tokenField.length === 0) { return null; }
     else {
         return {
             name: tokenField[0].name,
             value: tokenField[0].value
         };
     }
-};
+}
 //End of ajax form functions
 function setToggleVis(e) {
     var $t = $(this),
         $toggleEl = $('.' + $t.data('toggleclass')),
-        duration = (e && e.data && e.data.duration)?e.data.duration:400;
+        duration = e && e.data && e.data.duration?e.data.duration:400;
     if (duration === "instant") {
         if ($t.prop('checked')) {
             $toggleEl.show();
@@ -721,17 +721,17 @@ function setToggleVis(e) {
             $toggleEl.slideUp(duration);
         }
     }
-};
+}
 function setElementListeners() {
     var show = function (input, inst) {
             if ($.trim(input.value)) {
-                if (inst.selectedYear != 0 && inst.selectedMonth != 0 && inst.selectedDay != 0) {
+                if (inst.selectedYear !== 0 && inst.selectedMonth !== 0 && inst.selectedDay !== 0) {
                     return { defaultDate: new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay) };
                 }
             }
             return { defaultDate: new Date() };
         },
-        context = (this==window)?document:this,
+        context = this===window?document:this,
         options;
         
     //date & time pickers
@@ -747,8 +747,8 @@ function setElementListeners() {
             options = {
                 //seperator: " ",
                 hour: (new Date()).getHours(),
-                beforeShow: show,
-            }
+                beforeShow: show
+            };
             options.onClose = $.datepicker._defaults.onClose;
 
             $(".dateTime", context).not("[type=hidden]")
@@ -781,7 +781,7 @@ function setElementListeners() {
     if (!Modernizr.input.placeholder) {
         $('input,textarea', context).placeholder();
     }
-};
+}
 //
 function removeProperty(obj/*, argList*/) {
     var args = arguments;
@@ -794,5 +794,5 @@ function removeProperty(obj/*, argList*/) {
         }
         return obj;
     }
-};
+}
 

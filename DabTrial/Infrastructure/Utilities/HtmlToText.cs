@@ -1,8 +1,6 @@
 ﻿using HtmlAgilityPack;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 //http://htmlagilitypack.codeplex.com/sourcecontrol/changeset/view/62772#52179
 

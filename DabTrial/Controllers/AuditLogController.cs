@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using DabTrial.Models;
-using Mvc.JQuery.Datatables;
+using Mvc.JQuery.DataTables;
 using DabTrial.Domain.Tables;
 using DabTrial.Domain.Services;
 using System.Linq;

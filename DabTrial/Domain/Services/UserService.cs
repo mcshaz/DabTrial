@@ -334,7 +334,7 @@ namespace DabTrial.Domain.Services
             MembershipUser user;
             if (WebSecurity.ChangePassword(userName, oldPassword, newPassword, out user))
             {
-                BackgroundJob.Enqueue<CreateEmailService>(c => c.NotifyResetUserPassword(userName, user.Email,newPassword,includePasswordInEmail?PasswordPresentations.Obfuscated:PasswordPresentations.None));
+                (new CreateEmailService()).NotifyResetUserPassword(userName, user.Email,newPassword,includePasswordInEmail?PasswordPresentations.Obfuscated:PasswordPresentations.None);
             }
             else
             {
@@ -350,10 +350,11 @@ namespace DabTrial.Domain.Services
                 return; 
             }
             string password = CodeFirstMembershipProvider.ResetPassword(usr);
-            _db.SaveChanges();
+            
             //making the page cycle wait to send this makes logical sense in this instance (i.e. avoid hangfire), however, due to the procompilation of the site
             //everything in the email folder nees to be enqued (well, at least use the razor rendering engine library)
             (new CreateEmailService()).NotifyResetUserPassword(usr.UserName, usr.Email,password,PasswordPresentations.PlainText);
+            _db.SaveChanges();
         }
         public void DeleteUser(string userMakingChanges, string userName)
         {

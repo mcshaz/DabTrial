@@ -1,15 +1,13 @@
-﻿@using Mvc.JQuery.Datatables
+﻿@using Mvc.JQuery.DataTables
 @using DabTrial.Controllers
-
+@model DataTableConfigVm
 @{
     Html.Assets().AddHeaderScript("~/Scripts/EditableDataTable.js");
     Html.Assets().Libraries.Uses("MvcDataTables", "jQueryUI");
     
     //Html.DataTableIncludes(jqueryUi: true);
-    var vm = Html.DataTableVm("ScreeningLog", (ScreeningLogController sc) => sc.GetScreenedPatients(null));
-    vm.ColumnFilter = true;
-    vm.FilterOn("StudyCentreAbbreviation").Select(Model);
+
 }
 
 <h3>All Screened Patients</h3>
-@Html.Partial("DataTable", vm)
+@Html.Partial("DataTable", Model)

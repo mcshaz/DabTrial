@@ -1,4 +1,4 @@
-﻿;(function ($) {
+﻿(function ($) {
     //functions from unobtrusive:
     function setValidationValues(options, ruleName, value) {
         options.rules[ruleName] = value;
@@ -9,7 +9,7 @@
     function setMultiValidationValues(options, ruleName, values) {
         var i = 0, thisRule;
         for (; i < values.length; i++) {
-            thisRule = (i == 0) ? ruleName : ruleName + i;
+            thisRule = i === 0 ? ruleName : ruleName + i;
             options.messages[thisRule] = values[i].message;
             delete values[i].message;
             options.rules[thisRule] = values[i];
@@ -78,7 +78,7 @@
     function findByName(name, form) {
         // select by name and filter by form for performance over form.find("[name=...]")
         return $(document.getElementsByName(name)).map(function (index, element) {
-            return element.form == form && element.name == name && element || null;
+            return element.form === form && element.name === name && element || null;
         });
     }
     //------------------------
@@ -107,17 +107,17 @@
         var isValid = "pending",
             i=0,
             totalLoops = (element.files || []).length;
-        while (i<totalLoops && (isValid!==false)) {
+        while (i<totalLoops && isValid!==false) {
             isValid = validationFunc.call(element, element.files[i]);
             i += 1;
         }
         return isValid;
-    };
+    }
     //------------------------
     $.validator.addMethod("maxfilesize", function (value, element, maxSize) {
-        return fileinput(element, function(f){
+        return fileinput(element, function (f) {
             return f.size < maxSize;
-        })
+        });
     });
     $.validator.unobtrusive.adapters.add("maxfilesize", ["size"], function (options) {
         setValidationValues(options, "maxfilesize", parseInt(options.params.size, 10));
@@ -128,7 +128,7 @@
         return fileinput(element, function (f) {
             var filetype = getFileType.exec(f.name);
             return filetype && $.inArray(filetype[0].substr(1), acceptedTypes) > -1;
-        })
+        });
     });
     $.validator.unobtrusive.adapters.add("filetypes", ["types"], function (options) {
         var acceptedTypes = options.params.types.split(",");
@@ -147,7 +147,7 @@
     $.validator.unobtrusive.adapters.addSingleVal("datetonow", "opt");
     //------------------------
     $.validator.addMethod("regexcount", function (value, element, params) {
-        var matches = (value.match(params.regex)||[]).length
+        var matches = (value.match(params.regex) || []).length;
         return  matches >= params.min && matches <= params.max;
     });
     $.validator.unobtrusive.adapters.add("regexcount", ["min", "max", "regex", "regexopt"], function (options) {
@@ -160,14 +160,15 @@
     });
     //------------------------
     $.validator.addMethod("comesafter", function (value, element, otherDate) {
-        var otherDate = parseDate(otherDate),
-            thisDate = parseDate(element);
+        var thisDate = parseDate(element);
+        otherDate = parseDate(otherDate);
         if (!thisDate || !otherDate) { return "pending"; }
         return thisDate >= otherDate;
     });
     $.validator.addMethod("comesbefore", function (value, element, otherDate) {
-        var otherDate = parseDate(otherDate),
-            thisDate = parseDate(element);
+        var thisDate = parseDate(element);
+        otherDate = parseDate(otherDate);
+            
         if (!thisDate || !otherDate) { return "pending"; }
         return thisDate <= otherDate;
     });
@@ -197,14 +198,15 @@
             thisDate = parseDate($(element));
         if (!otherDate || isNaN(otherDate) || !thisDate || isNaN(thisDate)) { return "pending"; }
         interval = dateDifference(thisDate, otherDate, params.timeunit);
-        return (interval >= params.mininterval && interval <= params.maxinterval);
+        return interval >= params.mininterval && interval <= params.maxinterval;
     });
     $.validator.unobtrusive.adapters.add("dateinterval", ["otherdateprop", "min", "max", "unit"], function (options) {
         var other = options.params.otherdateprop,
-            params = { mininterval: parseInt(options.params.min, 10),
+            params = {
+                mininterval: parseInt(options.params.min, 10),
                 maxinterval: parseInt(options.params.max, 10),
                 timeunit: options.params.unit
-            }
+            };
         if (other) {
             var prefix = getModelPrefix(options.element.name),
                 fullOtherName = appendModelPrefix(other, prefix);
@@ -218,9 +220,9 @@
             var val = this.value,
                 type = this.type;
             if (type && (type === "radio" || type === "checkbox") && !this.checked) { return false; }
-            return (params.othervals.indexOf(val)>-1);
+            return params.othervals.indexOf(val)>-1;
         };
-        return (!element.checked || params.$otherprop.is(isInList));
+        return !element.checked || params.$otherprop.is(isInList);
     });
     $.validator.unobtrusive.adapters.add("trueonlyif", ["otherprop", "othervals"], function (options) {
         var other = options.params.otherprop,
@@ -239,7 +241,7 @@
             cga;
         if (isNaN(dob) || !weeksGest) { return "pending"; }
         cga = correctedAgeInWeeks(dob, weeksGest);
-        return (cga >= params.min && cga <= params.max);
+        return cga >= params.min && cga <= params.max;
     });
     $.validator.unobtrusive.adapters.add("cgarange", ["min", "max", "weeksgestationprop"], function (options) {
         var params = { min: parseInt(options.params.min, 10),
@@ -255,7 +257,7 @@
         var maleGender,
             zscore = getZ(),
             $wtWarnContainer = $("#wtWarnContainer");
-        if (zscore == "pending") { return "pending"; }
+        if (zscore === "pending") { return "pending"; }
         if (-params.zfail > zscore || zscore > params.zfail) {
             $wtWarnContainer.hide();
             return false;
@@ -270,17 +272,17 @@
             var dob = parseDate(params.$dob),
                 weeksGest = params.$weeksGest[0].value || 40, cga;
             maleGender = params.$gender.not(":not(:checked)").val() === params.maleVal;
-            if (isNaN(dob) || !weeksGest || !(typeof(maleGender) == "boolean")) { return "pending"; };
+            if (isNaN(dob) || !weeksGest || !(typeof maleGender === "boolean")) { return "pending"; }
             cga = correctedAgeInWeeks(dob, weeksGest);
             return gausDist.zWtForAge(element.value, cga, maleGender);
         }
         function wtString() {
             return "<span class='field-validation-error'>"
-                    + gausDist.suggestedDeviationMsg(zscore)
-                    + "</span> healthy"
-                    + (maleGender ? " males" : " females")
-                    + " of the same age weigh "
-                    + (zscore > 0 ? "more" : "less")
+                + gausDist.suggestedDeviationMsg(zscore)
+                + "</span> healthy"
+                + (maleGender ? " males" : " females")
+                + " of the same age weigh "
+                + (zscore > 0 ? "more" : "less");
         }
 
         function warnWeightConfirmed() {
@@ -307,12 +309,12 @@
                 .add(params.$dob)
                 .on("change", changeWtStr);
             return false;
-        };
+        }
     });
     $.validator.unobtrusive.adapters.add("wtforage", ["zwarn", "zfail", "dobprop", "weeksgestationprop","genderprop","maleval"], function (options) {
         var params = {
             zfail: parseFloat(options.params.zfail, 10),
-            zwarn: (options.params.zwarn)?parseFloat(options.params.zwarn, 10):Number.MAX_VALUE,
+            zwarn: options.params.zwarn?parseFloat(options.params.zwarn, 10):Number.MAX_VALUE,
             maleVal: options.params.maleval
         },
             prefix = getModelPrefix(options.element.name),
@@ -327,7 +329,7 @@
     //-------------------------
     $.validator.addMethod('requiredgroup', function (value, element, params) {
         var i = 0;
-        for (; i < params.length;i++) {
+        for (; i < params.length; i++) {
             if (params[i].checked === true) { return true; }
         }
         return false;
@@ -361,7 +363,7 @@
 
         dateVal = new Date(yyyy,MM,dd);
 
-       if ((dateVal.getFullYear() !== yyyy) || (dateVal.getMonth() !== MM) || (dateVal.getDate() !== dd)) {
+       if (dateVal.getFullYear() !== yyyy || dateVal.getMonth() !== MM || dateVal.getDate() !== dd) {
             return null;
         }
 
@@ -405,19 +407,19 @@
             if (hasDatePicker.test(dateArg[0].className)) { return dateArg.datepicker("getDate"); }
             dateStr = dateArg.val();
         }
-        else if (typeof (dateArg) === "string") { dateStr = dateArg; }
+        else if (typeof dateArg === "string") { dateStr = dateArg; }
         else { throw new TypeError("invalid dateArg - must be a DOM element, jQuery element, date or string representation of a date"); }
         if (!dateStr) { return null; }
         if (!dateVal) {
             dateVal = parseIsoDate(dateStr) || parseDMY(dateStr);
         }
         return dateVal;
-    };
+    }
     function parseIsoDate(input) { //note the ECMA 6 draft will parse all date strings as local, but currently UTC format are parsed as Grenwich
         var d = /(\d{4})-([01]\d)-([0-3]\d)T([0-2]\d):([0-5]\d):([0-5]\d)/.exec(input);
         if (d === null) { return null; }
         return new Date(d[1], parseInt(d[2]) - 1, d[3], d[4], d[5], d[6]);
-    };
+    }
     function dateDifference(thisDate, otherDate, TimeUnitChar) {
         //if otherDate > thisDate, returns +ve, otherwise -ve
         if (TimeUnitChar === "M" || TimeUnitChar === "Y") {
@@ -429,20 +431,20 @@
             } else if (dayDif < 0) {
                 monthsDif += dayDif / daysInMonth(otherDate.getFullYear(), otherDate.getMonth());
             }
-            return TimeUnitChar === "M" ? monthsDif : (monthsDif / 12);
+            return TimeUnitChar === "M" ? monthsDif : monthsDif / 12;
         } else {
             var ms = milliSecs[TimeUnitChar];
             return (otherDate.getTime() - thisDate.getTime()) / ms;
         }
-    };
+    }
     function daysInMonth(month, year) {
         // note this does not refer to 0 based months
         return new Date(year, month, 0).getDate();
-    };
+    }
     function correctedAgeInWeeks(Dob, weeksGestationAtBirth) {//, double correctFromLessThan=40, double correctToLessThan=43
         weeksGestationAtBirth = parseInt(weeksGestationAtBirth, 10);
         if (isNaN(weeksGestationAtBirth)) { throw new TypeError("weeksGestationAtBirth Must be a valid integer"); }
         if (weeksGestationAtBirth >= 43 || weeksGestationAtBirth < 23) { throw new RangeError("weeksGestationAtBirth Must be between 23 and 42"); }
         return dateDifference(Dob, new Date(), 'w') + weeksGestationAtBirth;
-    };
+    }
 } (jQuery));

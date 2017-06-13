@@ -278,7 +278,7 @@ namespace DabTrial.Domain.Services
                     if (readyForIcuDischarge.Value > localTime) { _validatonDictionary.AddError("ReadyForIcuDischarge", "ready for ICU discharge must be before current date and time"); }
                     if (numberOfSteroidDoses.HasValue) 
                     {
-                        int theoreticalDoses = theoreticalSteroidDoses(readyForIcuDischarge.Value - participant.LocalTimeRandomised);
+                        int theoreticalDoses = TheoreticalSteroidDoses(readyForIcuDischarge.Value - participant.LocalTimeRandomised);
                         if (theoreticalDoses > numberOfSteroidDoses.Value)
                         {
                             _validatonDictionary.AddError("DaysOfSteroids",
@@ -337,7 +337,7 @@ namespace DabTrial.Domain.Services
             if (deathTime.HasValue == (String.IsNullOrWhiteSpace(deathDetails))) { _validatonDictionary.AddError("", "Please provide both Date and Details of death"); }
             if (withdrawalTime.HasValue == (String.IsNullOrWhiteSpace(withdrawalReason))) { _validatonDictionary.AddError("", "Please provide both Date and Details of withdrawal from study"); }
         }
-        private static int theoreticalSteroidDoses(TimeSpan daysInIcu)
+        private static int TheoreticalSteroidDoses(TimeSpan daysInIcu)
         {
             int hrs = daysInIcu.Hours;
             return 1 + (hrs >= 80 

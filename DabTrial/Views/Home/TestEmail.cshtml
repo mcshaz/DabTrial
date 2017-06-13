@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewBag.Title = "Test Email";
+}
+
+<h2>Test Email</h2>
+@using (Html.BeginForm("TestEmailResult", "Home", FormMethod.Post))
+{ 
+    <button type="submit">Send Email</button>
+}

@@ -8,7 +8,7 @@ using AutoMapper;
 using DabTrial.Utilities;
 using DabTrial.Domain.Services;
 using DabTrial.Domain.Tables;
-using Mvc.JQuery.Datatables;
+using Mvc.JQuery.DataTables;
 using System.Data.Entity;
 using DabTrial.Infrastructure.Crypto;
 using DabTrial.Infrastructure.Helpers;
@@ -25,10 +25,12 @@ namespace DabTrial.Controllers
 
         //
         // GET: /ScreeningLog/
-        [AutoMapModel(typeof(IEnumerable<ScreenedPatient>),typeof(IEnumerable<ScreenedPatientListItem>))]
+        //[AutoMapModel(typeof(IEnumerable<ScreenedPatient>),typeof(IEnumerable<ScreenedPatientListItem>))]
         public ViewResult Index()
         {
-            return View(ScreenService.GetAllScreenedPatients(CurrentUserName));
+
+
+            return View(GetDatatableVm());
         }
 
         //
@@ -54,7 +56,8 @@ namespace DabTrial.Controllers
                     ScreenedPatientId = -1
                     //ScreeningDate = CurrentUser.StudyCentre.LocalTime().Date
                 };
-            setLists(model);
+            SetLists(model);
+            ViewBag.DatatableVm = GetDatatableVm();
             return View(model);
         }
         [HttpGet]
@@ -121,7 +124,7 @@ namespace DabTrial.Controllers
                 //Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return ModelState.JsonValidation();
             }
-            setLists(patient);
+            SetLists(patient);
             return View(patient);
         }
  
@@ -131,7 +134,7 @@ namespace DabTrial.Controllers
         public ActionResult Edit(int id)
         {
             var model = Mapper.Map<CreateEditScreenedPatient>(ScreenService.GetScreenedPatient(id, CurrentUser));
-            setLists(model);
+            SetLists(model);
             return View(model);
         }
 
@@ -156,7 +159,7 @@ namespace DabTrial.Controllers
                     CurrentUserName);
                 if (ModelState.IsValid) { return RedirectToAction("Index"); }
             }
-            setLists(model);
+            SetLists(model);
             return View(model);
         }
 
@@ -189,15 +192,23 @@ namespace DabTrial.Controllers
         {
             var studyCentreId = CurrentUser.RestrictedToCentre();
             DateTime today = DateTime.Today;
-            if (dataTableParam.sSearchColumns[ScreenedPatientListItem.HosiptalIdOrder] != String.Empty)
-            {
-                var q = ScreenService.GetScreenedPatientByHospitalId(dataTableParam.sSearchColumns[ScreenedPatientListItem.HosiptalIdOrder], CurrentUser);
-                dataTableParam.sSearchColumns[ScreenedPatientListItem.HosiptalIdOrder] = String.Empty;
-                if (q!=null) dataTableParam.sSearchColumns[0] = q.ScreenedPatientId.ToString();
-            }
 
+            IQueryable<ScreenedPatient> queryable = null;
+            if (dataTableParam.sSearchValues[ScreenedPatientListItem.HosiptalIdOrder] != String.Empty)
+            {
+                var q = ScreenService.GetScreenedPatientByHospitalId(dataTableParam.sSearchValues[ScreenedPatientListItem.HosiptalIdOrder], CurrentUser);
+                dataTableParam.sSearchValues[ScreenedPatientListItem.HosiptalIdOrder] = String.Empty;
+                if (q != null)
+                {
+                    queryable = (new[] { q }).AsQueryable();
+                }
+            }
+            if (queryable == null)
+            {
+                queryable = dbContext.ScreenedPatients;
+            }
             return DataTablesResult.Create(
-                dbContext.ScreenedPatients.Where(src => !studyCentreId.HasValue || src.StudyCentreId == studyCentreId.Value).Select(src => new ScreenedPatientListItem
+                queryable.Where(src => !studyCentreId.HasValue || src.StudyCentreId == studyCentreId.Value).Select(src => new ScreenedPatientListItem
                 {
                     HospitalId = src.HospitalId,
                     ExclusionReasonAbbreviation = !src.AllInclusionCriteriaPresent ? "Inclusions"
@@ -224,7 +235,7 @@ namespace DabTrial.Controllers
                     });
         }
 
-        private void setLists(CreateEditScreenedPatient model)
+        private void SetLists(CreateEditScreenedPatient model)
         {
             model.CentreData = Mapper.Map<CentreSpecificPatientValidationInfo>(CentreService.GetCentreByUser(CurrentUserName));
 
@@ -240,6 +251,16 @@ namespace DabTrial.Controllers
 
             model.StudyCentreAbbreviations = CentreService.GetCentreAbbreviations();
         }
+
+        private DataTableConfigVm GetDatatableVm()
+        {
+            var getDataUrl = Url.Action(nameof(ScreeningLogController.GetScreenedPatients));
+            var datatableVm = DataTablesHelper.DataTableVm<ScreenedPatientListItem>("ScreeningLog", getDataUrl);
+            datatableVm.UseColumnFilterPlugin = true;
+            datatableVm.FilterOn("StudyCentreAbbreviation");
+            return datatableVm;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
