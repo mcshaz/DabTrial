@@ -28,8 +28,6 @@ namespace DabTrial.Controllers
         //[AutoMapModel(typeof(IEnumerable<ScreenedPatient>),typeof(IEnumerable<ScreenedPatientListItem>))]
         public ViewResult Index()
         {
-
-
             return View(GetDatatableVm());
         }
 
@@ -57,7 +55,8 @@ namespace DabTrial.Controllers
                     //ScreeningDate = CurrentUser.StudyCentre.LocalTime().Date
                 };
             SetLists(model);
-            ViewBag.DatatableVm = GetDatatableVm();
+            var dataTableVm = GetDatatableVm();
+            ViewBag.DatatableVm = dataTableVm;
             return View(model);
         }
         [HttpGet]
@@ -257,7 +256,7 @@ namespace DabTrial.Controllers
             var getDataUrl = Url.Action(nameof(ScreeningLogController.GetScreenedPatients));
             var datatableVm = DataTablesHelper.DataTableVm<ScreenedPatientListItem>("ScreeningLog", getDataUrl);
             datatableVm.UseColumnFilterPlugin = true;
-            datatableVm.FilterOn("StudyCentreAbbreviation");
+            datatableVm.FilterOn(nameof(ScreenedPatientListItem.StudyCentreAbbreviation)).Select(CentreService.GetCentreAbbreviations());
             return datatableVm;
         }
 
