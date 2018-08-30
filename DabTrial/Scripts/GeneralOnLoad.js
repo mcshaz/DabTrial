@@ -255,7 +255,7 @@ Array.prototype.remove = Array.prototype.remove || function (/*argumentList*/) {
                         if ($.isArray(elVal)) {
                             match = $.inArray(arr[i], elVal) !== -1;
                         } else {
-                            match = elVal === arr[i];
+                            match = elVal == arr[i]; //intentional lenient equality
                         }
                         if (match) { return match; }
                     }

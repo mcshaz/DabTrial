@@ -149,7 +149,6 @@ namespace DabTrial.Models
                 .ForMember(dest=>dest.ReportingUserFullName, opt=>opt.MapFrom(src=>src.ReportingUser.FirstName + " " + src.ReportingUser.LastName));
             CreateMap<AdverseEvent, AdverseEventListItem>();
             CreateMap<Drug, DrugCreateModify>();
-            CreateMap<Drug, DrugListItem>();
             CreateMap<Drug, ConfirmDeleteDrugModel>();
         }
     }

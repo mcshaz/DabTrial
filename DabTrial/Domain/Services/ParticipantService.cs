@@ -22,6 +22,19 @@ namespace DabTrial.Domain.Services
             var currentBlock = GetCurrentBlock(participant);
             int noInBlock = currentBlock.Count();
             int blockSize = (participant.HasCyanoticHeartDisease || participant.HasChronicLungDisease)?RareBlockSize:StdBlockSize;
+            if (noInBlock > blockSize) //shouldn't be needed, but backwards compat
+            {
+                int interventionCount = currentBlock.Count(p => p.IsInterventionArm);
+                int controlCount = noInBlock - interventionCount;
+                if (interventionCount == controlCount)
+                {
+                    noInBlock = blockSize;
+                }
+                else
+                {
+                    blockSize = (interventionCount > controlCount ? interventionCount : controlCount)*2;
+                }
+            }
             if (noInBlock == 0)
             {
                 //for random block size add:

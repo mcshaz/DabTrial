@@ -29,12 +29,11 @@ namespace DabTrial.Controllers
         {
             if (ModelState.IsValid)
             {
-                int attempts;
-                if (WebSecurity.Login(model.UserName, model.Password, out attempts, persistCookie: model.RememberMe))
+                if (WebSecurity.Login(model.UserName, model.Password, out int attempts, persistCookie: model.RememberMe))
                 {
                     return RedirectToLocal(returnUrl);
                 }
-                if (attempts >= DabTrial.CustomMembership.CodeFirstMembershipProvider.FixedMaxInvalidPasswordAttempts)
+                if (attempts >= CustomMembership.CodeFirstMembershipProvider.FixedMaxInvalidPasswordAttempts)
                 {
                     ModelState.AddModelError("", "You have been locked out. Please contact an investigator from your site to be unlocked.");
                     return View();
@@ -44,7 +43,7 @@ namespace DabTrial.Controllers
                 {
                     ModelState.AddModelError("", "PASSWORD PROVIDED IS ALL CAPITALS - please check you do not have the caps lock key on by mistake.");
                 }
-                if (DabTrial.CustomMembership.CodeFirstMembershipProvider.FixedMaxInvalidPasswordAttempts-1 == attempts)
+                if (CustomMembership.CodeFirstMembershipProvider.FixedMaxInvalidPasswordAttempts-1 == attempts)
                 {
                     ModelState.AddModelError("", "You have only 1 more attempt before being locked out. If you have forgotten your password, please click the link to have a new one emailed before being locked out.");
                 }

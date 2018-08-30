@@ -54,7 +54,7 @@
 
     var formEls;
     function getUniqueFormId(form) {
-        if (typeof (formEls === 'undefined')) {
+        if (typeof formEls === 'undefined') {
             formEls = document.getElementsByTagName('form');
         }
         return 'form' + $.inArray(form, formEls);
@@ -271,7 +271,7 @@
         function getZ() {
             var dob = parseDate(params.$dob),
                 weeksGest = params.$weeksGest[0].value || 40, cga;
-            maleGender = params.$gender.not(":not(:checked)").val() === params.maleVal;
+            maleGender = params.$gender.not(":not(:checked)").val() == params.maleVal;//intentional lenient equality
             if (isNaN(dob) || !weeksGest || !(typeof maleGender === "boolean")) { return "pending"; }
             cga = correctedAgeInWeeks(dob, weeksGest);
             return gausDist.zWtForAge(element.value, cga, maleGender);
@@ -289,7 +289,9 @@
             var $wtWarnMsg = $("#confirmWtWarnMsg");
             function changeWtStr() {
                 zscore = getZ();
-                if ($.inArray(this, params.$gender) > -1) { maleGender = params.$gender.not(":not(:checked)").val() === params.maleVal; }
+                if ($.inArray(this, params.$gender) > -1) {
+                    maleGender = params.$gender.not(":not(:checked)").val() == params.maleVal; //intentional lenient equality
+                }
                 $wtWarnMsg.html(wtString());
             }
             if ($wtWarnMsg.length)

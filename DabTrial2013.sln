@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DabTrial", "DabTrial\DabTri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DabTrialTests", "DabTrialTests\DabTrialTests.csproj", "{55610A79-D79E-4A4A-91AC-72AD07E6CC9B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc.JQuery.Datatables", "..\..\..\GitHub\mvc.jquery.datatables\Mvc.JQuery.Datatables\Mvc.JQuery.Datatables.csproj", "{137A0ED2-F053-49BD-81DB-FC59252810A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc.JQuery.Datatables", "..\..\..\GitHub\mvc.jquery.datatables\Mvc.JQuery.Datatables\Mvc.JQuery.Datatables.csproj", "{389ADE94-7C32-4885-812E-68A2A74C82D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc.JQuery.DataTables.Common", "..\..\..\GitHub\mvc.jquery.datatables\Mvc.JQuery.DataTables.Common\Mvc.JQuery.DataTables.Common.csproj", "{1A307896-A670-4876-A645-39A988F3BF10}"
 EndProject
@@ -25,10 +25,10 @@ Global
 		{55610A79-D79E-4A4A-91AC-72AD07E6CC9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55610A79-D79E-4A4A-91AC-72AD07E6CC9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55610A79-D79E-4A4A-91AC-72AD07E6CC9B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{137A0ED2-F053-49BD-81DB-FC59252810A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{137A0ED2-F053-49BD-81DB-FC59252810A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{137A0ED2-F053-49BD-81DB-FC59252810A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{137A0ED2-F053-49BD-81DB-FC59252810A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{389ADE94-7C32-4885-812E-68A2A74C82D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{389ADE94-7C32-4885-812E-68A2A74C82D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{389ADE94-7C32-4885-812E-68A2A74C82D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{389ADE94-7C32-4885-812E-68A2A74C82D8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A307896-A670-4876-A645-39A988F3BF10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A307896-A670-4876-A645-39A988F3BF10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A307896-A670-4876-A645-39A988F3BF10}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,5 +36,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29712ABB-A724-4113-824D-5E3470B46DCB}
 	EndGlobalSection
 EndGlobal
